@@ -1,3 +1,4 @@
 # YnABMC
 
-# Made by Zobtzler, with help from Gedemon
+# Code: Zobtzler
+# Bug testing: Zobtzler, Gedemon
