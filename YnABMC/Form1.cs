@@ -287,10 +287,16 @@ namespace YnABMC
         }
 #endregion
 
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
         private void GenerateMap_Click(object sender, EventArgs e)
         {
             if (PathFound && ProjectName.Length > 0)
             {
+                timer.Interval = 5000;
+                timer.Tick += Timer_Tick;
+                timer.Start();
+                GenerateMap.Enabled = false;
 #region LUA
                 Bitmap Map = new Bitmap(BmpFilePath);
 
@@ -1358,6 +1364,7 @@ namespace YnABMC
 #endregion
             }
         }
+
 #region Methods
         public string ParameterRow(string ProjectName, string ParameterID, string ParameterName, string DefaultValue, string ConfigurationID, int Hash, int Visible, int SortIndex)
         {
@@ -1397,6 +1404,12 @@ namespace YnABMC
             if (x < 190 && y < 100) return "MAPSIZE_GIANT";
             if (x >= 190 && y >= 100) return "MAPSIZE_LUDICROUS";
             return "MAPSIZE_STANDARD";
+        }
+
+        private void Timer_Tick(object sender, System.EventArgs e)
+        {
+            GenerateMap.Enabled = true;
+            timer.Stop();
         }
 #endregion
     }
