@@ -14,12 +14,14 @@ namespace YnABMC
     public partial class Form1 : Form
     {
         string FolderPath = "", BmpFilePath = "", ProjectName = "", ModID = "";
-        #region MapValues
-        #region Terrain
+#region MapValues
+
+#region Terrain
         string Grass = "(32,192,64)", Plains = "(192,224,0)", Desert = "(224,128,0)", Tundra = "(192,220,192)",
                Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)";
-        #endregion
-        #region feratures and plots
+#endregion
+
+#region feratures and plots
         string Mountain = "(128,128,128)", Hills = "(192,192,192)";
 
         string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
@@ -33,10 +35,10 @@ namespace YnABMC
 
                GiantsCauseway = "(0,0,255)", DelicateArch = "(0,0,192)", EyeOfTheSahara = "(0,0,128)", LakeRetba = "(0,0,64)",
                Matterhorn = "(32,0,64)", Roraima = "(64,64,64)", UbsunurHollow = "(192,128,64)", ZhangyeDanxia = "(128,128,128)";
-        #endregion
+#endregion
 
         string River0 = "(64,64,192)", River1 = "(160,64,192)", Cliffs = "(192,128,64)";
-        #region continents
+#region continents
         string Africa = "(255,0,0)", Amasia = "(224,32,0)", America = "(192,32,0)", Antarctica = "(160,32,0)",
                Arctica = "(128,0,0)", Asia = "(64,32,0)", Asiamerica = "(0,0,0)", Atlantica = "(0,128,128)",
 
@@ -53,8 +55,9 @@ namespace YnABMC
                Siberia = "(128,0,128)", SouthAmerica = "(96,0,128)", TerraAustralis = "(64,0,64)", Ur = "(0,32,64)",
 
                Vaalbara = "(0,255,255)", Vendian = "(0,192,192)";
-        #endregion
-        #region resources
+#endregion
+
+#region resources
         string Bananas = "(255,0,0)", Cattle = "(224,32,0)", Copper = "(192,32,0)", Crabs = "(160,32,0)",
                Deer = "(128,0,0)", Fish = "(64,32,0)", Rice = "(0,0,0)", Sheep = "(0,128,128)",
 
@@ -72,11 +75,13 @@ namespace YnABMC
 
                Uranium = "(0,255,255)", AntiquitySite = "(0,192,192)", Shipwreck = "(192,192,192)", Amber = "(255,251,240)",
                Olives = "(255,0,255)", Turtles = "(255,0,0)";
-        #endregion
-        #endregion
+#endregion
 
-        #region Files
-        #region Lua
+#endregion
+
+#region Files
+
+#region Lua
         string LuaFile = "",
                 LuaStart = "include \"MapEnums\"\ninclude \"MapUtilities\"\ninclude \"MountainsCliffs\"\ninclude \"RiversLakes\"\n" +
                                 "include \"FeatureGenerator\"\ninclude \"TerrainGenerator\"\ninclude \"NaturalWonderGenerator\"\n" +
@@ -89,15 +94,17 @@ namespace YnABMC
                                 "function GetCiv6DataToConvert()\n\treturn {}\nend\n\nfunction GetMap()\n\tlocal MapToConvert = {}\n\t" +
                                 "for i = 0, g_iW - 1, 1 do\n\t\tMapToConvert[i] = {}\n\tend\n\n",
                 LuaEndMap = "\n\treturn MapToConvert\nend\n\n";
-        #endregion
-        #region Database
+#endregion
+
+#region Database
         string Config = "",
                 ConfigMap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameInfo>\n\t<Maps>\n",
                 ConfigParameters = "\t</Maps>\n\t<Parameters>\n",
                 ConfigMapSupport = "\t</Parameters>\n\t<MapSupportedValues>\n",
                 ConfigEnd = "\t</MapSupportedValues>\n</GameInfo>";
-        #endregion
-        #endregion
+#endregion
+
+#endregion
 
         bool  PathFound = false;
 
@@ -141,7 +148,7 @@ namespace YnABMC
             }
             ModIDValue.Text = ModID;
         }
-        #region Checkboxes
+#region Checkboxes
         private void RNFRules_CheckedChanged(object sender, EventArgs e)
         {
             if (!RNFRules.Checked)
@@ -278,13 +285,13 @@ namespace YnABMC
                 ResourcesGenerate.Enabled = true;
             }
         }
-        #endregion
+#endregion
 
         private void GenerateMap_Click(object sender, EventArgs e)
         {
             if (PathFound && ProjectName.Length > 0)
             {
-                #region LUA
+#region LUA
                 Bitmap Map = new Bitmap(BmpFilePath);
 
                 int MapH = (Map.Height - 3) / 5;
@@ -298,7 +305,7 @@ namespace YnABMC
                     int MapY = Map.Height - ((y * OffsetY) + Center) - 1;
                     for (int x = 0; x < MapW; x++)
                     {
-                        #region Variables etc
+#region Variables etc
                         int MapX = x * OffsetX + Center + (y % 2) * Center;
                         string CurrentLine = "MapToConvert[" + x + "][" + y + "]={";
                         string Comment = "\t\t-- ";
@@ -322,9 +329,9 @@ namespace YnABMC
                         string MatchResource = "(" + MapResource.R + "," + MapResource.G + "," + MapResource.B + ")";
                         string MatchContinent = "(" + MapContinent.R + "," + MapContinent.G + "," + MapContinent.B + ")";
                         string MatchWonder = "(" + MapWonder.R + "," + MapWonder.G + "," + MapWonder.B + ")";
-                        #endregion
+#endregion
 
-                        #region Terrain
+#region Terrain
                         if (MatchTerrain == Grass)
                         {
                             if (MatchPlotFeature == Mountain)
@@ -425,9 +432,9 @@ namespace YnABMC
                             CurrentLine = CurrentLine + "16,";
                             Comment = Comment + "Ocean";
                         }
-                        #endregion
+#endregion
 
-                        #region Natural Wonders
+#region Natural Wonders
                         if (MatchWonder == BarrierReef)
                         {
                             LuaEndWrap = LuaEndWrap + "\n\tNaturalWonders[GameInfo.Features[\"FEATURE_BARRIER_REEF\"].Index] = { X = " + x + ", Y = " + y + "}";
@@ -536,9 +543,9 @@ namespace YnABMC
                             LuaEndWrap = LuaEndWrap + "\n\tif GameInfo.Features[\"FEATURE_ZHANGYE_DANXIA\"] then\n\t\tNaturalWonders[GameInfo.Features[\"FEATURE_ZHANGYE_DANXIA\"].Index] = " +
                                                 "{ X = " + x + ", Y = " + y + "}\n\tend";
                         }
-                        #endregion
+#endregion
 
-                        #region Features
+#region Features
                         if (MatchPlotFeature == FloodPlains && MatchTerrain == Desert)
                         {
                             CurrentLine = CurrentLine + "0,";
@@ -578,10 +585,9 @@ namespace YnABMC
                         {
                             CurrentLine = CurrentLine + "-1,";
                         }
-                        
-                        #endregion
+#endregion
 
-                        #region Continent
+#region Continent
                         if ((MatchTerrain != Ocean || MatchTerrain != Coast) && MatchContinent == Africa)
                         {
                             CurrentLine = CurrentLine + "0,{{";
@@ -801,9 +807,9 @@ namespace YnABMC
                         {
                             CurrentLine = CurrentLine + "-1,{{";
                         }
-                        #endregion
+#endregion
 
-                        #region Rivers
+#region Rivers
                         if (MatchRiverSW == River0)
                         {
                             CurrentLine = CurrentLine + "1,2},{";
@@ -850,9 +856,9 @@ namespace YnABMC
                         {
                             CurrentLine = CurrentLine + "0,-1}},{";
                         }
-                        #endregion
+#endregion
 
-                        #region Resources
+#region Resources
                         if (MatchResource == Bananas && MatchTerrain != Ocean && MatchTerrain != Coast)
                         {
                             CurrentLine = CurrentLine + "0,1},{";
@@ -1087,9 +1093,9 @@ namespace YnABMC
                         {
                             CurrentLine = CurrentLine + "-1,0},{";
                         }
-                        #endregion
+#endregion
 
-                        #region Cliffs
+#region Cliffs
                         if (MatchRiverSW == Cliffs)
                         {
                             CurrentLine = CurrentLine + "1,";
@@ -1120,7 +1126,7 @@ namespace YnABMC
 
                             CurrentLine = CurrentLine + "0}}";
                         }
-                        #endregion
+#endregion
                         Output[Line] = CurrentLine + Comment;
                         LuaGenMap = LuaGenMap + Output[Line] + "\n";
                         Line++;
@@ -1131,10 +1137,11 @@ namespace YnABMC
                 DirectoryInfo LuaDir = Directory.CreateDirectory(FolderPath + "\\" + ProjectName + "\\Lua");
                 File.Create(FolderPath + "\\" + ProjectName + "\\Lua\\" + ProjectName + "_Map.lua").Dispose();
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Lua\\" + ProjectName + "_Map.lua", LuaFile);
-                #endregion
+#endregion
 
-                #region Config
-                #region Config Values
+#region Config
+
+#region Config Values
                 if (STDRules.Checked)
                 {
                     ConfigMap = ConfigMap + "<Row File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
@@ -1144,7 +1151,7 @@ namespace YnABMC
                     ConfigMap = ConfigMap + "<Row Domain=\"Maps:Expansion1Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
                 }
 
-                #region Rivers
+#region Rivers
                 if (OneSelected(RiversGenerate.Checked, RiversImport.Checked, RiversEmpty.Checked))
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT", DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 0, 231);
@@ -1153,8 +1160,9 @@ namespace YnABMC
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT", DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 1, 231);
                 }
-                #endregion
-                #region Continents
+#endregion
+
+#region Continents
                 if (ContinentsGenerate.Checked && !ContinentsImport.Checked || !ContinentsGenerate.Checked && ContinentsImport.Checked)
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT", DefaultPlacement(ContinentsImport.Checked, ContinentsGenerate.Checked, ContinentsGenerate.Checked), "ContinentsPlacement", 2, 0, 232);
@@ -1163,8 +1171,9 @@ namespace YnABMC
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT", DefaultPlacement(ContinentsImport.Checked, ContinentsGenerate.Checked, ContinentsGenerate.Checked), "ContinentsPlacement", 2, 1, 232);
                 }
-                #endregion
-                #region Natural Wonders
+#endregion
+
+#region Natural Wonders
                 if (OneSelected(WondersGenerate.Checked, WondersImport.Checked, WondersEmpty.Checked))
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT", DefaultPlacement(WondersImport.Checked, WondersGenerate.Checked, WondersEmpty.Checked), "NaturalWondersPlacement", 0, 0, 244);
@@ -1173,8 +1182,9 @@ namespace YnABMC
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT", DefaultPlacement(WondersImport.Checked, WondersGenerate.Checked, WondersEmpty.Checked), "NaturalWondersPlacement", 0, 1, 244);
                 }
-                #endregion
-                #region Features
+#endregion
+
+#region Features
                 if (OneSelected(FeaturesGenerate.Checked, FeaturesImport.Checked, FeaturesEmpty.Checked))
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "FeaturesPlacement", "FEATURES_PLACEMENT", DefaultPlacement(FeaturesImport.Checked, FeaturesGenerate.Checked, FeaturesEmpty.Checked), "FeaturesPlacement", 0, 0, 245);
@@ -1185,8 +1195,9 @@ namespace YnABMC
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "FeaturesPlacement", "FEATURES_PLACEMENT", DefaultPlacement(FeaturesImport.Checked, FeaturesGenerate.Checked, FeaturesEmpty.Checked), "FeaturesPlacement", 0, 1, 2);
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "Rainfall", "RAINFALL", "2", "rainfall", 0, 1, 250);
                 }
-                #endregion
-                #region Resources
+#endregion
+
+#region Resources
                 if (OneSelected(ResourcesGenerate.Checked, ResourcesImport.Checked, ResourcesEmpty.Checked))
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "ResourcesPlacement", "RESOURCES_PLACEMENT", DefaultPlacement(ResourcesImport.Checked, ResourcesGenerate.Checked, ResourcesEmpty.Checked), "ResourcesPlacement", 0, 0, 269);
@@ -1197,8 +1208,9 @@ namespace YnABMC
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "ResourcesPlacement", "RESOURCES_PLACEMENT", DefaultPlacement(ResourcesImport.Checked, ResourcesGenerate.Checked, ResourcesEmpty.Checked), "ResourcesPlacement", 0, 1, 269);
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "Resources", "RESOURCES", "2", "resources", 0, 1, 270);
                 }
-                #endregion
-                #region TSL
+#endregion
+
+#region TSL
                 if (TSLEnable.Checked)
                 {
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "StartPosition", "START_POSITION", "2", "start", 0, 1, 280);
@@ -1213,14 +1225,14 @@ namespace YnABMC
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "ForceTSL", "FORCE_TSL", "FORCE_TSL_OFF", "ForceTSL", 0, 1, 281);
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "StartPosition", "START_POSITION", "2", "start", 0, 1, 285);
                 }
-                #endregion
+#endregion
 
                 ConfigParameters = ConfigParameters + "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ProjectName + "_MapSize\" Name=\"LOC_MAP_SIZE\" Description=\"\" Domain=\"StandardMapSizes\" DefaultValue=\"" + SizeOfMap(MapW, MapH) + "\" ConfigurationGroup=\"Map\" ConfigurationId=\"MAP_SIZE\" GroupId=\"MapOptions\" Hash=\"1\" Visible=\"0\" SortIndex=\"225\"/>\n";
                 ConfigParameters = ConfigParameters + "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"HideSize\" Name=\"HideSize\" Description=\"\" Domain=\"bool\" DefaultValue=\"1\" ConfigurationGroup=\"Map\" ConfigurationId=\"HideSize\" GroupId=\"MapOptions\" Visible=\"0\" SortIndex=\"2010\"/>\n";
                 ConfigParameters = ConfigParameters + "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ProjectName + "_MapName\" Name=\"MapName\" Description=\"\" Domain=\"text\" DefaultValue=\"" + ProjectName + "_Map\" ConfigurationGroup=\"Map\" ConfigurationId=\"MapName\" GroupId=\"MapOptions\" Visible=\"0\" SortIndex=\"2010\"/>\n";
 
                 //MapSupportedValues
-                #region Rivers
+#region Rivers
                 if (!RiversGenerate.Checked || !RiversImport.Checked || !RiversEmpty.Checked)
                 {
                     if (RiversGenerate.Checked)
@@ -1236,8 +1248,9 @@ namespace YnABMC
                         ConfigMapSupport = ConfigMapSupport + "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"RiversPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
                     }
                 }
-                #endregion
-                #region Continents
+#endregion
+
+#region Continents
                 if (!ContinentsGenerate.Checked || !ContinentsImport.Checked)
                 {
                     if (ContinentsGenerate.Checked)
@@ -1249,8 +1262,9 @@ namespace YnABMC
                         ConfigMapSupport = ConfigMapSupport + "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ContinentsPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
                     }
                 }
-                #endregion
-                #region Wonders
+#endregion
+
+#region Wonders
                 if (!WondersGenerate.Checked || !WondersImport.Checked || !WondersEmpty.Checked)
                 {
                     if (WondersGenerate.Checked)
@@ -1266,8 +1280,9 @@ namespace YnABMC
                         ConfigMapSupport = ConfigMapSupport + "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"NaturalWondersPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
                     }
                 }
-                #endregion
-                #region Features
+#endregion
+
+#region Features
                 if (!FeaturesGenerate.Checked || !FeaturesImport.Checked || !FeaturesEmpty.Checked)
                 {
                     if (FeaturesGenerate.Checked)
@@ -1283,8 +1298,9 @@ namespace YnABMC
                         ConfigMapSupport = ConfigMapSupport + "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"FeaturesPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
                     }
                 }
-                #endregion
-                #region Resources
+#endregion
+
+#region Resources
                 if (!ResourcesGenerate.Checked || !ResourcesImport.Checked || !ResourcesEmpty.Checked)
                 {
                     if (ResourcesGenerate.Checked)
@@ -1300,32 +1316,33 @@ namespace YnABMC
                         ConfigMapSupport = ConfigMapSupport + "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ResourcesPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
                     }
                 }
-                #endregion
+#endregion
 
                 Config = ConfigMap + ConfigParameters + ConfigMapSupport + ConfigEnd;
                 DirectoryInfo ConfigDir = Directory.CreateDirectory(FolderPath + "\\" + ProjectName + "\\Config");
                 File.Create(FolderPath + "\\" + ProjectName + "\\Config\\Config.xml").Dispose();
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Config\\Config.xml", Config);
-                #endregion
+#endregion
 
-                #region Config Text
+#region Config Text
                 string ConfigText = "<?xml version=\"1.0\" encoding=\"utf - 8\"?>\n<GameData>\n\t<LocalizedText>\n\t\t<Replace Tag=\"LOC_" + ProjectName + "_Map_NAME\" Language=\"en_US\">\n" +
                                     "\t\t\t<Text>" + ProjectText.Text + "</Text>\n\t\t</Replace>\n\t\t<Replace Tag=\"LOC_" + ProjectName + "_Map_DESC\" Language=\"en_US\"\n>" +
                                     "\t\t\t<Text>" + ProjectText.Text + " (" + 96 + "x" + 60 + ") by " + AuthorText.Text + "</Text>\n\t\t</Replace>\n\t</LocalizedText>\n</GameData>";
                 File.Create(FolderPath + "\\" + ProjectName + "\\Config\\Config_Text.xml").Dispose();
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Config\\Config_Text.xml", ConfigText);
-                #endregion
-                #endregion
+#endregion
 
-                #region TSL
+#endregion
+
+#region TSL
                 string TSLText = "<?xml version=\"1.0\" encoding=\"utf - 8\"?>\n<GameData>\n\t<!-- You have to fill this in manually -->\n\t<StartPosition>\n\t\t<!--<Replace MapName=\"" + ProjectName + "_Map\" Civilization =\"CIVILIZATION_AMERICA\"	X=\"0\" Y=\"0\" />-->" +
                                     "\n\t</StartPosition>\n</GameData>";
                 DirectoryInfo MapDir = Directory.CreateDirectory(FolderPath + "\\" + ProjectName + "\\Map");
                 File.Create(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml").Dispose();
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml", TSLText);
-                #endregion
+#endregion
 
-                #region Mod Info
+#region Mod Info
 
                 string ModInfo = "<?xml version=\"1.0\" encoding=\"utf - 8\"?>\n<Mod id=\"" + ModID + "\" version = \"1\">\n\t<Properties>\n\t\t<Name>" + ProjectText.Text + " by " + AuthorText.Text + "</Name>" +
                                     "\n\t\t<Description>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Community Map Editor</Description>" +
@@ -1338,10 +1355,10 @@ namespace YnABMC
                                     "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Lua/" + ProjectName + "_Map.lua</File>\n\t</Files>\n</Mod>";
 
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\" + ProjectName + ".modinfo", ModInfo);
-                #endregion
+#endregion
             }
         }
-        #region Methods
+#region Methods
         public string ParameterRow(string ProjectName, string ParameterID, string ParameterName, string DefaultValue, string ConfigurationID, int Hash, int Visible, int SortIndex)
         {
             if (Visible == 1 && Hash == 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + ConfigurationID + "\"	GroupId=\"MapOptions\" SortIndex=\"" + SortIndex + "\"/>\n";
@@ -1381,6 +1398,6 @@ namespace YnABMC
             if (x >= 190 && y >= 100) return "MAPSIZE_LUDICROUS";
             return "MAPSIZE_STANDARD";
         }
-        #endregion
+#endregion
     }
 }
