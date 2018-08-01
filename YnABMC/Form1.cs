@@ -1333,7 +1333,7 @@ namespace YnABMC
 #region Config Text
                 string ConfigText = "<?xml version=\"1.0\" encoding=\"utf - 8\"?>\n<GameData>\n\t<LocalizedText>\n\t\t<Replace Tag=\"LOC_" + ProjectName + "_Map_NAME\" Language=\"en_US\">\n" +
                                     "\t\t\t<Text>" + ProjectText.Text + "</Text>\n\t\t</Replace>\n\t\t<Replace Tag=\"LOC_" + ProjectName + "_Map_DESC\" Language=\"en_US\"\n>" +
-                                    "\t\t\t<Text>" + ProjectText.Text + " (" + 96 + "x" + 60 + ") by " + AuthorText.Text + "</Text>\n\t\t</Replace>\n\t</LocalizedText>\n</GameData>";
+                                    "\t\t\t<Text>" + ProjectText.Text + " (" + MapW + "x" + MapH + ") by " + AuthorText.Text + "</Text>\n\t\t</Replace>\n\t</LocalizedText>\n</GameData>";
                 File.Create(FolderPath + "\\" + ProjectName + "\\Config\\Config_Text.xml").Dispose();
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Config\\Config_Text.xml", ConfigText);
 #endregion
@@ -1394,15 +1394,15 @@ namespace YnABMC
 
         public string SizeOfMap(int x, int y)
         {
-            if (x < 50 && y < 30) return "MAPSIZE_DUAL";
-            if (x < 68 && y < 40) return "MAPSIZE_TINY";
-            if (x < 78 && y < 50) return "MAPSIZE_SMALL";
-            if (x < 90 && y < 57) return "MAPSIZE_STANDARD";
-            if (x < 100 && y < 63) return "MAPSIZE_LARGE";
-            if (x < 115 && y < 72) return "MAPSIZE_HUGE";
-            if (x < 136 && y < 87) return "MAPSIZE_ENORMOUS";
-            if (x < 190 && y < 100) return "MAPSIZE_GIANT";
-            if (x >= 190 && y >= 100) return "MAPSIZE_LUDICROUS";
+            if (x * y < 1500) return "MAPSIZE_DUAL";
+            if (x * y < 2700) return "MAPSIZE_TINY";
+            if (x * y < 3900) return "MAPSIZE_SMALL";
+            if (x * y < 5100) return "MAPSIZE_STANDARD";
+            if (x * y < 6200) return "MAPSIZE_LARGE";
+            if (x * y < 8000) return "MAPSIZE_HUGE";
+            if (x * y < 11500) return "MAPSIZE_ENORMOUS";
+            if (x * y < 18000) return "MAPSIZE_GIANT";
+            if (x * y >= 18000) return "MAPSIZE_LUDICROUS";
             return "MAPSIZE_STANDARD";
         }
 
