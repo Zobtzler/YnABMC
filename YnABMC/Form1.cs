@@ -584,7 +584,7 @@ namespace YnABMC
                         }
                         else if (MatchPlotFeature == Reef && MatchTerrain == Coast)
                         {
-                            CurrentLine = CurrentLine + "18,"; //This is broken
+                            CurrentLine = CurrentLine + "18,";
                             Comment = Comment + " with Reef";
                         }
                         else
@@ -1198,7 +1198,7 @@ namespace YnABMC
                 }
                 else
                 {
-                    ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "FeaturesPlacement", "FEATURES_PLACEMENT", DefaultPlacement(FeaturesImport.Checked, FeaturesGenerate.Checked, FeaturesEmpty.Checked), "FeaturesPlacement", 0, 1, 2);
+                    ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "FeaturesPlacement", "FEATURES_PLACEMENT", DefaultPlacement(FeaturesImport.Checked, FeaturesGenerate.Checked, FeaturesEmpty.Checked), "FeaturesPlacement", 0, 1, 245);
                     ConfigParameters = ConfigParameters + ParameterRow(ProjectName, "Rainfall", "RAINFALL", "2", "rainfall", 0, 1, 250);
                 }
 #endregion
