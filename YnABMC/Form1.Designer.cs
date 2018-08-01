@@ -60,6 +60,7 @@
             this.ModIDLabel = new System.Windows.Forms.Label();
             this.ModIDValue = new System.Windows.Forms.TextBox();
             this.SelectSource = new System.Windows.Forms.Button();
+            this.Attention = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -122,7 +123,7 @@
             this.ResourcesEmpty.AutoSize = true;
             this.ResourcesEmpty.Checked = true;
             this.ResourcesEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResourcesEmpty.Location = new System.Drawing.Point(390, 313);
+            this.ResourcesEmpty.Location = new System.Drawing.Point(370, 313);
             this.ResourcesEmpty.Name = "ResourcesEmpty";
             this.ResourcesEmpty.Size = new System.Drawing.Size(55, 17);
             this.ResourcesEmpty.TabIndex = 63;
@@ -158,7 +159,7 @@
             // ResourcesLabel
             // 
             this.ResourcesLabel.AutoSize = true;
-            this.ResourcesLabel.Location = new System.Drawing.Point(64, 314);
+            this.ResourcesLabel.Location = new System.Drawing.Point(85, 314);
             this.ResourcesLabel.Name = "ResourcesLabel";
             this.ResourcesLabel.Size = new System.Drawing.Size(58, 13);
             this.ResourcesLabel.TabIndex = 60;
@@ -169,7 +170,7 @@
             this.FeaturesEmpty.AutoSize = true;
             this.FeaturesEmpty.Checked = true;
             this.FeaturesEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.FeaturesEmpty.Location = new System.Drawing.Point(390, 290);
+            this.FeaturesEmpty.Location = new System.Drawing.Point(370, 290);
             this.FeaturesEmpty.Name = "FeaturesEmpty";
             this.FeaturesEmpty.Size = new System.Drawing.Size(55, 17);
             this.FeaturesEmpty.TabIndex = 59;
@@ -205,7 +206,7 @@
             // FeaturesLabel
             // 
             this.FeaturesLabel.AutoSize = true;
-            this.FeaturesLabel.Location = new System.Drawing.Point(64, 291);
+            this.FeaturesLabel.Location = new System.Drawing.Point(85, 291);
             this.FeaturesLabel.Name = "FeaturesLabel";
             this.FeaturesLabel.Size = new System.Drawing.Size(48, 13);
             this.FeaturesLabel.TabIndex = 56;
@@ -216,7 +217,7 @@
             this.WondersEmpty.AutoSize = true;
             this.WondersEmpty.Checked = true;
             this.WondersEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.WondersEmpty.Location = new System.Drawing.Point(390, 267);
+            this.WondersEmpty.Location = new System.Drawing.Point(370, 267);
             this.WondersEmpty.Name = "WondersEmpty";
             this.WondersEmpty.Size = new System.Drawing.Size(55, 17);
             this.WondersEmpty.TabIndex = 55;
@@ -252,7 +253,7 @@
             // WondersLabel
             // 
             this.WondersLabel.AutoSize = true;
-            this.WondersLabel.Location = new System.Drawing.Point(64, 268);
+            this.WondersLabel.Location = new System.Drawing.Point(85, 268);
             this.WondersLabel.Name = "WondersLabel";
             this.WondersLabel.Size = new System.Drawing.Size(87, 13);
             this.WondersLabel.TabIndex = 52;
@@ -286,7 +287,7 @@
             // ContinentsLabel
             // 
             this.ContinentsLabel.AutoSize = true;
-            this.ContinentsLabel.Location = new System.Drawing.Point(64, 245);
+            this.ContinentsLabel.Location = new System.Drawing.Point(85, 245);
             this.ContinentsLabel.Name = "ContinentsLabel";
             this.ContinentsLabel.Size = new System.Drawing.Size(57, 13);
             this.ContinentsLabel.TabIndex = 49;
@@ -297,7 +298,7 @@
             this.RiversEmpty.AutoSize = true;
             this.RiversEmpty.Checked = true;
             this.RiversEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RiversEmpty.Location = new System.Drawing.Point(390, 221);
+            this.RiversEmpty.Location = new System.Drawing.Point(370, 218);
             this.RiversEmpty.Name = "RiversEmpty";
             this.RiversEmpty.Size = new System.Drawing.Size(55, 17);
             this.RiversEmpty.TabIndex = 48;
@@ -310,7 +311,7 @@
             this.RiversImport.AutoSize = true;
             this.RiversImport.Checked = true;
             this.RiversImport.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RiversImport.Location = new System.Drawing.Point(296, 221);
+            this.RiversImport.Location = new System.Drawing.Point(296, 218);
             this.RiversImport.Name = "RiversImport";
             this.RiversImport.Size = new System.Drawing.Size(55, 17);
             this.RiversImport.TabIndex = 47;
@@ -333,7 +334,7 @@
             // RiversLabel
             // 
             this.RiversLabel.AutoSize = true;
-            this.RiversLabel.Location = new System.Drawing.Point(64, 221);
+            this.RiversLabel.Location = new System.Drawing.Point(85, 222);
             this.RiversLabel.Name = "RiversLabel";
             this.RiversLabel.Size = new System.Drawing.Size(37, 13);
             this.RiversLabel.TabIndex = 45;
@@ -413,11 +414,23 @@
             this.SelectSource.UseVisualStyleBackColor = true;
             this.SelectSource.Click += new System.EventHandler(this.SelectSource_Click);
             // 
+            // Attention
+            // 
+            this.Attention.AutoSize = true;
+            this.Attention.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Attention.Location = new System.Drawing.Point(27, 429);
+            this.Attention.Name = "Attention";
+            this.Attention.Size = new System.Drawing.Size(543, 16);
+            this.Attention.TabIndex = 70;
+            this.Attention.Text = "ATTENTION: This Program is in Alpha, meaning that there may be bugs hiding in the" +
+    " code.";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 368);
+            this.ClientSize = new System.Drawing.Size(588, 454);
+            this.Controls.Add(this.Attention);
             this.Controls.Add(this.AuthorText);
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.ProjectText);
@@ -491,6 +504,7 @@
         private System.Windows.Forms.Label ModIDLabel;
         private System.Windows.Forms.TextBox ModIDValue;
         private System.Windows.Forms.Button SelectSource;
+        private System.Windows.Forms.Label Attention;
     }
 }
 

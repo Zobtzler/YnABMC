@@ -584,7 +584,7 @@ namespace YnABMC
                         }
                         else if (MatchPlotFeature == Reef && MatchTerrain == Coast)
                         {
-                            CurrentLine = CurrentLine + "6,";
+                            CurrentLine = CurrentLine + "18,"; //This is broken
                             Comment = Comment + " with Reef";
                         }
                         else
