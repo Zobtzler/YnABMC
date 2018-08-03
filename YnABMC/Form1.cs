@@ -13,7 +13,7 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
-        string FolderPath = "", BmpFilePath = "", ProjectName = "", ModID = "";
+        string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
 #region MapValues
 
 #region Terrain
@@ -128,7 +128,16 @@ namespace YnABMC
 
         private void ProjectText_TextChanged(object sender, EventArgs e)
         {
+            AuthorName = new string(AuthorText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
             ProjectName = new string(ProjectText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+            ProjectName = AuthorName + "_" + ProjectName;
+        }
+
+        private void AuthorText_TextChanged(object sender, EventArgs e)
+        {
+            AuthorName = new string(AuthorText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+            ProjectName = new string(ProjectText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+            ProjectName = AuthorName + "_" + ProjectName;
         }
 
         private void ModIDValue_TextChanged(object sender, EventArgs e)

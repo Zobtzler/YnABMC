@@ -69,6 +69,7 @@
             this.AuthorText.Name = "AuthorText";
             this.AuthorText.Size = new System.Drawing.Size(195, 20);
             this.AuthorText.TabIndex = 69;
+            this.AuthorText.TextChanged += new System.EventHandler(this.AuthorText_TextChanged);
             // 
             // AuthorLabel
             // 
