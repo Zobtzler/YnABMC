@@ -21,12 +21,13 @@ namespace YnABMC
                Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)";
 #endregion
 
-#region feratures and plots
+#region Feratures and Plots
         string Mountain = "(128,128,128)", Hills = "(192,192,192)";
 
         string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
                FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)"; //, Fallout = "(224,160,192)";
-
+#endregion
+#region Natural Wonders
         string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
                Everest = "(128,0,0)", Galapagos = "(64,32,0)", Kilimanjaro = "(0,0,0)", Pantanal = "(0,128,128)",
 
@@ -36,9 +37,10 @@ namespace YnABMC
                GiantsCauseway = "(0,0,255)", DelicateArch = "(0,0,192)", EyeOfTheSahara = "(0,0,128)", LakeRetba = "(0,0,64)",
                Matterhorn = "(32,0,64)", Roraima = "(64,64,64)", UbsunurHollow = "(192,128,64)", ZhangyeDanxia = "(128,128,128)";
 #endregion
-
+#region Rivers
         string River0 = "(64,64,192)", River1 = "(160,64,192)", Cliffs = "(192,128,64)";
-#region continents
+#endregion
+#region Continents
         string Africa = "(255,0,0)", Amasia = "(224,32,0)", America = "(192,32,0)", Antarctica = "(160,32,0)",
                Arctica = "(128,0,0)", Asia = "(64,32,0)", Asiamerica = "(0,0,0)", Atlantica = "(0,128,128)",
 
@@ -57,7 +59,7 @@ namespace YnABMC
                Vaalbara = "(0,255,255)", Vendian = "(0,192,192)";
 #endregion
 
-#region resources
+#region Resources
         string Bananas = "(255,0,0)", Cattle = "(224,32,0)", Copper = "(192,32,0)", Crabs = "(160,32,0)",
                Deer = "(128,0,0)", Fish = "(64,32,0)", Rice = "(0,0,0)", Sheep = "(0,128,128)",
 
@@ -1403,7 +1405,7 @@ namespace YnABMC
 
         public string SizeOfMap(int x, int y)
         {
-            if (x * y < 1500) return "MAPSIZE_DUAL";
+            if (x * y < 1500) return "MAPSIZE_DUEL";
             if (x * y < 2700) return "MAPSIZE_TINY";
             if (x * y < 3900) return "MAPSIZE_SMALL";
             if (x * y < 5100) return "MAPSIZE_STANDARD";
