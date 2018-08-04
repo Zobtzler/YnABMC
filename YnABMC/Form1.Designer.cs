@@ -419,12 +419,12 @@
             // 
             this.Attention.AutoSize = true;
             this.Attention.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Attention.Location = new System.Drawing.Point(27, 429);
+            this.Attention.Location = new System.Drawing.Point(-3, 429);
             this.Attention.Name = "Attention";
-            this.Attention.Size = new System.Drawing.Size(543, 16);
+            this.Attention.Size = new System.Drawing.Size(595, 16);
             this.Attention.TabIndex = 70;
-            this.Attention.Text = "ATTENTION: This Program is in Alpha, meaning that there may be bugs hiding in the" +
-    " code.";
+            this.Attention.Text = "This Program is in Alpha, meaning that all maps produced may not work properly wi" +
+    "th some settings\r\n";
             // 
             // Form1
             // 
