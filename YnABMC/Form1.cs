@@ -1409,9 +1409,9 @@ namespace YnABMC
             if (x * y < 5100) return "MAPSIZE_STANDARD";
             if (x * y < 6200) return "MAPSIZE_LARGE";
             if (x * y < 8000) return "MAPSIZE_HUGE";
-            if (x * y < 12000) return "MAPSIZE_ENORMOUS";
-            if (x * y < 19000) return "MAPSIZE_GIANT";
-            if (x * y >= 19000) return "MAPSIZE_LUDICROUS";
+            if (x * y < 13000) return "MAPSIZE_ENORMOUS";
+            if (x * y < 21000) return "MAPSIZE_GIANT";
+            if (x * y >= 21000) return "MAPSIZE_LUDICROUS";
             return "MAPSIZE_STANDARD";
         }
 
