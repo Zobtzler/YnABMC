@@ -435,7 +435,7 @@
             this.SelectLua.Name = "SelectLua";
             this.SelectLua.Size = new System.Drawing.Size(139, 67);
             this.SelectLua.TabIndex = 71;
-            this.SelectLua.Text = "Select .lua File (both civ 5 and 6 maps)";
+            this.SelectLua.Text = "Select .log File (both civ 5 and 6 maps)";
             this.SelectLua.UseVisualStyleBackColor = true;
             this.SelectLua.Visible = false;
             this.SelectLua.Click += new System.EventHandler(this.SelectLua_Click);

@@ -157,7 +157,7 @@ namespace YnABMC
         {
             OpenFileDialog OFDLua = new OpenFileDialog
             {
-                Filter = "LUA Files (*.lua)|*.lua|All files(*.*)|*.* ",
+                Filter = "LOG Files (*.log)|*.log|All files(*.*)|*.* ",
                 FilterIndex = 1
             };
             if (OFDLua.ShowDialog() == DialogResult.OK)
@@ -345,6 +345,8 @@ namespace YnABMC
 
         private void GenerateMap_Click(object sender, EventArgs e)
         {
+
+#region Timer           
             if (PathFound && ProjectText.Text.Length > 0 && AuthorText.Text.Length > 0)
             {
                 timer.Interval = 5000;
@@ -352,6 +354,8 @@ namespace YnABMC
                 timer.Start();
                 GenerateMap.Enabled = false;
                 int MapH = 0, MapW = 0, Center = 3, OffsetX = 6, OffsetY = 5;
+#endregion
+
 #region LUA
 
 #region BMP Generated
@@ -1620,7 +1624,7 @@ namespace YnABMC
             if (r == 12) return 8;
             if (r == 13) return 32;
             if (r == 14) return 23;
-            if (r == 15) return 44; //Gold -> Biter
+            if (r == 15) return 44; //Gold -> Niter
             if (r == 16) return 26;
             if (r == 17) return 14; //Diamonds
             if (r == 18) return 21;
