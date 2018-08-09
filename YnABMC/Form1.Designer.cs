@@ -61,6 +61,8 @@
             this.ModIDValue = new System.Windows.Forms.TextBox();
             this.SelectSource = new System.Windows.Forms.Button();
             this.Attention = new System.Windows.Forms.Label();
+            this.SelectLua = new System.Windows.Forms.Button();
+            this.AdvancedOptions = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -426,11 +428,36 @@
             this.Attention.Text = "This Program is in Alpha, meaning that all maps produced may not work properly wi" +
     "th some settings\r\n";
             // 
+            // SelectLua
+            // 
+            this.SelectLua.Enabled = false;
+            this.SelectLua.Location = new System.Drawing.Point(597, 12);
+            this.SelectLua.Name = "SelectLua";
+            this.SelectLua.Size = new System.Drawing.Size(139, 67);
+            this.SelectLua.TabIndex = 71;
+            this.SelectLua.Text = "Select .lua File (both civ 5 and 6 maps)";
+            this.SelectLua.UseVisualStyleBackColor = true;
+            this.SelectLua.Visible = false;
+            this.SelectLua.Click += new System.EventHandler(this.SelectLua_Click);
+            // 
+            // AdvancedOptions
+            // 
+            this.AdvancedOptions.AutoSize = true;
+            this.AdvancedOptions.Location = new System.Drawing.Point(178, 383);
+            this.AdvancedOptions.Name = "AdvancedOptions";
+            this.AdvancedOptions.Size = new System.Drawing.Size(114, 17);
+            this.AdvancedOptions.TabIndex = 72;
+            this.AdvancedOptions.Text = "Advanced Options";
+            this.AdvancedOptions.UseVisualStyleBackColor = true;
+            this.AdvancedOptions.CheckedChanged += new System.EventHandler(this.AdvancedOptions_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 454);
+            this.ClientSize = new System.Drawing.Size(748, 454);
+            this.Controls.Add(this.AdvancedOptions);
+            this.Controls.Add(this.SelectLua);
             this.Controls.Add(this.Attention);
             this.Controls.Add(this.AuthorText);
             this.Controls.Add(this.AuthorLabel);
@@ -506,6 +533,8 @@
         private System.Windows.Forms.TextBox ModIDValue;
         private System.Windows.Forms.Button SelectSource;
         private System.Windows.Forms.Label Attention;
+        private System.Windows.Forms.Button SelectLua;
+        private System.Windows.Forms.CheckBox AdvancedOptions;
     }
 }
 
