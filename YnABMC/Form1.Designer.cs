@@ -63,6 +63,9 @@
             this.Attention = new System.Windows.Forms.Label();
             this.SelectLua = new System.Windows.Forms.Button();
             this.AdvancedOptions = new System.Windows.Forms.CheckBox();
+            this.CliffsGenerate = new System.Windows.Forms.RadioButton();
+            this.CliffsLabel = new System.Windows.Forms.Label();
+            this.CliffsImport = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -114,7 +117,7 @@
             this.TSLEnable.AutoSize = true;
             this.TSLEnable.Checked = true;
             this.TSLEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TSLEnable.Location = new System.Drawing.Point(178, 336);
+            this.TSLEnable.Location = new System.Drawing.Point(178, 359);
             this.TSLEnable.Name = "TSLEnable";
             this.TSLEnable.Size = new System.Drawing.Size(191, 17);
             this.TSLEnable.TabIndex = 64;
@@ -443,7 +446,7 @@
             // AdvancedOptions
             // 
             this.AdvancedOptions.AutoSize = true;
-            this.AdvancedOptions.Location = new System.Drawing.Point(178, 383);
+            this.AdvancedOptions.Location = new System.Drawing.Point(178, 406);
             this.AdvancedOptions.Name = "AdvancedOptions";
             this.AdvancedOptions.Size = new System.Drawing.Size(114, 17);
             this.AdvancedOptions.TabIndex = 72;
@@ -451,11 +454,47 @@
             this.AdvancedOptions.UseVisualStyleBackColor = true;
             this.AdvancedOptions.CheckedChanged += new System.EventHandler(this.AdvancedOptions_CheckedChanged);
             // 
+            // CliffsGenerate
+            // 
+            this.CliffsGenerate.AutoSize = true;
+            this.CliffsGenerate.Location = new System.Drawing.Point(178, 336);
+            this.CliffsGenerate.Name = "CliffsGenerate";
+            this.CliffsGenerate.Size = new System.Drawing.Size(75, 17);
+            this.CliffsGenerate.TabIndex = 73;
+            this.CliffsGenerate.Text = "Generated";
+            this.CliffsGenerate.UseVisualStyleBackColor = true;
+            this.CliffsGenerate.CheckedChanged += new System.EventHandler(this.CliffsGenerate_CheckedChanged);
+            // 
+            // CliffsLabel
+            // 
+            this.CliffsLabel.AutoSize = true;
+            this.CliffsLabel.Location = new System.Drawing.Point(85, 338);
+            this.CliffsLabel.Name = "CliffsLabel";
+            this.CliffsLabel.Size = new System.Drawing.Size(29, 13);
+            this.CliffsLabel.TabIndex = 74;
+            this.CliffsLabel.Text = "Cliffs";
+            // 
+            // CliffsImport
+            // 
+            this.CliffsImport.AutoSize = true;
+            this.CliffsImport.Checked = true;
+            this.CliffsImport.Location = new System.Drawing.Point(296, 336);
+            this.CliffsImport.Name = "CliffsImport";
+            this.CliffsImport.Size = new System.Drawing.Size(54, 17);
+            this.CliffsImport.TabIndex = 75;
+            this.CliffsImport.TabStop = true;
+            this.CliffsImport.Text = "Import";
+            this.CliffsImport.UseVisualStyleBackColor = true;
+            this.CliffsImport.CheckedChanged += new System.EventHandler(this.CliffsImport_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 454);
+            this.Controls.Add(this.CliffsImport);
+            this.Controls.Add(this.CliffsLabel);
+            this.Controls.Add(this.CliffsGenerate);
             this.Controls.Add(this.AdvancedOptions);
             this.Controls.Add(this.SelectLua);
             this.Controls.Add(this.Attention);
@@ -535,6 +574,9 @@
         private System.Windows.Forms.Label Attention;
         private System.Windows.Forms.Button SelectLua;
         private System.Windows.Forms.CheckBox AdvancedOptions;
+        private System.Windows.Forms.RadioButton CliffsGenerate;
+        private System.Windows.Forms.Label CliffsLabel;
+        private System.Windows.Forms.RadioButton CliffsImport;
     }
 }
 

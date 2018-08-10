@@ -339,6 +339,16 @@ namespace YnABMC
                 ResourcesGenerate.Enabled = true;
             }
         }
+
+        private void CliffsImport_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CliffsGenerate_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
 #endregion
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -366,10 +376,22 @@ namespace YnABMC
                     MapH = (Map.Height - 3) / 5;
                     MapW = (Map.Width - 4) / 6;
 
+                    bool[,] WaterArray = new bool[MapW, MapH];
+                    bool[,] HasHills = new bool[MapW, MapH];
+                    for (int i = 0; i < MapW; i++)
+                    {
+                        for (int j = 0; j < MapH; j++)
+                        {
+                            WaterArray[i,j] = false;
+                            HasHills[i, j] = false;
+                        }
+                    }                    
+
                     for (int y = 0; y < MapH; y++)
                     {
+                        string EndCliffs = "", InvertedLines = "";
                         int MapY = Map.Height - ((y * OffsetY) + Center) - 1;
-                        for (int x = 0; x < MapW; x++)
+                        for (int x = MapW - 1; x > -1; x--)
                         {
 #region Variables etc
                             int MapX = x * OffsetX + Center + (y % 2) * Center;
@@ -409,6 +431,7 @@ namespace YnABMC
                                 {
                                     CurrentLine += "1,";
                                     Comment += "Grassland Hills";
+                                    HasHills[x, y] = true;
                                 }
                                 else
                                 {
@@ -427,6 +450,7 @@ namespace YnABMC
                                 {
                                     CurrentLine += "4,";
                                     Comment += "Plains Hills";
+                                    HasHills[x, y] = true;
                                 }
                                 else
                                 {
@@ -445,6 +469,7 @@ namespace YnABMC
                                 {
                                     CurrentLine += "7,";
                                     Comment += "Desert Hills";
+                                    HasHills[x, y] = true;
                                 }
                                 else
                                 {
@@ -463,6 +488,7 @@ namespace YnABMC
                                 {
                                     CurrentLine += "10,";
                                     Comment += "Tundra Hills";
+                                    HasHills[x, y] = true;
                                 }
                                 else
                                 {
@@ -481,6 +507,7 @@ namespace YnABMC
                                 {
                                     CurrentLine += "13,";
                                     Comment += "Snow Hills";
+                                    HasHills[x, y] = true;
                                 }
                                 else
                                 {
@@ -492,11 +519,13 @@ namespace YnABMC
                             {
                                 CurrentLine += "15,";
                                 Comment += "Coast";
+                                WaterArray[x, y] = true;
                             }
                             else
                             {
                                 CurrentLine += "16,";
                                 Comment += "Ocean";
+                                WaterArray[x, y] = true;
                             }
 #endregion
 
@@ -1159,42 +1188,353 @@ namespace YnABMC
                             {
                                 CurrentLine += "-1,0},{";
                             }
-#endregion
+                            #endregion
 
 #region Cliffs
-                            if (MatchRiverSW == Cliffs)
+
+                            if (CliffsImport.Checked)
                             {
-                                CurrentLine += "1,";
-                                Comment += ", Cliffs to the Southwest";
+                                if (MatchRiverSW == Cliffs)
+                                {
+                                    CurrentLine += "1,";
+                                    Comment += ", Cliffs to the Southwest";
+                                }
+                                else
+                                {
+                                    CurrentLine += "0,";
+                                }
+                                if (MatchRiverE == Cliffs)
+                                {
+                                    CurrentLine += "1,";
+                                    Comment += ", Cliffs to the East";
+                                }
+                                else
+                                {
+                                    CurrentLine += "0,";
+                                }
+                                if (MatchRiverSE == Cliffs)
+                                {
+                                    CurrentLine += "1}}";
+                                    Comment += ", Cliffs to the Southeast";
+                                }
+                                else
+                                {
+                                    CurrentLine += "0}}";
+                                }
                             }
                             else
                             {
+                                if (y % 2 == 1)
+                                {
+                                    if (x < MapW - 1)
+                                    {
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[x, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0,";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
 
-                                CurrentLine += "0,";
-                            }
-                            if (MatchRiverE == Cliffs)
-                            {
-                                CurrentLine += "1,";
-                                Comment += ", Cliffs to the East";
-                            }
-                            else
-                            {
+                                        if (WaterArray[x + 1, y] && HasHills[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
 
-                                CurrentLine += "0,";
-                            }
-                            if (MatchRiverSE == Cliffs)
-                            {
-                                CurrentLine += "1}}";
-                                Comment += ", Cliffs to the Southeast";
-                            }
-                            else
-                            {
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[x + 1, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else if (HasHills[x + 1, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0}}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0}}";
+                                        }
+                                    }
+                                    if (x == 0)
+                                    {
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1,";
+                                            }
+                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1,";
+                                            }
+                                            else
+                                            {
+                                                EndCliffs += "0,";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0,";
+                                        }
 
-                                CurrentLine += "0}}";
+                                        if (WaterArray[0, y] && HasHills[MapW - 1, y])
+                                        {
+                                            EndCliffs += "1,";
+                                        }
+                                        else if (HasHills[0, y] && WaterArray[MapW - 1, y])
+                                        {
+                                            EndCliffs += "1,";
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0,";
+                                        }
+
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[0, y - 1] && HasHills[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1}}";
+                                            }
+                                            else if (HasHills[0, y - 1] && WaterArray[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1}}";
+                                            }
+                                            else
+                                            {
+                                                EndCliffs += "0}}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0}}";
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (x < MapW - 1 && x > 0)
+                                    {
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[x - 1, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else if (HasHills[x - 1, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0,";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
+
+                                        if (WaterArray[x + 1, y] && HasHills[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
+
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[x, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0}}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0}}";
+                                        }
+                                    }
+                                    if (x == 0)
+                                    {
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[MapW - 1, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1,";
+                                                Comment += ", Cliffs to the Southwest";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0,";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
+
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1,";
+                                            }
+                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1,";
+                                            }
+                                            else
+                                            {
+                                                EndCliffs += "0,";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0,";
+                                        }
+
+                                        if (WaterArray[x + 1, y] && HasHills[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
+                                        {
+                                            CurrentLine += "1,";
+                                            Comment += ", Cliffs to the East";
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0,";
+                                        }
+
+                                        if (WaterArray[0, y] && HasHills[MapW - 1, y])
+                                        {
+                                            EndCliffs += "1,";
+                                        }
+                                        else if (HasHills[0, y] && WaterArray[MapW - 1, y])
+                                        {
+                                            EndCliffs += "1,";
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0,";
+                                        }
+
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[x, y - 1] && HasHills[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
+                                            {
+                                                CurrentLine += "1}}";
+                                                Comment += ", Cliffs to the Southeast";
+                                            }
+                                            else
+                                            {
+                                                CurrentLine += "0}}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CurrentLine += "0}}";
+                                        }
+
+                                        if (y > 0)
+                                        {
+                                            if (WaterArray[0, y - 1] && HasHills[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1}}";
+                                            }
+                                            else if (HasHills[0, y - 1] && WaterArray[MapW - 1, y])
+                                            {
+                                                EndCliffs += "1}}";
+                                            }
+                                            else
+                                            {
+                                                EndCliffs += "0}}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            EndCliffs += "0}}";
+                                        }
+                                    }
+                                }
                             }
 #endregion
-                            LuaGenMap += CurrentLine + Comment + "\n";
+                            if (x == 0 && !CliffsImport.Checked)
+                            {
+                                InvertedLines = CurrentLine + InvertedLines + EndCliffs + "\n";
+                            }
+                            else
+                            {
+                                //InvertedLines = CurrentLine + Comment + "\n" + InvertedLines;
+                                InvertedLines = "\n" + CurrentLine + InvertedLines;
+                            }
+                            //LuaGenMap += CurrentLine + Comment + "\n";
                         }
+                        LuaGenMap += InvertedLines;
                     }
                 }
 #endregion
@@ -1204,9 +1544,11 @@ namespace YnABMC
                 {
                     string LuaLine = "";
                     System.IO.StreamReader file = new System.IO.StreamReader(BmpFilePath);
+                    bool Civ5 = false, Civ6 = false;
+                    List<string> Civ5Lines = new List<string>();
+                    List<string> Civ5LinesY = new List<string>();
                     while ((LuaLine = file.ReadLine()) != null)
                     {
-                        bool Civ5 = false, Civ6 = false;
                         string[] Parts = LuaLine.Split(' ');
                         string StartWord = "MapToConvert";
                         try
@@ -1286,8 +1628,6 @@ namespace YnABMC
                                 Civ5 = true;
                                 if (StartWord == Parts[2].Substring(0, StartWord.Length))
                                 {
-
-                                    //char[] CharacterArray = new char[Parts[2].Length - 1];
                                     int NumberPosition = 13, Multiplier = 1;
                                     int[] IntArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                                     string ReversedString = Reverse(Parts[2]);
@@ -1331,8 +1671,21 @@ namespace YnABMC
                                     {
                                         MTCArray[2] = IntArray[2] + 10;
                                     }
+
+                                    /*if (MTCArray[0] == 0 && !Civ5Lines.Any())
+                                    {
+                                        var array = Civ5Lines.ToArray();
+                                        for (int i = Civ5Lines.Count; i > -1; i--)
+                                        {
+                                            Civ5LinesY.Add(array[i]);
+                                        }
+                                        Civ5Lines.Clear();
+                                    }*/
+
                                     LuaGenMap += "MapToConvert[" + MTCArray[0] + "][" + MTCArray[1] + "]={" + MTCArray[2] + "," + MTCArray[3] + "," + MTCArray[4] + ",{{" + MTCArray[5] + "," + MTCArray[6] +
                                         "},{" + MTCArray[7] + "," + MTCArray[8] + "},{" + MTCArray[9] + "," + MTCArray[10] + "}},{" + MTCArray[11] + "," + MTCArray[12] + "},{0,0,0}}\n";
+                                    /*Civ5Lines.Add("MapToConvert[" + MTCArray[0] + "][" + MTCArray[1] + "]={" + MTCArray[2] + "," + MTCArray[3] + "," + MTCArray[4] + ",{{" + MTCArray[5] + "," + MTCArray[6] +
+                                        "},{" + MTCArray[7] + "," + MTCArray[8] + "},{" + MTCArray[9] + "," + MTCArray[10] + "}},{" + MTCArray[11] + "," + MTCArray[12] + "},{");*/
                                     MapH = MTCArray[1] + 1;
                                     MapW = MTCArray[0] + 1;
                                     if (Civ5Wonder(MTCArray[3]) != null)
@@ -1344,6 +1697,8 @@ namespace YnABMC
                             }
                             else if (Civ6 || Civ5)
                             {
+                                //Console.WriteLine(Civ5LinesY);
+                                // write shit here
                                 break;
                             }
                         }
@@ -1351,6 +1706,11 @@ namespace YnABMC
                         {
                             continue;
                         }
+                    }
+                    if (Civ5)
+                    {
+                        Console.WriteLine("This is where the magic happens");
+                        //Civ5LinesY.ForEach(i => Console.WriteLine("{0}", i));
                     }
                 }
 #endregion
