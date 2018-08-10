@@ -1209,103 +1209,147 @@ namespace YnABMC
                         bool Civ5 = false, Civ6 = false;
                         string[] Parts = LuaLine.Split(' ');
                         string StartWord = "MapToConvert";
-                        if (Parts[0] == "GameCore_Tuner:" && !Civ5)
+                        try
                         {
-                            Civ6 = true;
-                            if (StartWord == Parts[1].Substring(0, StartWord.Length))
+                            if (Parts[0] == "GameCore_Tuner:" && !Civ5)
                             {
-                                string MapArray = Parts[1];
-                                int Position = 0;
-                                int CoordX = 0, CoordY = 0;
-                                bool ReachedNum = false;
-                                foreach (char c in MapArray)
+                                Civ6 = true;
+                                if (StartWord == Parts[1].Substring(0, StartWord.Length))
                                 {
-                                    int foo = c - '0';
-                                    if (Position == 0 && foo >= 0 && foo <= 9)
+                                    string MapArray = Parts[1];
+                                    int Position = 0;
+                                    int CoordX = 0, CoordY = 0, Feature = 0;
+                                    bool ReachedNum = false;
+                                    foreach (char c in MapArray)
                                     {
-                                        ReachedNum = true;
-                                        CoordX = CoordX * 10 + foo;
+                                        int foo = c - '0';
+                                        if (Position == 0 && foo >= 0 && foo <= 9)
+                                        {
+                                            ReachedNum = true;
+                                            CoordX = CoordX * 10 + foo;
+                                        }
+                                        else if (Position == 0 && ReachedNum)
+                                        {
+                                            Position = 1;
+                                            ReachedNum = false;
+                                        }
+                                        if (Position == 1 && foo >= 0 && foo <= 9)
+                                        {
+                                            ReachedNum = true;
+                                            CoordY = CoordY * 10 + foo;
+                                        }
+                                        else if (Position == 1 && ReachedNum)
+                                        {
+                                            Position = 2;
+                                            ReachedNum = false;
+                                        }
+                                        if (Position == 2 && foo >= 0 && foo <= 9)
+                                        {
+                                            ReachedNum = true;
+                                            //Skips the Terrain Type value
+                                        }
+                                        else if (Position == 2 && ReachedNum)
+                                        {
+                                            Position = 3;
+                                            ReachedNum = false;
+                                        }
+                                        if (Position == 3 && c == '-')
+                                        {
+                                            Position = 4;
+                                            ReachedNum = false;
+                                            Feature = -1;
+                                            //Skips empty features
+                                        }
+                                        if (Position == 3 && foo >= 0 && foo <= 9)
+                                        {
+                                            ReachedNum = true;
+                                            Feature = Feature * 10 + foo;
+                                        }
+                                        else if (Position == 3 && ReachedNum)
+                                        {
+                                            Position = 4;
+                                            ReachedNum = false;
+                                        }
                                     }
-                                    else if (Position == 0 && ReachedNum)
+                                    MapW = CoordX + 1;
+                                    MapH = CoordY + 1;
+                                    if (Civ6Wonder(Feature) != null)
                                     {
-                                        Position = 1;
-                                        ReachedNum = false;
+                                        LuaEndWrap += "\n\tif GameInfo.Features[\"" + Civ6Wonder(Feature) + "\"] then\n\t\tNaturalWonders[GameInfo.Features[\"" + Civ6Wonder(Feature) + "\"].Index] = " +
+                                                            "{ X = " + (MapW - 1) + ", Y = " + (MapH - 1) + "}\n\tend";
                                     }
-                                    if (Position == 1 && foo >= 0 && foo <= 9)
+                                    LuaGenMap += Parts[1] + "\n";
+                                }
+                            }
+                            else if (Parts[1] == "InGame:" && !Civ6)
+                            {
+                                Civ5 = true;
+                                if (StartWord == Parts[2].Substring(0, StartWord.Length))
+                                {
+
+                                    //char[] CharacterArray = new char[Parts[2].Length - 1];
+                                    int NumberPosition = 13, Multiplier = 1;
+                                    int[] IntArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                                    string ReversedString = Reverse(Parts[2]);
+                                    foreach (char c in ReversedString)
                                     {
-                                        ReachedNum = true;
-                                        CoordY = CoordY * 10 + foo;
+                                        int foo = c - '0';
+                                        if (foo >= 0 && foo <= 9)
+                                        {
+                                            IntArray[NumberPosition] += foo * Multiplier;
+                                            Multiplier = Multiplier * 10;
+                                        }
+                                        if (c == '-')
+                                        {
+                                            IntArray[NumberPosition] *= -1;
+                                            Multiplier = 1;
+                                        }
+                                        if (c == ',' || c == ']')
+                                        {
+                                            NumberPosition--;
+                                            Multiplier = 1;
+                                        }
                                     }
-                                    else if (Position == 1 && ReachedNum)
+                                    int[] MTCArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                                    MTCArray[0] = IntArray[0];
+                                    MTCArray[1] = IntArray[1];
+                                    MTCArray[3] = Civ6Feature(IntArray[4]);
+                                    MTCArray[4] = Civ6Contient(IntArray[5]);
+                                    MTCArray[5] = IntArray[6];
+                                    MTCArray[6] = IntArray[7];
+                                    MTCArray[7] = IntArray[8];
+                                    MTCArray[8] = IntArray[9];
+                                    MTCArray[9] = IntArray[10];
+                                    MTCArray[10] = IntArray[11];
+                                    MTCArray[11] = Civ6Resource(IntArray[12]);
+                                    MTCArray[12] = IntArray[13];
+                                    if (IntArray[2] < 5)
                                     {
-                                        Position = 2;
+                                        MTCArray[2] = IntArray[2] * 3 + 2 - IntArray[3];
+                                    }
+                                    else if (IntArray[2] > 4)
+                                    {
+                                        MTCArray[2] = IntArray[2] + 10;
+                                    }
+                                    LuaGenMap += "MapToConvert[" + MTCArray[0] + "][" + MTCArray[1] + "]={" + MTCArray[2] + "," + MTCArray[3] + "," + MTCArray[4] + ",{{" + MTCArray[5] + "," + MTCArray[6] +
+                                        "},{" + MTCArray[7] + "," + MTCArray[8] + "},{" + MTCArray[9] + "," + MTCArray[10] + "}},{" + MTCArray[11] + "," + MTCArray[12] + "},{0,0,0}}\n";
+                                    MapH = MTCArray[1] + 1;
+                                    MapW = MTCArray[0] + 1;
+                                    if (Civ5Wonder(MTCArray[3]) != null)
+                                    {
+                                        LuaEndWrap += "\n\tif GameInfo.Features[\"" + Civ5Wonder(MTCArray[3]) + "\"] then\n\t\tNaturalWonders[GameInfo.Features[\"" + Civ5Wonder(MTCArray[3]) + "\"].Index] = " +
+                                                            "{ X = " + MTCArray[0] + ", Y = " + MTCArray[1] + "}\n\tend";
                                     }
                                 }
-                                MapW = CoordX + 1;
-                                MapH = CoordY + 1;
-                                LuaGenMap += Parts[1] + "\n";
+                            }
+                            else if (Civ6 || Civ5)
+                            {
+                                break;
                             }
                         }
-                        else if (Parts[1] == "InGame:" && !Civ6)
+                        catch (IndexOutOfRangeException)
                         {
-                            Civ5 = true;
-                            if (StartWord == Parts[2].Substring(0, StartWord.Length))
-                            {
-
-                                //char[] CharacterArray = new char[Parts[2].Length - 1];
-                                int NumberPosition = 13, Multiplier = 1;
-                                int[] IntArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                                string ReversedString = Reverse(Parts[2]);
-                                foreach (char c in ReversedString)
-                                {
-                                    int foo = c - '0';
-                                    if (foo >= 0 && foo <= 9)
-                                    {
-                                        IntArray[NumberPosition] += foo * Multiplier;
-                                        Multiplier = Multiplier * 10;
-                                    }
-                                    if (c == '-')
-                                    {
-                                        IntArray[NumberPosition] *= -1;
-                                        Multiplier = 1;
-                                    }
-                                    if (c == ',' || c == ']')
-                                    {
-                                        NumberPosition--;
-                                        Multiplier = 1;
-                                    }
-                                }
-                                int[] MTCArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                                MTCArray[0] = IntArray[0];
-                                MTCArray[1] = IntArray[1];
-                                MTCArray[3] = Civ6Feature(IntArray[4]);
-                                MTCArray[4] = Civ6Contient(IntArray[5]);
-                                MTCArray[5] = IntArray[6];
-                                MTCArray[6] = IntArray[7];
-                                MTCArray[7] = IntArray[8];
-                                MTCArray[8] = IntArray[9];
-                                MTCArray[9] = IntArray[10];
-                                MTCArray[10] = IntArray[11];
-                                MTCArray[11] = Civ6Resource(IntArray[12]);
-                                MTCArray[12] = IntArray[13];
-                                if (IntArray[2] < 5)
-                                {
-                                    MTCArray[2] = IntArray[2] * 3 + 2 - IntArray[3];
-                                }
-                                else if (IntArray[2] > 4)
-                                {
-                                    MTCArray[2] = IntArray[2] + 10;
-                                }
-                                LuaGenMap += "MapToConvert[" + MTCArray[0] + "][" + MTCArray[1] + "]={" + MTCArray[2] + "," + MTCArray[3] + "," + MTCArray[4] + ",{{" + MTCArray[5] + "," + MTCArray[6] +
-                                    "},{" + MTCArray[7] + "," + MTCArray[8] + "},{" + MTCArray[9] + "," + MTCArray[10] + "}},{" + MTCArray[11] + "," + MTCArray[12] + "},{0,0,0}}\n";
-                                MapH = MTCArray[1] + 1;
-                                MapW = MTCArray[0] + 1;
-                            }
-                        }
-                        else if (Civ6 || Civ5)
-                        {
-
-                            break;
+                            continue;
                         }
                     }
                 }
@@ -1594,7 +1638,59 @@ namespace YnABMC
             if (f == 3) return 4;
             if (f == 4) return 0;
             if (f == 5) return 3;
-            return -1;
+            if (f == 17) return 6;
+            return f;
+        }
+
+        public string Civ6Wonder(int w)
+        {
+            if (w == 6) return "FEATURE_BARRIER_REEF";
+            if (w == 7) return "FEATURE_CLIFFS_DOVER";
+            if (w == 8) return "FEATURE_CRATER_LAKE";
+            if (w == 9) return "FEATURE_DEAD_SEA";
+            if (w == 10) return "FEATURE_EVEREST";
+            if (w == 11) return "FEATURE_GALAPAGOS";
+            if (w == 12) return "FEATURE_KILIMANJARO";
+            if (w == 13) return "FEATURE_PANTANAL";
+            if (w == 14) return "FEATURE_PIOPIOTAHI";
+            if (w == 15) return "FEATURE_TORRES_DEL_PAINE";
+            if (w == 16) return "FEATURE_TSINGY";
+            if (w == 17) return "FEATURE_YOSEMITE";
+            if (w == 19) return "FEATURE_DELICATE_ARCH";
+            if (w == 20) return "FEATURE_EYE_OF_THE_SAHARA";
+            if (w == 21) return "FEATURE_LAKE_RETBA";
+            if (w == 22) return "FEATURE_MATTERHORN";
+            if (w == 23) return "FEATURE_RORAIMA";
+            if (w == 24) return "FEATURE_UBSUNUR_HOLLOW";
+            if (w == 25) return "FEATURE_ZHANGYE_DANXIA";
+            if (w == 25) return "FEATURE_HA_LONG_BAY";
+            if (w == 27) return "FEATURE_EYJAFJALLAJOKULL";
+            if (w == 28) return "FEATURE_LYSEFJORDEN";
+            if (w == 29) return "FEATURE_GIANTS_CAUSEWAY";
+            if (w == 30) return "FEATURE_ULURU";
+            return null;
+        }
+
+        public string Civ5Wonder(int w)
+        {
+            if (w == 7) return "FEATURE_CRATER_LAKE";
+            if (w == 8) return "FEATURE_MATTERHORN";
+            if (w == 9) return "FEATURE_YOSEMITE";
+            if (w == 10) return "FEATURE_BARRIER_REEF";
+            if (w == 11) return "FEATURE_EYJAFJALLAJOKULL";
+            if (w == 12) return "FEATURE_PIOPIOTAHI";
+            if (w == 13) return "FEATURE_UBSUNUR_HOLLOW";
+            if (w == 14) return "FEATURE_LAKE_RETBA";
+            if (w == 15) return "FEATURE_TSINGY";
+            if (w == 16) return "FEATURE_PANTANAL";
+            if (w == 18) return "FEATURE_TORRES_DEL_PAINE";
+            if (w == 19) return "FEATURE_DELICATE_ARCH";
+            if (w == 20) return "FEATURE_EVEREST";
+            if (w == 21) return "FEATURE_ULURU";
+            if (w == 22) return "FEATURE_DEAD_SEA";
+            if (w == 23) return "FEATURE_KILIMANJARO";
+            if (w == 24) return "FEATURE_UBSUNUR_HOLLOW";
+            return null;
         }
 
         public int Civ6Contient(int c)
