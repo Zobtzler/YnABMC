@@ -119,6 +119,7 @@ namespace YnABMC
         {
             InitializeComponent();
             Size = new Size(600, 493);
+            AdvancedOptions.Visible = false;
         }
 
         private void AdvancedOptions_CheckedChanged(object sender, EventArgs e)
