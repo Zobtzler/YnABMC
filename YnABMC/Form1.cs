@@ -19,7 +19,7 @@ namespace YnABMC
 
 #region Terrain
         string Grass = "(32,192,64)", Plains = "(192,224,0)", Desert = "(224,128,0)", Tundra = "(192,220,192)",
-               Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)";
+               Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)", Lake = "(0,96,128)";
 #endregion
 
 #region Feratures and Plots
@@ -521,6 +521,12 @@ namespace YnABMC
                                 CurrentLine += "15,";
                                 Comment += "Coast";
                                 WaterArray[x, y] = true;
+                            }
+                            else if (MatchTerrain == Lake)
+                            {
+                                CurrentLine += "15,";
+                                Comment += "Lake";
+                                WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes
                             }
                             else
                             {
