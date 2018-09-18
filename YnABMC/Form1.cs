@@ -14,8 +14,15 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
+        string Version = "0.1.2";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Text = "Yet (not) Another Bit Map Converter - v" + Version;
+        }
+
 #region MapValues
 
 #region Terrain
@@ -28,7 +35,7 @@ namespace YnABMC
 
         string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
                FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)"; //, Fallout = "(224,160,192)";
-#endregion
+        #endregion
 
 #region Natural Wonders
         string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
@@ -134,20 +141,20 @@ namespace YnABMC
                 SelectLua.Enabled = false;
                 SelectLua.Visible = false;
                 Size = new Size(600, 493);
-                CliffsGenerate.Enabled = true;
+                /*CliffsGenerate.Enabled = true;
                 CliffsImport.Enabled = true;
                 CliffsGenerate.Checked = false;
-                CliffsImport.Checked = true;
+                CliffsImport.Checked = true;*/
             }
             else
             {
                 SelectLua.Enabled = true;
                 SelectLua.Visible = true;
                 Size = new Size(764, 493);
-                CliffsGenerate.Enabled = false;
+                /*CliffsGenerate.Enabled = false;
                 CliffsImport.Enabled = false;
                 CliffsGenerate.Checked = false;
-                CliffsImport.Checked = false;
+                CliffsImport.Checked = false;*/
             }
         }
 
@@ -369,10 +376,10 @@ namespace YnABMC
 
         private void GenerateMap_Click(object sender, EventArgs e)
         {
-
-#region Timer           
+           
             if (PathFound && ProjectText.Text.Length > 0 && AuthorText.Text.Length > 0)
             {
+#region Timer
                 timer.Interval = 5000;
                 timer.Tick += Timer_Tick;
                 timer.Start();
@@ -1497,11 +1504,11 @@ namespace YnABMC
 
                                         if (y > 0)
                                         {
-                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
+                                            if (WaterArray[MapW - 2, y - 1] && HasHills[MapW - 1, y])
                                             {
                                                 EndCliffs += "1,";
                                             }
-                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
+                                            else if (HasHills[MapW - 2, y - 1] && WaterArray[MapW - 1, y])
                                             {
                                                 EndCliffs += "1,";
                                             }
@@ -1567,11 +1574,11 @@ namespace YnABMC
 
                                         if (y > 0)
                                         {
-                                            if (WaterArray[0, y - 1] && HasHills[MapW - 1, y])
+                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
                                             {
                                                 EndCliffs += "1}}";
                                             }
-                                            else if (HasHills[0, y - 1] && WaterArray[MapW - 1, y])
+                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
                                             {
                                                 EndCliffs += "1}}";
                                             }
@@ -1614,9 +1621,21 @@ namespace YnABMC
                     string LuaLine = "";
                     System.IO.StreamReader file = new System.IO.StreamReader(BmpFilePath);
                     bool Civ5 = false, Civ6 = false;
+                    bool[,] WaterArray = new bool[256, 256];
+                    bool[,] HasHills = new bool[256, 256];
+                    for (int i = 0; i < MapW; i++)
+                    {
+                        for (int j = 0; j < MapH; j++)
+                        {
+                            WaterArray[i, j] = false;
+                            HasHills[i, j] = false;
+                        }
+                    }
                     List<string> Civ5Lines = new List<string>();
                     List<string> Civ5LinesY = new List<string>();
                     int GridSize = 0;
+                    bool FirstLine = true, FirstRow = true, LastColumn = true;
+                    string LuaTemp = "", LuaCliffsEnd = "";
                     while ((LuaLine = file.ReadLine()) != null)
                     {
                         string[] Parts = LuaLine.Split(' ');
@@ -1689,10 +1708,16 @@ namespace YnABMC
                                         }*/
                                     }
                                     MapH = CoordY + 1;
-                                    const string V = "(\"FEATURE_).+?\"";
-                                    const string T = "(\"TERRAIN_).+?\"";
+                                    const string V = "\"FEATURE_.+?\"";
+                                    const string T = "\"TERRAIN_.+?\"";
+                                    const string H = "\"TERRAIN_.+?HILLS\"";
+                                    const string W = "\"TERRAIN_(OCEAN|COAST)\"";
+                                    const string C = "(0|1),(0|1),(0|1)}}";
                                     Match match = Regex.Match(MapArray, @V);
                                     Match terr = Regex.Match(MapArray, @T);
+                                    Match hills = Regex.Match(MapArray, @H);
+                                    Match water = Regex.Match(MapArray, @W);
+                                    Match cliffs = Regex.Match(MapArray, @C);
                                     if (match.Success && terr.Success)
                                     {
                                         if (Civ6Wonder(match.Groups[0].Value) != null)
@@ -1703,20 +1728,339 @@ namespace YnABMC
                                             MapArray = MapArray.Replace(match.Groups[0].Value, "-1");
                                         }
                                     }
+
+                                    if (LastColumn) MapW = CoordX + 1;
+
+                                    if (hills.Success) HasHills[CoordX, CoordY] = true;
+                                    else if (water.Success) WaterArray[CoordX, CoordY] = true;
+                                    LuaCliffsEnd = "";
+                                    if (CliffsGenerate.Checked)
+                                    {
+#region Cliffs
+                                        if (cliffs.Success)
+                                        {
+                                            MapArray = MapArray.Replace(cliffs.Groups[0].Value, "");
+
+                                            if (CoordY % 2 == 1)
+                                            {
+                                                if (CoordX < MapW - 1)
+                                                {
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0,";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[CoordX + 1, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else if (HasHills[CoordX + 1, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0}}";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0}}";
+                                                    }
+                                                }
+                                                if (CoordX == 0)
+                                                {
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1,";
+                                                        }
+                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1,";
+                                                        }
+                                                        else
+                                                        {
+                                                            LuaCliffsEnd += "0,";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0,";
+                                                    }
+
+                                                    if (WaterArray[0, CoordY] && HasHills[MapW - 1, CoordY])
+                                                    {
+                                                        LuaCliffsEnd += "1,";
+                                                    }
+                                                    else if (HasHills[0, CoordY] && WaterArray[MapW - 1, CoordY])
+                                                    {
+                                                        LuaCliffsEnd += "1,";
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0,";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[0, CoordY - 1] && HasHills[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1}}";
+                                                        }
+                                                        else if (HasHills[0, CoordY - 1] && WaterArray[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1}}";
+                                                        }
+                                                        else
+                                                        {
+                                                            LuaCliffsEnd += "0}}";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0}}";
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (CoordX < MapW - 1 && CoordX > 0)
+                                                {
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[CoordX - 1, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else if (HasHills[CoordX - 1, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0,";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0}}";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0}}";
+                                                    }
+                                                }
+                                                if (CoordX == 0)
+                                                {
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1,";
+                                                            //Comment += ", Cliffs to the Southwest";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0,";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[MapW - 2, CoordY - 1] && HasHills[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1,";
+                                                        }
+                                                        else if (HasHills[MapW - 2, CoordY - 1] && WaterArray[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1,";
+                                                        }
+                                                        else
+                                                        {
+                                                            LuaCliffsEnd += "0,";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0,";
+                                                    }
+
+                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
+                                                    {
+                                                        MapArray += "1,";
+                                                        //Comment += ", Cliffs to the East";
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0,";
+                                                    }
+
+                                                    if (WaterArray[0, CoordY] && HasHills[MapW - 1, CoordY])
+                                                    {
+                                                        LuaCliffsEnd += "1,";
+                                                    }
+                                                    else if (HasHills[0, CoordY] && WaterArray[MapW - 1, CoordY])
+                                                    {
+                                                        LuaCliffsEnd += "1,";
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0,";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
+                                                        {
+                                                            MapArray += "1}}";
+                                                            //Comment += ", Cliffs to the Southeast";
+                                                        }
+                                                        else
+                                                        {
+                                                            MapArray += "0}}";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MapArray += "0}}";
+                                                    }
+
+                                                    if (CoordY > 0)
+                                                    {
+                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1}}";
+                                                        }
+                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[MapW - 1, CoordY])
+                                                        {
+                                                            LuaCliffsEnd += "1}}";
+                                                        }
+                                                        else
+                                                        {
+                                                            LuaCliffsEnd += "0}}";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        LuaCliffsEnd += "0}}";
+                                                    }
+                                                }
+                                            }
+                                        }
+#endregion
+                                    }
+
+
+                                    LuaTemp = "\n" + MapArray + LuaTemp;
+                                    LastColumn = false;
                                     if (CoordX == 0)
                                     {
                                         NatWond += NatWondTemp;
                                         NatWondTemp = "";
+                                        LuaGenMap += LuaTemp + LuaCliffsEnd;
+                                        LuaTemp = "";
+                                        LastColumn = true;
+                                        if (CoordY == 0) FirstRow = false;
                                     }
                                     /*if (MapArray.Contains("FEATURE_"))
                                     if (Civ6Wonder(Feature) != null)*/
-
-                                    LuaGenMap += MapArray + "\n";
-                                    if ((CoordX + 1) * MapH >= GridSize)
+                                    /*if ((CoordX + 1) * MapH >= GridSize)
                                     {
                                         GridSize = (CoordX + 1) * MapH;
                                         MapW = GridSize / MapH;
-                                    }
+                                    }*/
 
                                 }
                             }
