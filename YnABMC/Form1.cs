@@ -1302,116 +1302,26 @@ namespace YnABMC
                                     {
                                         if (y > 0)
                                         {
-                                            if (WaterArray[x, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0,";
-                                            }
+                                            CurrentLine += Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "," +
+                                                Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
+                                                Cliff_Generator(WaterArray[x + 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y - 1]) + "}}";
                                         }
                                         else
                                         {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (WaterArray[x + 1, y] && HasHills[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[x + 1, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else if (HasHills[x + 1, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0}}";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0}}";
+                                            CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
                                         }
                                     }
                                     if (x == 0)
                                     {
                                         if (y > 0)
                                         {
-                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1,";
-                                            }
-                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1,";
-                                            }
-                                            else
-                                            {
-                                                EndCliffs += "0,";
-                                            }
+                                            EndCliffs += Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 1, y - 1]) + "," +
+                                                Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + "," +
+                                                Cliff_Generator(WaterArray[0, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y - 1]) + "}}";
                                         }
                                         else
                                         {
-                                            EndCliffs += "0,";
-                                        }
-
-                                        if (WaterArray[0, y] && HasHills[MapW - 1, y])
-                                        {
-                                            EndCliffs += "1,";
-                                        }
-                                        else if (HasHills[0, y] && WaterArray[MapW - 1, y])
-                                        {
-                                            EndCliffs += "1,";
-                                        }
-                                        else
-                                        {
-                                            EndCliffs += "0,";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[0, y - 1] && HasHills[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1}}";
-                                            }
-                                            else if (HasHills[0, y - 1] && WaterArray[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1}}";
-                                            }
-                                            else
-                                            {
-                                                EndCliffs += "0}}";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            EndCliffs += "0}}";
+                                            EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}}";
                                         }
                                     }
                                 }
@@ -1421,175 +1331,30 @@ namespace YnABMC
                                     {
                                         if (y > 0)
                                         {
-                                            if (WaterArray[x - 1, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else if (HasHills[x - 1, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0,";
-                                            }
+                                            CurrentLine += Cliff_Generator(WaterArray[x - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x - 1, y - 1]) + "," + 
+                                                Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
+                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}}";
                                         }
                                         else
                                         {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (WaterArray[x + 1, y] && HasHills[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[x, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0}}";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0}}";
+                                            CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
                                         }
                                     }
                                     if (x == 0)
                                     {
                                         if (y > 0)
                                         {
-                                            if (WaterArray[MapW - 1, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1,";
-                                                Comment += ", Cliffs to the Southwest";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0,";
-                                            }
+                                            CurrentLine += Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[MapW - 1, y - 1]) + "," +
+                                                Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
+                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}}";
+                                            EndCliffs += Cliff_Generator(WaterArray[MapW - 2, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 2, y - 1]) + "," +
+                                                Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + "," +
+                                                Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 1, y - 1]) + "}}";
                                         }
                                         else
                                         {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[MapW - 2, y - 1] && HasHills[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1,";
-                                            }
-                                            else if (HasHills[MapW - 2, y - 1] && WaterArray[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1,";
-                                            }
-                                            else
-                                            {
-                                                EndCliffs += "0,";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            EndCliffs += "0,";
-                                        }
-
-                                        if (WaterArray[x + 1, y] && HasHills[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else if (HasHills[x + 1, y] && WaterArray[x, y])
-                                        {
-                                            CurrentLine += "1,";
-                                            Comment += ", Cliffs to the East";
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0,";
-                                        }
-
-                                        if (WaterArray[0, y] && HasHills[MapW - 1, y])
-                                        {
-                                            EndCliffs += "1,";
-                                        }
-                                        else if (HasHills[0, y] && WaterArray[MapW - 1, y])
-                                        {
-                                            EndCliffs += "1,";
-                                        }
-                                        else
-                                        {
-                                            EndCliffs += "0,";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[x, y - 1] && HasHills[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else if (HasHills[x, y - 1] && WaterArray[x, y])
-                                            {
-                                                CurrentLine += "1}}";
-                                                Comment += ", Cliffs to the Southeast";
-                                            }
-                                            else
-                                            {
-                                                CurrentLine += "0}}";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            CurrentLine += "0}}";
-                                        }
-
-                                        if (y > 0)
-                                        {
-                                            if (WaterArray[MapW - 1, y - 1] && HasHills[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1}}";
-                                            }
-                                            else if (HasHills[MapW - 1, y - 1] && WaterArray[MapW - 1, y])
-                                            {
-                                                EndCliffs += "1}}";
-                                            }
-                                            else
-                                            {
-                                                EndCliffs += "0}}";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            EndCliffs += "0}}";
+                                            CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
+                                            EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}}";
                                         }
                                     }
                                 }
@@ -1747,116 +1512,26 @@ namespace YnABMC
                                                 {
                                                     if (CoordY > 0)
                                                     {
-                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0,";
-                                                        }
+                                                        MapArray += Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY - 1]) + "}}";
                                                     }
                                                     else
                                                     {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[CoordX + 1, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else if (HasHills[CoordX + 1, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0}}";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0}}";
+                                                        MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
                                                     }
                                                 }
                                                 if (CoordX == 0)
                                                 {
                                                     if (CoordY > 0)
                                                     {
-                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1,";
-                                                        }
-                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1,";
-                                                        }
-                                                        else
-                                                        {
-                                                            LuaCliffsEnd += "0,";
-                                                        }
+                                                        LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
+                                                            Cliff_Generator(WaterArray[0, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY - 1]) + "}}";
                                                     }
                                                     else
                                                     {
-                                                        LuaCliffsEnd += "0,";
-                                                    }
-
-                                                    if (WaterArray[0, CoordY] && HasHills[MapW - 1, CoordY])
-                                                    {
-                                                        LuaCliffsEnd += "1,";
-                                                    }
-                                                    else if (HasHills[0, CoordY] && WaterArray[MapW - 1, CoordY])
-                                                    {
-                                                        LuaCliffsEnd += "1,";
-                                                    }
-                                                    else
-                                                    {
-                                                        LuaCliffsEnd += "0,";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[0, CoordY - 1] && HasHills[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1}}";
-                                                        }
-                                                        else if (HasHills[0, CoordY - 1] && WaterArray[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1}}";
-                                                        }
-                                                        else
-                                                        {
-                                                            LuaCliffsEnd += "0}}";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        LuaCliffsEnd += "0}}";
+                                                        LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
                                                     }
                                                 }
                                             }
@@ -1866,175 +1541,30 @@ namespace YnABMC
                                                 {
                                                     if (CoordY > 0)
                                                     {
-                                                        if (WaterArray[CoordX - 1, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else if (HasHills[CoordX - 1, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0,";
-                                                        }
+                                                        MapArray += Cliff_Generator(WaterArray[CoordX - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX - 1, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
                                                     }
                                                     else
                                                     {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0}}";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0}}";
+                                                        MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
                                                     }
                                                 }
                                                 if (CoordX == 0)
                                                 {
                                                     if (CoordY > 0)
                                                     {
-                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1,";
-                                                            //Comment += ", Cliffs to the Southwest";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0,";
-                                                        }
+                                                        MapArray += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
+                                                        LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 2, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 2, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
+                                                            Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "}}";
                                                     }
                                                     else
                                                     {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[MapW - 2, CoordY - 1] && HasHills[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1,";
-                                                        }
-                                                        else if (HasHills[MapW - 2, CoordY - 1] && WaterArray[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1,";
-                                                        }
-                                                        else
-                                                        {
-                                                            LuaCliffsEnd += "0,";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        LuaCliffsEnd += "0,";
-                                                    }
-
-                                                    if (WaterArray[CoordX + 1, CoordY] && HasHills[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else if (HasHills[CoordX + 1, CoordY] && WaterArray[CoordX, CoordY])
-                                                    {
-                                                        MapArray += "1,";
-                                                        //Comment += ", Cliffs to the East";
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0,";
-                                                    }
-
-                                                    if (WaterArray[0, CoordY] && HasHills[MapW - 1, CoordY])
-                                                    {
-                                                        LuaCliffsEnd += "1,";
-                                                    }
-                                                    else if (HasHills[0, CoordY] && WaterArray[MapW - 1, CoordY])
-                                                    {
-                                                        LuaCliffsEnd += "1,";
-                                                    }
-                                                    else
-                                                    {
-                                                        LuaCliffsEnd += "0,";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[CoordX, CoordY - 1] && HasHills[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else if (HasHills[CoordX, CoordY - 1] && WaterArray[CoordX, CoordY])
-                                                        {
-                                                            MapArray += "1}}";
-                                                            //Comment += ", Cliffs to the Southeast";
-                                                        }
-                                                        else
-                                                        {
-                                                            MapArray += "0}}";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MapArray += "0}}";
-                                                    }
-
-                                                    if (CoordY > 0)
-                                                    {
-                                                        if (WaterArray[MapW - 1, CoordY - 1] && HasHills[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1}}";
-                                                        }
-                                                        else if (HasHills[MapW - 1, CoordY - 1] && WaterArray[MapW - 1, CoordY])
-                                                        {
-                                                            LuaCliffsEnd += "1}}";
-                                                        }
-                                                        else
-                                                        {
-                                                            LuaCliffsEnd += "0}}";
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        LuaCliffsEnd += "0}}";
+                                                        MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
+                                                        LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
                                                     }
                                                 }
                                             }
@@ -2265,86 +1795,44 @@ namespace YnABMC
 #region Rivers
                 if (!RiversGenerate.Checked || !RiversImport.Checked || !RiversEmpty.Checked)
                 {
-                    if (RiversGenerate.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"RiversPlacement\" Value = \"PLACEMENT_DEFAULT\" />\n";
-                    }
-                    if (RiversImport.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"RiversPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
-                    }
-                    if (RiversEmpty.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"RiversPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
-                    }
+                    ConfigMapSupport += MapConfig_Generator(RiversGenerate.Checked, ProjectName, "Rivers", "DEFAULT") +
+                        MapConfig_Generator(RiversImport.Checked, ProjectName, "Rivers", "IMPORT") +
+                        MapConfig_Generator(RiversEmpty.Checked, ProjectName, "Rivers", "EMPTY");
                 }
 #endregion
 
 #region Continents
                 if (!ContinentsGenerate.Checked || !ContinentsImport.Checked)
                 {
-                    if (ContinentsGenerate.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ContinentsPlacement\" Value = \"PLACEMENT_DEFAULT\" />\n";
-                    }
-                    if (ContinentsImport.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ContinentsPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
-                    }
+                    ConfigMapSupport += MapConfig_Generator(ContinentsGenerate.Checked, ProjectName, "Continents", "DEFAULT") +
+                        MapConfig_Generator(ContinentsImport.Checked, ProjectName, "Continents", "IMPORT");
                 }
 #endregion
 
 #region Wonders
                 if (!WondersGenerate.Checked || !WondersImport.Checked || !WondersEmpty.Checked)
                 {
-                    if (WondersGenerate.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"NaturalWondersPlacement\" Value = \"PLACEMENT_DEFAULT\" />\n";
-                    }
-                    if (WondersImport.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"NaturalWondersPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
-                    }
-                    if (WondersEmpty.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"NaturalWondersPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
-                    }
+                    ConfigMapSupport += MapConfig_Generator(WondersGenerate.Checked, ProjectName, "NaturalWonders", "DEFAULT") +
+                        MapConfig_Generator(WondersImport.Checked, ProjectName, "NaturalWonders", "IMPORT") +
+                        MapConfig_Generator(WondersEmpty.Checked, ProjectName, "NaturalWonders", "EMPTY");
                 }
 #endregion
 
 #region Features
                 if (!FeaturesGenerate.Checked || !FeaturesImport.Checked || !FeaturesEmpty.Checked)
                 {
-                    if (FeaturesGenerate.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"FeaturesPlacement\" Value = \"PLACEMENT_DEFAULT\" />\n";
-                    }
-                    if (FeaturesImport.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"FeaturesPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
-                    }
-                    if (FeaturesEmpty.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"FeaturesPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
-                    }
+                    ConfigMapSupport += MapConfig_Generator(FeaturesGenerate.Checked, ProjectName, "Features", "DEFAULT") +
+                        MapConfig_Generator(FeaturesImport.Checked, ProjectName, "Features", "IMPORT") +
+                        MapConfig_Generator(FeaturesEmpty.Checked, ProjectName, "Features", "EMPTY");
                 }
 #endregion
 
 #region Resources
                 if (!ResourcesGenerate.Checked || !ResourcesImport.Checked || !ResourcesEmpty.Checked)
                 {
-                    if (ResourcesGenerate.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ResourcesPlacement\" Value = \"PLACEMENT_DEFAULT\" />\n";
-                    }
-                    if (ResourcesImport.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ResourcesPlacement\" Value = \"PLACEMENT_IMPORT\" />\n";
-                    }
-                    if (ResourcesEmpty.Checked)
-                    {
-                        ConfigMapSupport += "\t\t<Row Map = \"" + ProjectName + "_Map.lua\" Domain = \"ResourcesPlacement\" Value = \"PLACEMENT_EMPTY\" />\n";
-                    }
+                    ConfigMapSupport += MapConfig_Generator(ResourcesGenerate.Checked, ProjectName, "Resources", "DEFAULT") +
+                        MapConfig_Generator(ResourcesImport.Checked, ProjectName, "Resources", "IMPORT") +
+                        MapConfig_Generator(ResourcesEmpty.Checked, ProjectName, "Resources", "EMPTY");
                 }
 #endregion
 
@@ -2542,6 +2030,29 @@ namespace YnABMC
         {
             GenerateMap.Enabled = true;
             timer.Stop();
+        }
+
+        public string Cliff_Generator(bool Water, bool Hills, bool Water2, bool Hills2)
+        {
+
+            if (Water && Hills)
+            {
+                return "1";
+            }
+            else if (Hills2 && Water2)
+            {
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }
+        }
+
+        public string MapConfig_Generator(bool Setting, string Name, string Placement, string Method)
+        {
+            if (Setting) return "\t\t<Row Map = \"" + Name + "_Map.lua\" Domain = \"" + Placement + "Placement\" Value = \"PLACEMENT_" + Method + "\" />\n";
+            return "";
         }
 #endregion
     }
