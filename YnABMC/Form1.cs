@@ -1369,6 +1369,7 @@ namespace YnABMC
                                 //InvertedLines = CurrentLine + Comment + "\n" + InvertedLines;
                                 InvertedLines = "\n" + CurrentLine + InvertedLines;
                             }
+
                             //LuaGenMap += CurrentLine + Comment + "\n";
                             //CurrentLine = "", Comment = "";
                         }
