@@ -1478,11 +1478,13 @@ namespace YnABMC
                                     const string H = "\"TERRAIN_.+?HILLS\"";
                                     const string W = "\"TERRAIN_(OCEAN|COAST)\"";
                                     const string C = "(0|1),(0|1),(0|1)}}";
+                                    const string L = "-- Lake";
                                     Match match = Regex.Match(MapArray, @V);
                                     Match terr = Regex.Match(MapArray, @T);
                                     Match hills = Regex.Match(MapArray, @H);
                                     Match water = Regex.Match(MapArray, @W);
                                     Match cliffs = Regex.Match(MapArray, @C);
+                                    Match lake = Regex.Match(MapArray, @L);
                                     if (match.Success && terr.Success)
                                     {
                                         if (Civ6Wonder(match.Groups[0].Value) != null)
@@ -1497,7 +1499,10 @@ namespace YnABMC
                                     if (LastColumn) MapW = CoordX + 1;
 
                                     if (hills.Success) HasHills[CoordX, CoordY] = true;
-                                    else if (water.Success) WaterArray[CoordX, CoordY] = true;
+                                    else if (water.Success)
+                                    {
+                                        if (!lake.Success) WaterArray[CoordX, CoordY] = true;
+                                    }
                                     LuaCliffsEnd = "";
                                     if (CliffsGenerate.Checked)
                                     {
@@ -1928,18 +1933,6 @@ namespace YnABMC
             return new string(cArray);
         }
 
-        public int Civ6Feature(int f)
-        {
-            if (f == 0) return 1;
-            if (f == 1) return 2;
-            if (f == 2) return 5;
-            if (f == 3) return 4;
-            if (f == 4) return 0;
-            if (f == 5) return 3;
-            if (f == 17) return 6;
-            return f;
-        }
-
         public string Civ6Wonder(string w)
         {
             if (w == "\"FEATURE_BARRIER_REEF\"" || w == "\"FEATURE_CLIFFS_DOVER\"" || w == "\"FEATURE_CRATER_LAKE\"" ||
@@ -1950,6 +1943,18 @@ namespace YnABMC
                 w == "\"FEATURE_UBSUNUR_HOLLOW\"" || w == "\"FEATURE_ZHANGYE_DANXIA\"" || w == "\"FEATURE_HA_LONG_BAY\"" || w == "\"FEATURE_EYJAFJALLAJOKULL\"" || 
                 w == "\"FEATURE_LYSEFJORDEN\"" || w == "\"FEATURE_GIANTS_CAUSEWAY\"" || w == "\"FEATURE_ULURU\"") return w;
             return null;
+        }
+
+        public int Civ6Feature(int f)
+        {
+            if (f == 0) return 1;
+            if (f == 1) return 2;
+            if (f == 2) return 5;
+            if (f == 3) return 4;
+            if (f == 4) return 0;
+            if (f == 5) return 3;
+            if (f == 17) return 6;
+            return f;
         }
 
         public string Civ5Wonder(int w)
