@@ -14,7 +14,7 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
-        string Version = "0.1.3";
+        string Version = "0.1.4";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
