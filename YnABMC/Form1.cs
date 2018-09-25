@@ -14,7 +14,7 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
-        string Version = "0.1.4";
+        string Version = "0.1.4.1";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
@@ -1405,16 +1405,30 @@ namespace YnABMC
                     while ((LuaLine = file.ReadLine()) != null)
                     {
                         string[] Parts = LuaLine.Split(' ');
-                        string StartWord = "MapToConvert";
+                        const string ConvertCode = @"MapToConvert.+", YnAMP = @"YnAMP_InGame:", WBP = @"WorldBuilderPlacement:", InGame = @"\[\d+\.\d+\] InGame:";
+                        //string Civ6Start = "", Civ5Start = "";
+                        /*Match start = Regex.Match(Version, @"ThisShouldNotHappen"), start5 = Regex.Match(Version, @"ThisShouldNotHappen");
                         try
                         {
-#region civ6
-                            if ((Parts[0] == "YnAMP_InGame:" || Parts[0] == "WorldBuilderPlacement:") && !Civ5)
+                            
+                            Civ6Start = LuaLine;
+                            start = Regex.Match(Parts[1], @StartWord);
+                            
+                        }
+                        catch (System.IndexOutOfRangeException) { }*/
+                        Match ynamp = Regex.Match(LuaLine, YnAMP);
+                        Match wbp = Regex.Match(LuaLine, WBP);
+                        Match ingame = Regex.Match(LuaLine, InGame);
+                        Match convertcode = Regex.Match(LuaLine, ConvertCode);
+                        try
+                        {
+                            #region civ6
+                            if (convertcode.Success)
                             {
-                                Civ6 = true;
-                                if (StartWord == Parts[1].Substring(0, StartWord.Length))
+                                if (!Civ5 && (ynamp.Success || wbp.Success))//((Parts[0] == "YnAMP_InGame:" || Parts[0] == "WorldBuilderPlacement:") && !Civ5)
                                 {
-                                    string MapArray = Parts[1];
+                                    Civ6 = true;
+                                    string MapArray = convertcode.Groups[0].Value;
                                     int Position = 0;
                                     int CoordX = 0, CoordY = 0, Feature = 0;
                                     bool ReachedNum = false;
@@ -1507,7 +1521,7 @@ namespace YnABMC
                                     LuaCliffsEnd = "";
                                     if (CliffsGenerate.Checked)
                                     {
-#region Cliffs
+                                        #region Cliffs
                                         if (cliffs.Success)
                                         {
                                             MapArray = MapArray.Replace(cliffs.Groups[0].Value, "");
@@ -1574,8 +1588,9 @@ namespace YnABMC
                                                     }
                                                 }
                                             }
+
                                         }
-#endregion
+                                        #endregion
                                     }
 
 
@@ -1598,19 +1613,17 @@ namespace YnABMC
                                         MapW = GridSize / MapH;
                                     }*/
 
+                                    
                                 }
-                            }
-#endregion
+                                #endregion
 
-#region civ 5
-                            else if (Parts[1] == "InGame:" && !Civ6)
-                            {
-                                Civ5 = true;
-                                if (StartWord == Parts[2].Substring(0, StartWord.Length))
+                                #region civ 5
+                                else if (ingame.Success && !Civ6)
                                 {
+                                    Civ5 = true;
                                     int NumberPosition = 13, Multiplier = 1;
                                     int[] IntArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                                    string ReversedString = Reverse(Parts[2]);
+                                    string ReversedString = Reverse(convertcode.Groups[0].Value);
                                     foreach (char c in ReversedString)
                                     {
                                         int foo = c - '0';
@@ -1673,14 +1686,15 @@ namespace YnABMC
                                         LuaEndWrap += "\n\tif GameInfo.Features[\"" + Civ5Wonder(MTCArray[3]) + "\"] then\n\t\tNaturalWonders[GameInfo.Features[\"" + Civ5Wonder(MTCArray[3]) + "\"].Index] = " +
                                                             "{ X = " + MTCArray[0] + ", Y = " + MTCArray[1] + "}\n\tend";
                                     }
+                                    
                                 }
-                            }
-#endregion
-                            else if (Civ6 || Civ5)
-                            {
-                                //Console.WriteLine(Civ5LinesY);
-                                // write shit here
-                                break;
+                                #endregion
+                                else if (Civ6 || Civ5)
+                                {
+                                    //Console.WriteLine(Civ5LinesY);
+                                    // write shit here
+                                    break;
+                                }
                             }
                         }
                         catch (IndexOutOfRangeException)
