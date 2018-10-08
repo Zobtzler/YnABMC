@@ -11,7 +11,7 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
-        string Version = "0.2";
+        string Version = "0.2.0.1";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
@@ -386,26 +386,26 @@ namespace YnABMC
                             else if (MatchTerrain == Desert) CurrentPlot = "TERRAIN_DESERT";
                             else if (MatchTerrain == Tundra) CurrentPlot = "TERRAIN_TUNDRA";
                             else if (MatchTerrain == Snow) CurrentPlot = "TERRAIN_SNOW";
-                            if (MatchPlotFeature == Mountain) CurrentPlot += "_MOUNTAIN";
-                            else if (MatchHills == Hills)
+                            else if (MatchTerrain == Lake)
                             {
-                                CurrentPlot += "_HILLS";
-                                HasHills[x, y] = true;
+                                CurrentPlot = "TERRAIN_COAST";
+                                WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes
                             }
                             else if (MatchTerrain == Coast)
                             {
                                 CurrentPlot = "TERRAIN_COAST";
                                 WaterArray[x, y] = true;
                             }
-                            else if (MatchTerrain == Lake)
-                            {
-                                CurrentPlot = "TERRAIN_COAST";
-                                WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes
-                            }
                             else
                             {
                                 CurrentPlot = "TERRAIN_OCEAN";
                                 WaterArray[x, y] = true;
+                            }
+                            if (MatchPlotFeature == Mountain && (MatchTerrain != Lake || MatchTerrain != Coast || MatchTerrain != Ocean)) CurrentPlot += "_MOUNTAIN";
+                            else if (MatchHills == Hills && (MatchTerrain != Lake || MatchTerrain != Coast || MatchTerrain != Ocean))
+                            {
+                                CurrentPlot += "_HILLS";
+                                HasHills[x, y] = true;
                             }
                             CurrentLine += "\"" + CurrentPlot + "\",";
 #endregion
@@ -862,7 +862,7 @@ namespace YnABMC
                                     LuaCliffsEnd = "";
                                     if (CliffsGenerate.Checked)
                                     {
-                                        #region Cliffs
+#region Cliffs
                                         if (CoordY % 2 == 1)
                                         {
                                             if (CoordX < MapW - 1)
