@@ -11,7 +11,7 @@ namespace YnABMC
 {
     public partial class Form1 : Form
     {
-        string Version = "0.2.0.1";
+        string Version = "0.2.0.2";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
@@ -579,7 +579,7 @@ namespace YnABMC
                             else if (MatchResource == Amber) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
-                            else CurrentLine += "-1,0},{";
+                            else CurrentLine += "-1,1},{";
 #endregion
 
 #region Cliffs
