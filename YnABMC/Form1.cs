@@ -123,7 +123,7 @@ namespace YnABMC
 #endregion
 
 #endregion
-        //Create better looking UI
+
 #region Everything Else
         bool  PathFound = false;
 
@@ -324,7 +324,7 @@ namespace YnABMC
 
         private void GenerateMap_Click(object sender, EventArgs e)
         {
-           
+
             if (PathFound && ProjectText.Text.Length > 0 && AuthorText.Text.Length > 0)
             {
 #region Timer
@@ -352,7 +352,7 @@ namespace YnABMC
                             WaterArray[i,j] = false;
                             HasHills[i, j] = false;
                         }
-                    }                    
+                    }
 
                     for (int y = 0; y < MapH; y++)
                     {
@@ -619,7 +619,7 @@ namespace YnABMC
                                 {
                                     if (x < MapW - 1 && x > 0)
                                     {
-                                        if (y > 0) CurrentLine += Cliff_Generator(WaterArray[x - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x - 1, y - 1]) + "," + 
+                                        if (y > 0) CurrentLine += Cliff_Generator(WaterArray[x - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x - 1, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
                                                 Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}}";
                                         else CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
@@ -735,14 +735,14 @@ namespace YnABMC
                                     {
                                         if (Civ6Wonder(match.Groups[0].Value) != null)
                                         {
-                                            NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + CoordX + "\" Y = \"" + CoordY + "\" FeatureType = " + 
+                                            NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + CoordX + "\" Y = \"" + CoordY + "\" FeatureType = " +
                                                 match.Groups[0].Value + " TerrainType = " + terr.Groups[0].Value + " />" + NatWondTemp;
                                             MapArray = MapArray.Replace(match.Groups[0].Value, "-1");
                                         }
                                     }
                                     if (LastColumn) MapW = CoordX + 1;
                                     if (hills.Success) HasHills[CoordX, CoordY] = true;
-                                    else if (water.Success) if (!lake.Success) WaterArray[CoordX, CoordY] = true; 
+                                    else if (water.Success) if (!lake.Success) WaterArray[CoordX, CoordY] = true;
                                     LuaCliffsEnd = "";
                                     if (CliffsGenerate.Checked)
                                     {
@@ -856,11 +856,11 @@ namespace YnABMC
                                     MapH = CoordY + 1;
                                     if (Civ5Wonder(IntArray[4]) != null)
                                     {
-                                        NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + CoordX + "\" Y = \"" + CoordY + "\" FeatureType = \"" + 
+                                        NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + CoordX + "\" Y = \"" + CoordY + "\" FeatureType = \"" +
                                             Civ5Wonder(IntArray[4]) + "\" TerrainType = \"" + Civ6Terrain(IntArray[2]) + "\" />" + NatWondTemp;
                                         IntArray[4] = -1;
                                     }
-                                    string MapArray = "MapToConvert[" + IntArray[0] + "][" + IntArray[1] + "]={\"" + Civ6Terrain(IntArray[2]) + "\"," + Civ6Feature(IntArray[4]) + "," + 
+                                    string MapArray = "MapToConvert[" + IntArray[0] + "][" + IntArray[1] + "]={\"" + Civ6Terrain(IntArray[2]) + "\"," + Civ6Feature(IntArray[4]) + "," +
                                         Civ6Continent(IntArray[5]) + ",{{" + IntArray[6] + "," + IntArray[7] + "},{" + IntArray[8] + "," + IntArray[9] + "},{" + IntArray[10] + "," +
                                         IntArray[11] + "}},{" + Civ6Resource(IntArray[12]) + "," + IntArray[13] + "},{";
                                     LuaCliffsEnd = "";
@@ -951,23 +951,23 @@ namespace YnABMC
                 if (STDRules.Checked) ConfigMap += "<Row File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
                 if (RNFRules.Checked) ConfigMap += "<Row Domain=\"Maps:Expansion1Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
 #region Rivers
-                if (OneSelected(RiversGenerate.Checked, RiversImport.Checked, RiversEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT", 
+                if (OneSelected(RiversGenerate.Checked, RiversImport.Checked, RiversEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT",
                     DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 0, 231);
-                else ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT", 
+                else ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT",
                     DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 1, 231);
 #endregion
 
 #region Continents
-                if (ContinentsGenerate.Checked && !ContinentsImport.Checked || !ContinentsGenerate.Checked && ContinentsImport.Checked) ConfigParameters += ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT", 
+                if (ContinentsGenerate.Checked && !ContinentsImport.Checked || !ContinentsGenerate.Checked && ContinentsImport.Checked) ConfigParameters += ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT",
                     DefaultPlacement(ContinentsImport.Checked, ContinentsGenerate.Checked, ContinentsGenerate.Checked), "ContinentsPlacement", 2, 0, 232);
-                else ConfigParameters += ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT", 
+                else ConfigParameters += ParameterRow(ProjectName, "ContinentsPlacement", "CONTINENT_PLACEMENT",
                     DefaultPlacement(ContinentsImport.Checked, ContinentsGenerate.Checked, ContinentsGenerate.Checked), "ContinentsPlacement", 2, 1, 232);
 #endregion
 
 #region Natural Wonders
-                if (OneSelected(WondersGenerate.Checked, WondersImport.Checked, WondersEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT", 
+                if (OneSelected(WondersGenerate.Checked, WondersImport.Checked, WondersEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT",
                     DefaultPlacement(WondersImport.Checked, WondersGenerate.Checked, WondersEmpty.Checked), "NaturalWondersPlacement", 0, 0, 244);
-                else ConfigParameters += ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT", 
+                else ConfigParameters += ParameterRow(ProjectName, "NaturalWondersPlacement", "NATURAL_WONDERS_PLACEMENT",
                     DefaultPlacement(WondersImport.Checked, WondersGenerate.Checked, WondersEmpty.Checked), "NaturalWondersPlacement", 0, 1, 244);
 #endregion
 
@@ -1021,15 +1021,15 @@ namespace YnABMC
                     "DefaultValue=\"" + ProjectName + "_Map\" ConfigurationGroup=\"Map\" ConfigurationId=\"MapName\" GroupId=\"MapOptions\" Visible=\"0\" SortIndex=\"2010\"/>\n";
 
 #region Map Supported Values
-                if (!RiversGenerate.Checked || !RiversImport.Checked || !RiversEmpty.Checked) ConfigMapSupport += MapConfig_Generator(RiversGenerate.Checked, ProjectName, "Rivers", "DEFAULT") + 
+                if (!RiversGenerate.Checked || !RiversImport.Checked || !RiversEmpty.Checked) ConfigMapSupport += MapConfig_Generator(RiversGenerate.Checked, ProjectName, "Rivers", "DEFAULT") +
                         MapConfig_Generator(RiversImport.Checked, ProjectName, "Rivers", "IMPORT") + MapConfig_Generator(RiversEmpty.Checked, ProjectName, "Rivers", "EMPTY");
-                if (!ContinentsGenerate.Checked || !ContinentsImport.Checked) ConfigMapSupport += MapConfig_Generator(ContinentsGenerate.Checked, ProjectName, "Continents", "DEFAULT") + 
+                if (!ContinentsGenerate.Checked || !ContinentsImport.Checked) ConfigMapSupport += MapConfig_Generator(ContinentsGenerate.Checked, ProjectName, "Continents", "DEFAULT") +
                         MapConfig_Generator(ContinentsImport.Checked, ProjectName, "Continents", "IMPORT");
-                if (!WondersGenerate.Checked || !WondersImport.Checked || !WondersEmpty.Checked) ConfigMapSupport += MapConfig_Generator(WondersGenerate.Checked, ProjectName, "NaturalWonders", "DEFAULT") + 
+                if (!WondersGenerate.Checked || !WondersImport.Checked || !WondersEmpty.Checked) ConfigMapSupport += MapConfig_Generator(WondersGenerate.Checked, ProjectName, "NaturalWonders", "DEFAULT") +
                         MapConfig_Generator(WondersImport.Checked, ProjectName, "NaturalWonders", "IMPORT") + MapConfig_Generator(WondersEmpty.Checked, ProjectName, "NaturalWonders", "EMPTY");
-                if (!FeaturesGenerate.Checked || !FeaturesImport.Checked || !FeaturesEmpty.Checked) ConfigMapSupport += MapConfig_Generator(FeaturesGenerate.Checked, ProjectName, "Features", "DEFAULT") + 
+                if (!FeaturesGenerate.Checked || !FeaturesImport.Checked || !FeaturesEmpty.Checked) ConfigMapSupport += MapConfig_Generator(FeaturesGenerate.Checked, ProjectName, "Features", "DEFAULT") +
                         MapConfig_Generator(FeaturesImport.Checked, ProjectName, "Features", "IMPORT") + MapConfig_Generator(FeaturesEmpty.Checked, ProjectName, "Features", "EMPTY");
-                if (!ResourcesGenerate.Checked || !ResourcesImport.Checked || !ResourcesEmpty.Checked) ConfigMapSupport += MapConfig_Generator(ResourcesGenerate.Checked, ProjectName, "Resources", "DEFAULT") + 
+                if (!ResourcesGenerate.Checked || !ResourcesImport.Checked || !ResourcesEmpty.Checked) ConfigMapSupport += MapConfig_Generator(ResourcesGenerate.Checked, ProjectName, "Resources", "DEFAULT") +
                         MapConfig_Generator(ResourcesImport.Checked, ProjectName, "Resources", "IMPORT") + MapConfig_Generator(ResourcesEmpty.Checked, ProjectName, "Resources", "EMPTY");
 #endregion
                 Config = ConfigMap + ConfigParameters + ConfigMapSupport + ConfigEnd;
@@ -1062,13 +1062,13 @@ namespace YnABMC
 #region Mod Info
                 string ModInfo = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Mod id=\"" + ModID + "\" version = \"1\">\n\t<Properties>\n\t\t<Name>" + AuthorText.Text + " - " + ProjectText.Text + "</Name>" +
                                     "\n\t\t<Description>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Description>" +
-                                    "\n\t\t<Teaser>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Teaser>\n\t\t<Authors>" + 
+                                    "\n\t\t<Teaser>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Teaser>\n\t\t<Authors>" +
                                     AuthorText.Text + "</Authors>\n\t</Properties>\n\t<Dependencies>\n\t\t<Mod id=\"36e88483-48fe-4545-b85f-bafc50dde315\" title=\"Yet (not) Another Maps Pack\"/>\n\t</Dependencies>" +
                                     "\n\t<FrontEndActions>\n\t\t<UpdateDatabase id=\"" + ProjectName + "_SETTING\">\n\t\t\t<File>Config/Config.xml</File>\n\t\t</UpdateDatabase>" +
                                     "\n\t\t<UpdateText id=\"NewAction\">\n\t\t\t<File>Config/Config_Text.xml</File>\n\t\t</UpdateText>\n\t</FrontEndActions>" +
                                     "\n\t<InGameActions>\n\t\t<ImportFiles id=\"" + ProjectName + "_IMPORT\">\n\t\t\t<File>Lua/" + ProjectName + "_Map.lua</File>\n\t\t</ImportFiles>" +
                                     "\n\t\t<UpdateDatabase id=\"NewAction\">\n\t\t\t<File>Map/Map.xml</File>\n\t\t\t<File>Map/NaturalWonders.xml</File>\n\t\t</UpdateDatabase>\n\t</InGameActions>" +
-                                    "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Lua/" + 
+                                    "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Lua/" +
                                     ProjectName + "_Map.lua</File>\n\t</Files>\n</Mod>";
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\" + ProjectName + ".modinfo", ModInfo);
                 Application.Restart();
@@ -1079,20 +1079,20 @@ namespace YnABMC
 #region Methods
         public string ParameterRow(string ProjectName, string ParameterID, string ParameterName, string DefaultValue, string ConfigurationID, int Hash, int Visible, int SortIndex)
         {
-            if (Visible == 1 && Hash == 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + 
-                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + 
+            if (Visible == 1 && Hash == 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" +
+                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" +
                     ConfigurationID + "\"	GroupId=\"MapOptions\" SortIndex=\"" + SortIndex + "\"/>\n";
-            else if (Visible == 1 && Hash < 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + 
-                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + 
+            else if (Visible == 1 && Hash < 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" +
+                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" +
                     ConfigurationID + "\"	GroupId=\"MapOptions\" Hash=\"" + Hash + "\" SortIndex=\"" + SortIndex + "\"/>\n";
-            else if (Visible == 0 && Hash == 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + 
-                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + 
+            else if (Visible == 0 && Hash == 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" +
+                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" +
                     ConfigurationID + "\"	GroupId=\"MapOptions\" Visible=\"" + Visible + "\" SortIndex=\"" + SortIndex + "\"/>\n";
-            else if (Visible == 0 && Hash < 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + 
-                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + 
+            else if (Visible == 0 && Hash < 2) return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" +
+                    ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" +
                     ConfigurationID + "\"	GroupId=\"MapOptions\" Hash=\"" + Hash + "\" Visible=\"" + Visible + "\" SortIndex=\"" + SortIndex + "\"/>\n";
-            return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" + 
-                ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" + 
+            return "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ParameterID + "\" Name=\"LOC_MAP_" + ParameterName + "_NAME\" Description=\"LOC_MAP_" +
+                ParameterName + "_DESCRIPTION\" Domain=\"" + ParameterID + "\" DefaultValue=\"" + DefaultValue + "\" ConfigurationGroup=\"Map\"	ConfigurationId=\"" +
                 ConfigurationID + "\"	GroupId=\"MapOptions\" Hash=\"" + Hash + "\" Visible=\"" + Visible + "\" SortIndex=\"" + SortIndex + "\"/>\n";
         }
 
@@ -1136,9 +1136,9 @@ namespace YnABMC
             if (w == "\"FEATURE_BARRIER_REEF\"" || w == "\"FEATURE_CLIFFS_DOVER\"" || w == "\"FEATURE_CRATER_LAKE\"" ||
                 w == "\"FEATURE_DEAD_SEA\"" || w == "\"FEATURE_EVEREST\"" || w == "\"FEATURE_GALAPAGOS\"" || w == "\"FEATURE_KILIMANJARO\"" ||
                 w == "\"FEATURE_PANTANAL\"" || w == "\"FEATURE_PIOPIOTAHI\"" || w == "\"FEATURE_TORRES_DEL_PAINE\"" ||
-                w == "\"FEATURE_TSINGY\"" || w == "\"FEATURE_YOSEMITE\"" || w == "\"FEATURE_DELICATE_ARCH\"" || w == "\"FEATURE_EYE_OF_THE_SAHARA\"" || 
-                w == "\"FEATURE_LAKE_RETBA\"" || w == "\"FEATURE_MATTERHORN\"" || w == "\"FEATURE_RORAIMA\"" || 
-                w == "\"FEATURE_UBSUNUR_HOLLOW\"" || w == "\"FEATURE_ZHANGYE_DANXIA\"" || w == "\"FEATURE_HA_LONG_BAY\"" || w == "\"FEATURE_EYJAFJALLAJOKULL\"" || 
+                w == "\"FEATURE_TSINGY\"" || w == "\"FEATURE_YOSEMITE\"" || w == "\"FEATURE_DELICATE_ARCH\"" || w == "\"FEATURE_EYE_OF_THE_SAHARA\"" ||
+                w == "\"FEATURE_LAKE_RETBA\"" || w == "\"FEATURE_MATTERHORN\"" || w == "\"FEATURE_RORAIMA\"" ||
+                w == "\"FEATURE_UBSUNUR_HOLLOW\"" || w == "\"FEATURE_ZHANGYE_DANXIA\"" || w == "\"FEATURE_HA_LONG_BAY\"" || w == "\"FEATURE_EYJAFJALLAJOKULL\"" ||
                 w == "\"FEATURE_LYSEFJORDEN\"" || w == "\"FEATURE_GIANTS_CAUSEWAY\"" || w == "\"FEATURE_ULURU\"") return w;
             return null;
         }
