@@ -9,9 +9,24 @@ using System.Text.RegularExpressions;
 
 namespace YnABMC
 {
+    public struct MapColour
+    {
+        public int Red { get; set; }
+        public int Green { get; set; }
+        public int Blue { get; set; }
+        public string Colour { get; set; }
+        public MapColour(int red, int green, int blue)
+        {
+            Red = red / 20;
+            Green = green / 20;
+            Blue = blue / 20;
+            Colour = "(" + Red + "," + Green + "," + Blue + ")";
+        }
+    }
+
     public partial class Form1 : Form
     {
-        string Version = "0.2.0.2";
+        string Version = "0.3 - 0.3";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
@@ -23,32 +38,83 @@ namespace YnABMC
 #region MapValues
         //Redo this entirely from the ground up by enabling colour intervals
 #region Terrain
-        string Grass = "(32,192,64)", Plains = "(192,224,0)", Desert = "(224,128,0)", Tundra = "(192,220,192)",
-               Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)", Lake = "(0,96,128)";
+        MapColour Grass = new MapColour(32, 192, 64); //1,9,3
+        MapColour Plains = new MapColour(192, 224, 0); //9,11,0
+        MapColour Desert = new MapColour(224, 128, 0); //11,6,0
+        MapColour Tundra = new MapColour(192, 220, 192); //9,11,9
+        MapColour Snow = new MapColour(255, 255, 255); //12,12,12
+        MapColour Coast = new MapColour(0, 160, 192); //0,8,9
+        MapColour Ocean = new MapColour(64, 64, 192); //3,3,9
+        MapColour Lake = new MapColour(0, 96, 128); //0,4,6
+
+
+        /*string Grass = "(32,192,64)", Plains = "(192,224,0)", Desert = "(224,128,0)", Tundra = "(192,220,192)",
+               Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)", Lake = "(0,96,128)";*/
 #endregion
 
 #region Feratures and Plots
-        string Mountain = "(128,128,128)", Hills = "(192,192,192)";
+        //string Mountain = "(128,128,128)", Hills = "(192,192,192)";
+        MapColour Mountain = new MapColour(128, 128, 128); //6,6,6
+        MapColour Hills = new MapColour(192, 192, 192); //9,9,9
+        MapColour Volcano = new MapColour(255, 0, 0); //12,0,0
 
-        string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
-               FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)";
-               //, PlainsFloodPlains = "(32,192,64)", Fallout = "(224,160,192), GeothermalFissure = "(0,96,128)"";
+        /*string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
+               FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)";*/
+        //, PlainsFloodPlains = "(32,192,64)", Fallout = "(224,160,192), GeothermalFissure = "(0,96,128)"";
+        MapColour Ice = new MapColour(255, 255, 255); //12,12,12
+        MapColour Jungle = new MapColour(224, 192, 0); //11,9,0
+        MapColour Marsh = new MapColour(0, 160, 192); //0,8,9
+        MapColour Oasis = new MapColour(0, 160, 192); //0,8,9
+        MapColour FloodPlains = new MapColour(192, 224, 0); //9,11,0
+        MapColour Woods = new MapColour(192, 128, 64); //9,6,3
+        MapColour Reef = new MapColour(224, 192, 0); //11,9,0
+        MapColour PlainsFloodPlains = new MapColour(32, 192, 64); //1,9,3
+        MapColour GeothermalFissure = new MapColour(0, 96, 128); //0,4,6
 #endregion
 
 #region Natural Wonders
-        string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
+        MapColour BarrierReef = new MapColour(255, 0, 0); //12,0,0
+        MapColour CliffsDover = new MapColour(224, 32, 0); //11,1,0
+        MapColour CraterLake = new MapColour(192, 32, 0); //9,1,0
+        MapColour DeadSea = new MapColour(160, 32, 0); //8,1,0
+        MapColour Everest = new MapColour(128, 0, 0); //6,0,0
+        MapColour Galapagos = new MapColour(64, 32, 0); //3,1,0
+        MapColour Kilimanjaro = new MapColour(0, 0, 0); //0,0,0
+        MapColour Pantanal = new MapColour(0, 128, 128); //0,6,6
+        MapColour Piopiotahi = new MapColour(0, 255, 0); //0,12,0
+        MapColour TorresDelPaine = new MapColour(0, 224, 0); //0,11,0
+        MapColour Tsingy = new MapColour(0, 192, 0); //0,9,0
+        MapColour Yosemite = new MapColour(0, 160, 0); //0,8,0
+        MapColour Uluru = new MapColour(0, 128, 0); //0,6,0
+        MapColour HaLongBay = new MapColour(0, 96, 0); //0,4,0
+        MapColour Eyjafjallajokull = new MapColour(0, 64, 0); //0,3,0
+        MapColour Lysefjorden = new MapColour(0, 96, 128); //0,4,6
+        MapColour GiantsCauseway = new MapColour(0, 0, 255); //0,0,12
+        MapColour DelicateArch = new MapColour(0, 0, 192); //0,0,9
+        MapColour EyeOfTheSahara = new MapColour(0, 0, 128); //0,0,6
+        MapColour LakeRetba = new MapColour(0, 0, 64); //0,0,3
+        MapColour Matterhorn = new MapColour(32, 0, 64); //1,0,3
+        MapColour Roraima = new MapColour(64, 64, 64); //3,3,3
+        MapColour UbsunurHollow = new MapColour(192, 128, 64); //9,6,3
+        MapColour ZhangyeDanxia = new MapColour(128, 128, 128); //6,6,6
+
+
+        /*string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
                Everest = "(128,0,0)", Galapagos = "(64,32,0)", Kilimanjaro = "(0,0,0)", Pantanal = "(0,128,128)",
 
                Piopiotahi = "(0,255,0)", TorresDelPaine = "(0,224,0)", Tsingy = "(0,192,0)", Yosemite = "(0,160,0)",
                Uluru = "(0,128,0)", HaLongBay = "(0,96,0)", Eyjafjallajokull = "(0,64,0)", Lysefjorden = "(0,96,128)",
 
                GiantsCauseway = "(0,0,255)", DelicateArch = "(0,0,192)", EyeOfTheSahara = "(0,0,128)", LakeRetba = "(0,0,64)",
-               Matterhorn = "(32,0,64)", Roraima = "(64,64,64)", UbsunurHollow = "(192,128,64)", ZhangyeDanxia = "(128,128,128)";
+               Matterhorn = "(32,0,64)", Roraima = "(64,64,64)", UbsunurHollow = "(192,128,64)", ZhangyeDanxia = "(128,128,128)";*/
                // Borrow colours from Continents for future NWs
 #endregion
 
 #region Rivers
-        string River0 = "(64,64,192)", River1 = "(160,64,192)", Cliffs = "(192,128,64)";
+        //string River0 = "(64,64,192)", River1 = "(160,64,192)", Cliffs = "(192,128,64)";
+        MapColour River0 = new MapColour(64, 64, 192); //3,3,9
+        MapColour River1 = new MapColour(160, 64, 192); //8,3,9
+        MapColour Cliffs = new MapColour(192, 128, 64); //9,6,3
 #endregion
 
 #region Continents
@@ -372,29 +438,29 @@ namespace YnABMC
                             Color MapResource = Map.GetPixel(MapX - 2, MapY - 2);
                             Color MapContinent = Map.GetPixel(MapX - 2, MapY + 1);
                             Color MapWonder = Map.GetPixel(MapX - 2, MapY - 1);
-                            string MatchTerrain = "(" + MapTerrain.R + "," + MapTerrain.G + "," + MapTerrain.B + ")";
-                            string MatchHills = "(" + MapHills.R + "," + MapHills.G + "," + MapHills.B + ")";
-                            string MatchPlotFeature = "(" + MapPlotFeature.R + "," + MapPlotFeature.G + "," + MapPlotFeature.B + ")";
-                            string MatchRiverE = "(" + MapRiverE.R + "," + MapRiverE.G + "," + MapRiverE.B + ")";
-                            string MatchRiverSE = "(" + MapRiverSE.R + "," + MapRiverSE.G + "," + MapRiverSE.B + ")";
-                            string MatchRiverSW = "(" + MapRiverSW.R + "," + MapRiverSW.G + "," + MapRiverSW.B + ")";
-                            string MatchResource = "(" + MapResource.R + "," + MapResource.G + "," + MapResource.B + ")";
-                            string MatchContinent = "(" + MapContinent.R + "," + MapContinent.G + "," + MapContinent.B + ")";
-                            string MatchWonder = "(" + MapWonder.R + "," + MapWonder.G + "," + MapWonder.B + ")";
+                            string MatchTerrain = "(" + MapTerrain.R / 20 + "," + MapTerrain.G / 20 + "," + MapTerrain.B / 20 + ")";
+                            string MatchHills = "(" + MapHills.R / 20 + "," + MapHills.G / 20 + "," + MapHills.B / 20 + ")";
+                            string MatchPlotFeature = "(" + MapPlotFeature.R / 20 + "," + MapPlotFeature.G / 20 + "," + MapPlotFeature.B / 20 + ")";
+                            string MatchRiverE = "(" + MapRiverE.R / 20 + "," + MapRiverE.G / 20 + "," + MapRiverE.B / 20 + ")";
+                            string MatchRiverSE = "(" + MapRiverSE.R / 20 + "," + MapRiverSE.G / 20 + "," + MapRiverSE.B / 20 + ")";
+                            string MatchRiverSW = "(" + MapRiverSW.R / 20 + "," + MapRiverSW.G / 20 + "," + MapRiverSW.B / 20 + ")";
+                            string MatchResource = "(" + MapResource.R / 20 + "," + MapResource.G / 20 + "," + MapResource.B / 20 + ")";
+                            string MatchContinent = "(" + MapContinent.R / 20 + "," + MapContinent.G / 20 + "," + MapContinent.B / 20 + ")";
+                            string MatchWonder = "(" + MapWonder.R / 20 + "," + MapWonder.G / 20 + "," + MapWonder.B / 20 + ")";
 #endregion
 
 #region Terrain
-                            if (MatchTerrain == Grass) CurrentPlot = "TERRAIN_GRASS";
-                            else if (MatchTerrain == Plains) CurrentPlot = "TERRAIN_PLAINS";
-                            else if (MatchTerrain == Desert) CurrentPlot = "TERRAIN_DESERT";
-                            else if (MatchTerrain == Tundra) CurrentPlot = "TERRAIN_TUNDRA";
-                            else if (MatchTerrain == Snow) CurrentPlot = "TERRAIN_SNOW";
-                            else if (MatchTerrain == Lake)
+                            if (MatchTerrain == Grass.Colour) CurrentPlot = "TERRAIN_GRASS";
+                            else if (MatchTerrain == Plains.Colour) CurrentPlot = "TERRAIN_PLAINS";
+                            else if (MatchTerrain == Desert.Colour) CurrentPlot = "TERRAIN_DESERT";
+                            else if (MatchTerrain == Tundra.Colour) CurrentPlot = "TERRAIN_TUNDRA";
+                            else if (MatchTerrain == Snow.Colour) CurrentPlot = "TERRAIN_SNOW";
+                            else if (MatchTerrain == Lake.Colour)
                             {
                                 CurrentPlot = "TERRAIN_COAST";
                                 WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes
                             }
-                            else if (MatchTerrain == Coast)
+                            else if (MatchTerrain == Coast.Colour)
                             {
                                 CurrentPlot = "TERRAIN_COAST";
                                 WaterArray[x, y] = true;
@@ -404,8 +470,8 @@ namespace YnABMC
                                 CurrentPlot = "TERRAIN_OCEAN";
                                 WaterArray[x, y] = true;
                             }
-                            if (MatchPlotFeature == Mountain && (MatchTerrain != Lake || MatchTerrain != Coast || MatchTerrain != Ocean)) CurrentPlot += "_MOUNTAIN";
-                            else if (MatchHills == Hills && (MatchTerrain != Lake || MatchTerrain != Coast || MatchTerrain != Ocean))
+                            if (MatchPlotFeature == Mountain.Colour && (MatchTerrain != Lake.Colour || MatchTerrain != Coast.Colour || MatchTerrain != Ocean.Colour)) CurrentPlot += "_MOUNTAIN";
+                            else if (MatchHills == Hills.Colour && (MatchTerrain != Lake.Colour || MatchTerrain != Coast.Colour || MatchTerrain != Ocean.Colour))
                             {
                                 CurrentPlot += "_HILLS";
                                 HasHills[x, y] = true;
@@ -414,130 +480,133 @@ namespace YnABMC
 #endregion
 
 #region Natural Wonders
-                            if (MatchWonder == BarrierReef) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            if (MatchWonder == BarrierReef.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_BARRIER_REEF\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == CliffsDover) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == CliffsDover.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_CLIFFS_DOVER\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == CraterLake) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == CraterLake.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_CRATER_LAKE\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == DeadSea) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == DeadSea.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_DEAD_SEA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Everest) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Everest.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_EVEREST\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Galapagos) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Galapagos.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_GALAPAGOS\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Kilimanjaro) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Kilimanjaro.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_KILIMANJARO\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Pantanal) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Pantanal.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_PANTANAL\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Piopiotahi) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Piopiotahi.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_PIOPIOTAHI\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == TorresDelPaine) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == TorresDelPaine.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_TORRES_DEL_PAINE\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Tsingy) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Tsingy.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_TSINGY\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Yosemite) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Yosemite.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_YOSEMITE\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Uluru) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Uluru.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_ULURU\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == HaLongBay) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == HaLongBay.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_HA_LONG_BAY\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Eyjafjallajokull) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Eyjafjallajokull.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_EYJAFJALLAJOKULL\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Lysefjorden && MatchTerrain != Lake) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Lysefjorden.Colour && MatchTerrain != Lake.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_LYSEFJORDEN\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == GiantsCauseway) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == GiantsCauseway.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_GIANTS_CAUSEWAY\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == DelicateArch) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == DelicateArch.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_DELICATE_ARCH\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == EyeOfTheSahara) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == EyeOfTheSahara.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_EYE_OF_THE_SAHARA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == LakeRetba) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == LakeRetba.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_LAKE_RETBA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Matterhorn) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Matterhorn.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_MATTERHORN\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == Roraima) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == Roraima.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_RORAIMA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == UbsunurHollow) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == UbsunurHollow.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_UBSUNUR_HOLLOW\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
-                            else if (MatchWonder == ZhangyeDanxia) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                            else if (MatchWonder == ZhangyeDanxia.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_ZHANGYE_DANXIA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             //Repeat for future NWs
 #endregion
 
 #region Features
-                            if (MatchPlotFeature == FloodPlains && (MatchTerrain == Desert) /*|| MatchTerrain == Grass || MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
-                            else if (MatchPlotFeature == Ice && (MatchTerrain == Ocean || MatchTerrain == Coast)) CurrentLine += "\"FEATURE_ICE\",";
-                            else if (MatchPlotFeature == Jungle && MatchTerrain != Coast) CurrentLine += "\"FEATURE_JUNGLE\",";
-                            else if (MatchPlotFeature == Woods) CurrentLine += "\"FEATURE_FOREST\",";
-                            else if (MatchPlotFeature == Oasis && MatchTerrain == Desert) CurrentLine += "\"FEATURE_OASIS\",";
-                            else if (MatchPlotFeature == Marsh && MatchTerrain == Grass) CurrentLine += "\"FEATURE_MARSH\",";
-                            else if (MatchPlotFeature == Reef && MatchTerrain == Coast) CurrentLine += "\"FEATURE_REEF\",";
+                            if (MatchPlotFeature == FloodPlains.Colour && (MatchTerrain == Desert.Colour) /*|| MatchTerrain == Grass || MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
+                            else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
+                            else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
+                            else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
+                            else if (MatchPlotFeature == Oasis.Colour && MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_OASIS\",";
+                            else if (MatchPlotFeature == Marsh.Colour && MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_MARSH\",";
+                            else if (MatchPlotFeature == Reef.Colour && MatchTerrain == Coast.Colour) CurrentLine += "\"FEATURE_REEF\",";
                             else CurrentLine += "-1,";
-#endregion
+                            #endregion
 
-#region Continent
-                            if ((MatchTerrain != Ocean || MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Africa) CurrentLine += "\"CONTINENT_AFRICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Amasia) CurrentLine += "\"CONTINENT_AMASIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == America) CurrentLine += "\"CONTINENT_AMERICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Antarctica) CurrentLine += "\"CONTINENT_ANTARCTICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Arctica) CurrentLine += "\"CONTINENT_ARCTICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Asia) CurrentLine += "\"CONTINENT_ASIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Asiamerica) CurrentLine += "\"CONTINENT_ASIAMERICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Atlantica) CurrentLine += "\"CONTINENT_ATLANTICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Atlantis) CurrentLine += "\"CONTINENT_ATLANTIS\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Australia) CurrentLine += "\"CONTINENT_AUSTRALIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Avalonia) CurrentLine += "\"CONTINENT_AVALONIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Azania) CurrentLine += "\"CONTINENT_AZANIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Baltica) CurrentLine += "\"CONTINENT_BALTICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Cimmeria) CurrentLine += "\"CONTINENT_CIMMERIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Columbia) CurrentLine += "\"CONTINENT_COLUMBIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == CongoCraton) CurrentLine += "\"CONTINENT_CONGO_CRATON\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Euramerica) CurrentLine += "\"CONTINENT_EURAMERICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Europe) CurrentLine += "\"CONTINENT_EUROPE\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Gondwana) CurrentLine += "\"CONTINENT_GONDWANA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Kalaharia) CurrentLine += "\"CONTINENT_KALAHARIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Kazakstania) CurrentLine += "\"CONTINENT_KAZAKHSTANIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Kenorland) CurrentLine += "\"CONTINENT_KERNORLAND\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == KumariKandam) CurrentLine += "\"CONTINENT_KUMARI_KANDAM\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Laurasia) CurrentLine += "\"CONTINENT_LAURASIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Laurentia) CurrentLine += "\"CONTINENT_LAURENTIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Lemuria) CurrentLine += "\"CONTINENT_LEMURIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Mu) CurrentLine += "\"CONTINENT_MU\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Nena) CurrentLine += "\"CONTINENT_NENA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == NorthAmerica) CurrentLine += "\"CONTINENT_NORTH_AMERICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Novapangaea) CurrentLine += "\"CONTINENT_NOVOPANGAEA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Nuna) CurrentLine += "\"CONTINENT_NUNA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Oceania) CurrentLine += "\"CONTINENT_OCEANIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Pangaea) CurrentLine += "\"CONTINENT_PANGAEA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == PangaeaUltima) CurrentLine += "\"CONTINENT_PANGAEA_ULTIMA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Pannotia) CurrentLine += "\"CONTINENT_PANNOTIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Rodinia) CurrentLine += "\"CONTINENT_RODINIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Siberia) CurrentLine += "\"CONTINENT_SIBERIA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == SouthAmerica) CurrentLine += "\"CONTINENT_SOUTH_AMERICA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == TerraAustralis) CurrentLine += "\"CONTINENT_TERRA_AUSTRALIS\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Ur) CurrentLine += "\"CONTINENT_UR\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Vaalbara) CurrentLine += "\"CONTINENT_VAALBARA\",{{";
-                            else if ((MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) && MatchContinent == Vendian) CurrentLine += "\"CONTINENT_VENDIAN\",{{";
-                            else if (MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) CurrentLine += "\"CONTINENT_ZEALANDIA\",{{";
+                            #region Continent
+                            if (MatchTerrain != Ocean.Colour || MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour)
+                            {
+                                if (MatchContinent == Africa) CurrentLine += "\"CONTINENT_AFRICA\",{{";
+                                else if (MatchContinent == Amasia) CurrentLine += "\"CONTINENT_AMASIA\",{{";
+                                else if (MatchContinent == America) CurrentLine += "\"CONTINENT_AMERICA\",{{";
+                                else if (MatchContinent == Antarctica) CurrentLine += "\"CONTINENT_ANTARCTICA\",{{";
+                                else if (MatchContinent == Arctica) CurrentLine += "\"CONTINENT_ARCTICA\",{{";
+                                else if (MatchContinent == Asia) CurrentLine += "\"CONTINENT_ASIA\",{{";
+                                else if (MatchContinent == Asiamerica) CurrentLine += "\"CONTINENT_ASIAMERICA\",{{";
+                                else if (MatchContinent == Atlantica) CurrentLine += "\"CONTINENT_ATLANTICA\",{{";
+                                else if (MatchContinent == Atlantis) CurrentLine += "\"CONTINENT_ATLANTIS\",{{";
+                                else if (MatchContinent == Australia) CurrentLine += "\"CONTINENT_AUSTRALIA\",{{";
+                                else if (MatchContinent == Avalonia) CurrentLine += "\"CONTINENT_AVALONIA\",{{";
+                                else if (MatchContinent == Azania) CurrentLine += "\"CONTINENT_AZANIA\",{{";
+                                else if (MatchContinent == Baltica) CurrentLine += "\"CONTINENT_BALTICA\",{{";
+                                else if (MatchContinent == Cimmeria) CurrentLine += "\"CONTINENT_CIMMERIA\",{{";
+                                else if (MatchContinent == Columbia) CurrentLine += "\"CONTINENT_COLUMBIA\",{{";
+                                else if (MatchContinent == CongoCraton) CurrentLine += "\"CONTINENT_CONGO_CRATON\",{{";
+                                else if (MatchContinent == Euramerica) CurrentLine += "\"CONTINENT_EURAMERICA\",{{";
+                                else if (MatchContinent == Europe) CurrentLine += "\"CONTINENT_EUROPE\",{{";
+                                else if (MatchContinent == Gondwana) CurrentLine += "\"CONTINENT_GONDWANA\",{{";
+                                else if (MatchContinent == Kalaharia) CurrentLine += "\"CONTINENT_KALAHARIA\",{{";
+                                else if (MatchContinent == Kazakstania) CurrentLine += "\"CONTINENT_KAZAKHSTANIA\",{{";
+                                else if (MatchContinent == Kenorland) CurrentLine += "\"CONTINENT_KERNORLAND\",{{";
+                                else if (MatchContinent == KumariKandam) CurrentLine += "\"CONTINENT_KUMARI_KANDAM\",{{";
+                                else if (MatchContinent == Laurasia) CurrentLine += "\"CONTINENT_LAURASIA\",{{";
+                                else if (MatchContinent == Laurentia) CurrentLine += "\"CONTINENT_LAURENTIA\",{{";
+                                else if (MatchContinent == Lemuria) CurrentLine += "\"CONTINENT_LEMURIA\",{{";
+                                else if (MatchContinent == Mu) CurrentLine += "\"CONTINENT_MU\",{{";
+                                else if (MatchContinent == Nena) CurrentLine += "\"CONTINENT_NENA\",{{";
+                                else if (MatchContinent == NorthAmerica) CurrentLine += "\"CONTINENT_NORTH_AMERICA\",{{";
+                                else if (MatchContinent == Novapangaea) CurrentLine += "\"CONTINENT_NOVOPANGAEA\",{{";
+                                else if (MatchContinent == Nuna) CurrentLine += "\"CONTINENT_NUNA\",{{";
+                                else if (MatchContinent == Oceania) CurrentLine += "\"CONTINENT_OCEANIA\",{{";
+                                else if (MatchContinent == Pangaea) CurrentLine += "\"CONTINENT_PANGAEA\",{{";
+                                else if (MatchContinent == PangaeaUltima) CurrentLine += "\"CONTINENT_PANGAEA_ULTIMA\",{{";
+                                else if (MatchContinent == Pannotia) CurrentLine += "\"CONTINENT_PANNOTIA\",{{";
+                                else if (MatchContinent == Rodinia) CurrentLine += "\"CONTINENT_RODINIA\",{{";
+                                else if (MatchContinent == Siberia) CurrentLine += "\"CONTINENT_SIBERIA\",{{";
+                                else if (MatchContinent == SouthAmerica) CurrentLine += "\"CONTINENT_SOUTH_AMERICA\",{{";
+                                else if (MatchContinent == TerraAustralis) CurrentLine += "\"CONTINENT_TERRA_AUSTRALIS\",{{";
+                                else if (MatchContinent == Ur) CurrentLine += "\"CONTINENT_UR\",{{";
+                                else if (MatchContinent == Vaalbara) CurrentLine += "\"CONTINENT_VAALBARA\",{{";
+                                else if (MatchContinent == Vendian) CurrentLine += "\"CONTINENT_VENDIAN\",{{";
+                                else CurrentLine += "\"CONTINENT_ZEALANDIA\",{{";
+                            }
                             else CurrentLine += "-1,{{";
 #endregion
 
 #region Rivers
-                            if (MatchRiverSW == River0) CurrentLine += "1,2},{";
-                            else if (MatchRiverSW == River1) CurrentLine += "1,5},{";
+                            if (MatchRiverSW == River0.Colour) CurrentLine += "1,2},{";
+                            else if (MatchRiverSW == River1.Colour) CurrentLine += "1,5},{";
                             else CurrentLine += "0,-1},{";
-                            if (MatchRiverE == River0) CurrentLine += "1,0},{";
-                            else if (MatchRiverE == River1) CurrentLine += "1,3},{";
+                            if (MatchRiverE == River0.Colour) CurrentLine += "1,0},{";
+                            else if (MatchRiverE == River1.Colour) CurrentLine += "1,3},{";
                             else CurrentLine += "0,-1},{";
-                            if (MatchRiverSE == River0) CurrentLine += "1,1}},{";
-                            else if (MatchRiverSE == River1) CurrentLine += "1,4}},{";
+                            if (MatchRiverSE == River0.Colour) CurrentLine += "1,1}},{";
+                            else if (MatchRiverSE == River1.Colour) CurrentLine += "1,4}},{";
                             else CurrentLine += "0,-1}},{";
 #endregion
 
 #region Resources
                             //Bonus
-                            if (MatchResource == Bananas && MatchTerrain != Ocean && MatchTerrain != Coast && MatchTerrain != Lake) CurrentLine += "\"RESOURCE_BANANAS\",1},{";
+                            if (MatchResource == Bananas && MatchTerrain != Ocean.Colour && MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour) CurrentLine += "\"RESOURCE_BANANAS\",1},{";
                             else if (MatchResource == Cattle) CurrentLine += "\"RESOURCE_CATTLE\",1},{";
                             else if (MatchResource == Copper) CurrentLine += "\"RESOURCE_COPPER\",1},{";
                             else if (MatchResource == Crabs) CurrentLine += "\"RESOURCE_CRABS\",1},{";
@@ -552,7 +621,7 @@ namespace YnABMC
                             else if (MatchResource == Coffee) CurrentLine += "\"RESOURCE_COFFEE\",1},{";
                             else if (MatchResource == Cotton) CurrentLine += "\"RESOURCE_COTTON\",1},{";
                             else if (MatchResource == Diamonds) CurrentLine += "\"RESOURCE_DIAMONDS\",1},{";
-                            else if (MatchResource == Dyes && MatchTerrain != Lake) CurrentLine += "\"RESOURCE_DYES\",1},{";
+                            else if (MatchResource == Dyes && MatchTerrain != Lake.Colour) CurrentLine += "\"RESOURCE_DYES\",1},{";
                             else if (MatchResource == Furs) CurrentLine += "\"RESOURCE_FURS\",1},{";
                             else if (MatchResource == Gypsum) CurrentLine += "\"RESOURCE_GYPSUM\",1},{";
                             else if (MatchResource == Incense) CurrentLine += "\"RESOURCE_INCENSE\",1},{";
@@ -569,7 +638,7 @@ namespace YnABMC
                             else if (MatchResource == Tea) CurrentLine += "\"RESOURCE_TEA\",1},{";
                             else if (MatchResource == Tobacco) CurrentLine += "\"RESOURCE_TOBACCO\",1},{";
                             else if (MatchResource == Truffles) CurrentLine += "\"RESOURCE_TRUFFLES\",1},{";
-                            else if (MatchResource == Whales && (MatchTerrain == Ocean || MatchTerrain == Coast || MatchTerrain == Lake)) CurrentLine += "\"RESOURCE_WHALES\",1},{";
+                            else if (MatchResource == Whales && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour || MatchTerrain == Lake.Colour)) CurrentLine += "\"RESOURCE_WHALES\",1},{";
                             else if (MatchResource == Wine) CurrentLine += "\"RESOURCE_WINE\",1},{";
                             else if (MatchResource == Aluminium) CurrentLine += "\"RESOURCE_ALUMINUM\",1},{";
                             else if (MatchResource == Coal) CurrentLine += "\"RESOURCE_COAL\",1},{";
@@ -589,11 +658,11 @@ namespace YnABMC
 #region Cliffs
                             if (CliffsImport.Checked)
                             {
-                                if (MatchRiverSW == Cliffs) CurrentLine += "1,";
+                                if (MatchRiverSW == Cliffs.Colour) CurrentLine += "1,";
                                 else CurrentLine += "0,";
-                                if (MatchRiverE == Cliffs) CurrentLine += "1,";
+                                if (MatchRiverE == Cliffs.Colour) CurrentLine += "1,";
                                 else CurrentLine += "0,";
-                                if (MatchRiverSE == Cliffs) CurrentLine += "1}}";
+                                if (MatchRiverSE == Cliffs.Colour) CurrentLine += "1}}";
                                 else CurrentLine += "0}}";
                             }
                             else
