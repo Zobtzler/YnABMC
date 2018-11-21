@@ -21,7 +21,7 @@ namespace YnABMC
         }
 
 #region MapValues
-
+        //Redo this entirely from the ground up by enabling colour intervals
 #region Terrain
         string Grass = "(32,192,64)", Plains = "(192,224,0)", Desert = "(224,128,0)", Tundra = "(192,220,192)",
                Snow = "(255,255,255)", Coast = "(0,160,192)", Ocean = "(64,64,192)", Lake = "(0,96,128)";
