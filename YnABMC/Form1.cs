@@ -31,10 +31,11 @@ namespace YnABMC
         string Mountain = "(128,128,128)", Hills = "(192,192,192)";
 
         string Ice = "(255,255,255)", Jungle = "(224,192,0)", Marsh = "(0,160,192)", Oasis = "(0,160,192)",
-               FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)"; //, Fallout = "(224,160,192)";
-#endregion
+               FloodPlains = "(192,224,0)", Woods = "(192,128,64)", Reef = "(224,192,0)";
+               //, PlainsFloodPlains = "(32,192,64)", Fallout = "(224,160,192), GeothermalFissure = "(0,96,128)"";
+        #endregion
 
-#region Natural Wonders
+        #region Natural Wonders
         string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
                Everest = "(128,0,0)", Galapagos = "(64,32,0)", Kilimanjaro = "(0,0,0)", Pantanal = "(0,128,128)",
 
@@ -43,6 +44,7 @@ namespace YnABMC
 
                GiantsCauseway = "(0,0,255)", DelicateArch = "(0,0,192)", EyeOfTheSahara = "(0,0,128)", LakeRetba = "(0,0,64)",
                Matterhorn = "(32,0,64)", Roraima = "(64,64,64)", UbsunurHollow = "(192,128,64)", ZhangyeDanxia = "(128,128,128)";
+               // Borrow colours from Continents for future NWs
 #endregion
 
 #region Rivers
@@ -86,6 +88,7 @@ namespace YnABMC
 
                Uranium = "(0,255,255)", AntiquitySite = "(0,192,192)", Shipwreck = "(192,192,192)", Amber = "(255,251,240)",
                Olives = "(255,0,255)", Turtles = "(255,0,0)";
+               //Find more colours to use!
 #endregion
 
 #endregion
@@ -459,10 +462,11 @@ namespace YnABMC
                                     "FeatureType = \"FEATURE_UBSUNUR_HOLLOW\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             else if (MatchWonder == ZhangyeDanxia) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_ZHANGYE_DANXIA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            //Repeat for future NWs
 #endregion
 
 #region Features
-                            if (MatchPlotFeature == FloodPlains && MatchTerrain == Desert) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
+                            if (MatchPlotFeature == FloodPlains && (MatchTerrain == Desert) /*|| MatchTerrain == Grass || MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
                             else if (MatchPlotFeature == Ice && (MatchTerrain == Ocean || MatchTerrain == Coast)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle && MatchTerrain != Coast) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods) CurrentLine += "\"FEATURE_FOREST\",";
