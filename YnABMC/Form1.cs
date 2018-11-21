@@ -35,7 +35,7 @@ namespace YnABMC
                //, PlainsFloodPlains = "(32,192,64)", Fallout = "(224,160,192), GeothermalFissure = "(0,96,128)"";
         #endregion
 
-        #region Natural Wonders
+#region Natural Wonders
         string BarrierReef = "(255,0,0)", CliffsDover = "(224,32,0)", CraterLake = "(192,32,0)", DeadSea = "(160,32,0)",
                Everest = "(128,0,0)", Galapagos = "(64,32,0)", Kilimanjaro = "(0,0,0)", Pantanal = "(0,128,128)",
 
