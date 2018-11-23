@@ -26,13 +26,13 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "0.3 - 0.3";
+        string Version = "Dev 0.3.0.1";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Text = "Yet (not) Another Bit Map Converter - v" + Version;
+            Text = "Yet (not) Another Bit Map Converter - " + Version;
         }
 
 #region MapValues
@@ -576,7 +576,7 @@ namespace YnABMC
                             else CurrentLine += "-1,";
                             #endregion
 
-                            #region Continent
+#region Continent
                             if (MatchTerrain != Ocean.Colour || MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour)
                             {
                                 if (MatchContinent == Africa.Colour) CurrentLine += "\"CONTINENT_AFRICA\",{{";
