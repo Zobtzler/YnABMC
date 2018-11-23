@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.AuthorText = new System.Windows.Forms.TextBox();
             this.AuthorLabel = new System.Windows.Forms.Label();
             this.ProjectText = new System.Windows.Forms.TextBox();
@@ -530,6 +531,7 @@
             this.Controls.Add(this.ModIDLabel);
             this.Controls.Add(this.ModIDValue);
             this.Controls.Add(this.SelectSource);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Yet (not) Another Bit Map Converter";
             this.Load += new System.EventHandler(this.Form1_Load);
