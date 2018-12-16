@@ -11,28 +11,22 @@ namespace YnABMC
 {
     public struct MapColour
     {
-        public int Red { get; set; }
-        public int Green { get; set; }
-        public int Blue { get; set; }
         public string Colour { get; set; }
         public MapColour(int red, int green, int blue)
         {
-            Red = red / 20;
-            Green = green / 20;
-            Blue = blue / 20;
-            Colour = "(" + Red + "," + Green + "," + Blue + ")";
+            Colour = "(" + red / 20 + "," + green / 20 + "," + blue / 20 + ")";
         }
     }
 
     public partial class Form1 : Form
     {
-        string Version = "0.3 - 0.3";
+        string Version = "Dev 0.3.0.2";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Text = "Yet (not) Another Bit Map Converter - v" + Version;
+            Text = "Yet (not) Another Bit Map Converter - " + Version;
         }
 
 #region MapValues
@@ -566,7 +560,8 @@ namespace YnABMC
 #endregion
 
 #region Features
-                            if (MatchPlotFeature == FloodPlains.Colour && (MatchTerrain == Desert.Colour) /*|| MatchTerrain == Grass || MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
+                            if (MatchPlotFeature == FloodPlains.Colour && (MatchTerrain == Desert.Colour || MatchTerrain == Grass.Colour) /*|| MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
+                            else if (MatchPlotFeature == PlainsFloodPlains.Colour && MatchTerrain == Plains.Colour) CurrentLine = "\"FEATURE_FLOODPLAINS\",";
                             else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
@@ -574,9 +569,10 @@ namespace YnABMC
                             else if (MatchPlotFeature == Marsh.Colour && MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_MARSH\",";
                             else if (MatchPlotFeature == Reef.Colour && MatchTerrain == Coast.Colour) CurrentLine += "\"FEATURE_REEF\",";
                             else CurrentLine += "-1,";
-                            #endregion
 
-                            #region Continent
+#endregion
+
+#region Continent
                             if (MatchTerrain != Ocean.Colour || MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour)
                             {
                                 if (MatchContinent == Africa.Colour) CurrentLine += "\"CONTINENT_AFRICA\",{{";
