@@ -67,6 +67,7 @@
             this.CliffsGenerate = new System.Windows.Forms.RadioButton();
             this.CliffsLabel = new System.Windows.Forms.Label();
             this.CliffsImport = new System.Windows.Forms.RadioButton();
+            this.GSRules = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -488,11 +489,25 @@
             this.CliffsImport.UseVisualStyleBackColor = true;
             this.CliffsImport.CheckedChanged += new System.EventHandler(this.CliffsImport_CheckedChanged);
             // 
+            // GSRules
+            // 
+            this.GSRules.AutoSize = true;
+            this.GSRules.Checked = true;
+            this.GSRules.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.GSRules.Location = new System.Drawing.Point(401, 175);
+            this.GSRules.Name = "GSRules";
+            this.GSRules.Size = new System.Drawing.Size(102, 17);
+            this.GSRules.TabIndex = 76;
+            this.GSRules.Text = "Gathering Storm";
+            this.GSRules.UseVisualStyleBackColor = true;
+            this.GSRules.CheckedChanged += new System.EventHandler(this.GSRules_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 454);
+            this.Controls.Add(this.GSRules);
             this.Controls.Add(this.CliffsImport);
             this.Controls.Add(this.CliffsLabel);
             this.Controls.Add(this.CliffsGenerate);
@@ -580,6 +595,7 @@
         private System.Windows.Forms.RadioButton CliffsGenerate;
         private System.Windows.Forms.Label CliffsLabel;
         private System.Windows.Forms.RadioButton CliffsImport;
+        private System.Windows.Forms.CheckBox GSRules;
     }
 }
 

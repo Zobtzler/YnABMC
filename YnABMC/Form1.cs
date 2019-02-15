@@ -20,13 +20,13 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "Dev 0.3.0.2";
+        string Version = "Dev 0.3.0.3";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Text = "Yet (not) Another Bit Map Converter - " + Version;
+            Text = "Yet (not) Another Bit Map Converter by Zobtzler - " + Version;
         }
 
 #region MapValues
@@ -59,6 +59,8 @@ namespace YnABMC
 #endregion
 
 #region Natural Wonders
+
+#region Vanilla
         MapColour BarrierReef = new MapColour(255, 0, 0); //12,0,0
         MapColour CliffsDover = new MapColour(224, 32, 0); //11,1,0
         MapColour CraterLake = new MapColour(192, 32, 0); //9,1,0
@@ -71,11 +73,23 @@ namespace YnABMC
         MapColour TorresDelPaine = new MapColour(0, 224, 0); //0,11,0
         MapColour Tsingy = new MapColour(0, 192, 0); //0,9,0
         MapColour Yosemite = new MapColour(0, 160, 0); //0,8,0
-        MapColour Uluru = new MapColour(0, 128, 0); //0,6,0
-        MapColour HaLongBay = new MapColour(0, 96, 0); //0,4,0
+#endregion
+
+#region Vikings
         MapColour Eyjafjallajokull = new MapColour(0, 64, 0); //0,3,0
-        MapColour Lysefjorden = new MapColour(0, 96, 128); //0,4,6
         MapColour GiantsCauseway = new MapColour(0, 0, 255); //0,0,12
+        MapColour Lysefjorden = new MapColour(0, 96, 128); //0,4,6
+#endregion
+
+#region Australia
+        MapColour Uluru = new MapColour(0, 128, 0); //0,6,0
+#endregion
+
+#region Khmer and Indonesia
+        MapColour HaLongBay = new MapColour(0, 96, 0); //0,4,0
+#endregion
+
+#region Rise and Fall
         MapColour DelicateArch = new MapColour(0, 0, 192); //0,0,9
         MapColour EyeOfTheSahara = new MapColour(0, 0, 128); //0,0,6
         MapColour LakeRetba = new MapColour(0, 0, 64); //0,0,3
@@ -83,6 +97,22 @@ namespace YnABMC
         MapColour Roraima = new MapColour(64, 64, 64); //3,3,3
         MapColour UbsunurHollow = new MapColour(192, 128, 64); //9,6,3
         MapColour ZhangyeDanxia = new MapColour(128, 128, 128); //6,6,6
+#endregion
+
+#region Gathering Storm
+        MapColour ChocolateHills = new MapColour(64, 0, 0); //3,0,0
+        MapColour DevilsTower = new MapColour(192, 0, 0); //9,0,0
+        MapColour Gobustan = new MapColour(64, 64, 0); //3,0,0
+        MapColour Ikkil = new MapColour(128, 64, 0); //6,3,0
+        MapColour Pamukkale = new MapColour(192, 64, 0); //9,3,0
+        MapColour Vesuvius = new MapColour(255, 64, 0); //12,3,0
+        MapColour WhiteDesert = new MapColour(64, 96, 0); //3,4,0
+#endregion
+
+#region Mods
+
+#endregion
+
 #endregion
 
 #region Rivers
@@ -312,7 +342,17 @@ namespace YnABMC
 #region Checkboxes
         private void RNFRules_CheckedChanged(object sender, EventArgs e)
         {
-            if (!RNFRules.Checked)
+            if (!RNFRules.Checked && !GSRules.Checked)
+            {
+                STDRules.Checked = true;
+                STDRules.Enabled = false;
+            }
+            else STDRules.Enabled = true;
+        }
+
+        private void GSRules_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!RNFRules.Checked && !GSRules.Checked)
             {
                 STDRules.Checked = true;
                 STDRules.Enabled = false;
@@ -498,7 +538,7 @@ namespace YnABMC
                                 CurrentPlot = "TERRAIN_OCEAN";
                                 WaterArray[x, y] = true;
                             }
-                            if (MatchPlotFeature == Mountain.Colour && (MatchTerrain != Lake.Colour || MatchTerrain != Coast.Colour || MatchTerrain != Ocean.Colour)) CurrentPlot += "_MOUNTAIN";
+                            if ((MatchPlotFeature == Mountain.Colour || MatchPlotFeature == Volcano.Colour) && (MatchTerrain != Lake.Colour || MatchTerrain != Coast.Colour || MatchTerrain != Ocean.Colour)) CurrentPlot += "_MOUNTAIN";
                             else if (MatchHills == Hills.Colour && (MatchTerrain != Lake.Colour || MatchTerrain != Coast.Colour || MatchTerrain != Ocean.Colour))
                             {
                                 CurrentPlot += "_HILLS";
@@ -556,15 +596,35 @@ namespace YnABMC
                                     "FeatureType = \"FEATURE_UBSUNUR_HOLLOW\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             else if (MatchWonder == ZhangyeDanxia.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_ZHANGYE_DANXIA\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == ChocolateHills.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_CHOCOLATEHILLS\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == DevilsTower.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_DEVILSTOWER\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == Gobustan.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_GOBUSTAN\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == Ikkil.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_IKKIL\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == Pamukkale.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_PAMUKKALE\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == Vesuvius.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_VESUVIUS\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == WhiteDesert.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_WHITEDESERT\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             //Repeat for future NWs
 #endregion
 
 #region Features
-                            if (MatchPlotFeature == FloodPlains.Colour && (MatchTerrain == Desert.Colour || MatchTerrain == Grass.Colour) /*|| MatchTerrain == ETC)*/) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
-                            else if (MatchPlotFeature == PlainsFloodPlains.Colour && MatchTerrain == Plains.Colour) CurrentLine = "\"FEATURE_FLOODPLAINS\",";
+                            if (MatchPlotFeature == FloodPlains.Colour)
+                            {
+                                if (MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
+                                else if (MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS_GRASSLAND\",";
+                            }
+                            else if (MatchPlotFeature == PlainsFloodPlains.Colour && MatchTerrain == Plains.Colour) CurrentLine = "\"FEATURE_FLOODPLAINS_PLAINS\",";
                             else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
+                            else if (MatchPlotFeature == Volcano.Colour) CurrentLine += "\"FEATURE_VOLCANO\",";
+                            else if (MatchPlotFeature == GeothermalFissure.Colour) CurrentLine += "\"FEATURE_GEOTHERMAL_FISSURE\",";
                             else if (MatchPlotFeature == Oasis.Colour && MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_OASIS\",";
                             else if (MatchPlotFeature == Marsh.Colour && MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_MARSH\",";
                             else if (MatchPlotFeature == Reef.Colour && MatchTerrain == Coast.Colour) CurrentLine += "\"FEATURE_REEF\",";
@@ -783,7 +843,7 @@ namespace YnABMC
                         Match convertcode = Regex.Match(LuaLine, ConvertCode);
                         try
                         {
-#region civ6
+#region civ 6
                             if (convertcode.Success)
                             {
                                 if (!Civ5 && (ynamp.Success || wbp.Success))
@@ -1049,6 +1109,7 @@ namespace YnABMC
 #region Config Values
                 if (STDRules.Checked) ConfigMap += "<Row File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
                 if (RNFRules.Checked) ConfigMap += "<Row Domain=\"Maps:Expansion1Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
+                if (GSRules.Checked) ConfigMap += "<Row Domain=\"Maps:Expansion2Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
 #region Rivers
                 if (OneSelected(RiversGenerate.Checked, RiversImport.Checked, RiversEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT",
                     DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 0, 231);
