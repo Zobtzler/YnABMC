@@ -20,7 +20,7 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "Dev 0.3.0.4";
+        string Version = "Dev 0.3.0.5";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
