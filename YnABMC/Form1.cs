@@ -20,7 +20,8 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "Dev 0.3.0.3";
+        string Version = "Dev 0.3.0.4";
+        string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
@@ -243,6 +244,9 @@ namespace YnABMC
         string  NatWond = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<NaturalWonderPosition>",
                 NatWondEnd = "\n\t</NaturalWonderPosition>\n</GameData>",
                 NatWondTemp = "";
+        string  ExtraPlacement = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<ExtraPlacement>",
+                VolcanoString = "",
+                ExtraPlacementEnd = "\n\t</ExtraPlacement>\n</GameData>";
 
 #endregion
 
@@ -623,17 +627,21 @@ namespace YnABMC
                             else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
-                            else if (MatchPlotFeature == Volcano.Colour) CurrentLine += "\"FEATURE_VOLCANO\",";
                             else if (MatchPlotFeature == GeothermalFissure.Colour) CurrentLine += "\"FEATURE_GEOTHERMAL_FISSURE\",";
                             else if (MatchPlotFeature == Oasis.Colour && MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_OASIS\",";
                             else if (MatchPlotFeature == Marsh.Colour && MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_MARSH\",";
                             else if (MatchPlotFeature == Reef.Colour && MatchTerrain == Coast.Colour) CurrentLine += "\"FEATURE_REEF\",";
+                            else if (MatchPlotFeature == Volcano.Colour)
+                            {
+                                CurrentLine += "-1,";
+                                VolcanoString += "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X=\"" + x + "\" Y=\"" + y + "\" RuleSet=\"RULESET_EXPANSION_2\" TerrainType=\"" + CurrentPlot + "\" FeatureType=\"FEATURE_VOLCANO\" />";
+                            }
                             else CurrentLine += "-1,";
 
 #endregion
 
 #region Continent
-                            if (MatchTerrain != Ocean.Colour || MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour)
+                            if (MatchTerrain != Ocean.Colour && MatchTerrain != Coast.Colour && MatchTerrain != Lake.Colour)
                             {
                                 if (MatchContinent == Africa.Colour) CurrentLine += "\"CONTINENT_AFRICA\",{{";
                                 else if (MatchContinent == Amasia.Colour) CurrentLine += "\"CONTINENT_AMASIA\",{{";
@@ -808,6 +816,8 @@ namespace YnABMC
                         }
                         NatWond += NatWondTemp;
                         NatWondTemp = "";
+                        ExtraPlacement += VolcanoString;
+                        VolcanoString = "";
                         LuaGenMap += InvertedLines;
                     }
                 }
@@ -884,19 +894,27 @@ namespace YnABMC
                                     const string W = "\"TERRAIN_(OCEAN|COAST)\"";
                                     const string C = "(0|1),(0|1),(0|1)}}";
                                     const string L = "-- Lake";
+                                    const string Volc = "\"FEATURE_VOLCANO\"";
                                     Match match = Regex.Match(MapArray, @V);
                                     Match terr = Regex.Match(MapArray, @T);
                                     Match hills = Regex.Match(MapArray, @H);
                                     Match water = Regex.Match(MapArray, @W);
                                     Match cliffs = Regex.Match(MapArray, @C);
                                     Match lake = Regex.Match(MapArray, @L);
+                                    Match volcano = Regex.Match(MapArray, @Volc);
                                     if (match.Success && terr.Success)
                                     {
                                         if (Civ6Wonder(match.Groups[0].Value) != null)
                                         {
-                                            NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + CoordX + "\" Y = \"" + CoordY + "\" FeatureType = " +
-                                                match.Groups[0].Value + " TerrainType = " + terr.Groups[0].Value + " />" + NatWondTemp;
+                                            NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X=\"" + CoordX + "\" Y=\"" + CoordY + "\" FeatureType=" +
+                                                match.Groups[0].Value + " TerrainType=" + terr.Groups[0].Value + " />" + NatWondTemp;
                                             MapArray = MapArray.Replace(match.Groups[0].Value, "-1");
+                                        }
+                                        else if (volcano.Success)
+                                        {
+                                            VolcanoString = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X=\"" + CoordX + "\" Y=\"" + CoordY + "\" RuleSet=\"RULESET_EXPANSION_2\" " +
+                                                "TerrainType=" + terr.Groups[0].Value + " FeatureType=\"FEATURE_VOLCANO\" />";
+                                            MapArray = MapArray.Replace(volcano.Groups[0].Value, "-1");
                                         }
                                     }
                                     if (LastColumn) MapW = CoordX + 1;
@@ -957,12 +975,15 @@ namespace YnABMC
 
                                         }
 #endregion
-                                    }LuaTemp = "\n" + MapArray + LuaTemp;
+                                    }
+                                    LuaTemp = "\n" + MapArray + LuaTemp;
                                     LastColumn = false;
                                     if (CoordX == 0)
                                     {
                                         NatWond += NatWondTemp;
                                         NatWondTemp = "";
+                                        ExtraPlacement += VolcanoString;
+                                        VolcanoString = "";
                                         LuaGenMap += LuaTemp + LuaCliffsEnd;
                                         LuaTemp = "";
                                     }
@@ -1102,14 +1123,15 @@ namespace YnABMC
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Lua\\" + ProjectName + "_Map.lua", LuaFile);
                 DirectoryInfo MapDir = Directory.CreateDirectory(FolderPath + "\\" + ProjectName + "\\Map");
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Map\\NaturalWonders.xml", NatWond + NatWondEnd);
+                System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Map\\ExtraPlacement.xml", ExtraPlacement + ExtraPlacementEnd);
 #endregion
 
 #region Config
 
 #region Config Values
-                if (STDRules.Checked) ConfigMap += "<Row File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
-                if (RNFRules.Checked) ConfigMap += "<Row Domain=\"Maps:Expansion1Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
-                if (GSRules.Checked) ConfigMap += "<Row Domain=\"Maps:Expansion2Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
+                if (STDRules.Checked) ConfigMap += "\t\t<Row File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
+                if (RNFRules.Checked) ConfigMap += "\t\t<Row Domain=\"Maps:Expansion1Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
+                if (GSRules.Checked) ConfigMap += "\t\t<Row Domain=\"Maps:Expansion2Maps\" File=\"" + ProjectName + "_Map.lua\" Name=\"LOC_" + ProjectName + "_Map_NAME\" Description=\"LOC_" + ProjectName + "_Map_DESC\" SortIndex=\"50\"/>\n";
 #region Rivers
                 if (OneSelected(RiversGenerate.Checked, RiversImport.Checked, RiversEmpty.Checked)) ConfigParameters += ParameterRow(ProjectName, "RiversPlacement", "RIVERS_PLACEMENT",
                     DefaultPlacement(RiversImport.Checked, RiversGenerate.Checked, RiversEmpty.Checked), "RiversPlacement", 2, 0, 231);
@@ -1223,12 +1245,12 @@ namespace YnABMC
                 string ModInfo = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Mod id=\"" + ModID + "\" version = \"1\">\n\t<Properties>\n\t\t<Name>" + AuthorText.Text + " - " + ProjectText.Text + "</Name>" +
                                     "\n\t\t<Description>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Description>" +
                                     "\n\t\t<Teaser>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Teaser>\n\t\t<Authors>" +
-                                    AuthorText.Text + "</Authors>\n\t</Properties>\n\t<Dependencies>\n\t\t<Mod id=\"36e88483-48fe-4545-b85f-bafc50dde315\" title=\"Yet (not) Another Maps Pack\"/>\n\t</Dependencies>" +
+                                    AuthorText.Text + "</Authors>\n\t<CompatibleVersions>" + GameVersions + "</CompatibleVersions>\n\t</Properties>\n\t<Dependencies>\n\t\t<Mod id=\"36e88483-48fe-4545-b85f-bafc50dde315\" title=\"Yet (not) Another Maps Pack\"/>\n\t</Dependencies>" +
                                     "\n\t<FrontEndActions>\n\t\t<UpdateDatabase id=\"" + ProjectName + "_SETTING\">\n\t\t\t<File>Config/Config.xml</File>\n\t\t</UpdateDatabase>" +
                                     "\n\t\t<UpdateText id=\"NewAction\">\n\t\t\t<File>Config/Config_Text.xml</File>\n\t\t</UpdateText>\n\t</FrontEndActions>" +
                                     "\n\t<InGameActions>\n\t\t<ImportFiles id=\"" + ProjectName + "_IMPORT\">\n\t\t\t<File>Lua/" + ProjectName + "_Map.lua</File>\n\t\t</ImportFiles>" +
-                                    "\n\t\t<UpdateDatabase id=\"NewAction\">\n\t\t\t<File>Map/Map.xml</File>\n\t\t\t<File>Map/NaturalWonders.xml</File>\n\t\t</UpdateDatabase>\n\t</InGameActions>" +
-                                    "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Lua/" +
+                                    "\n\t\t<UpdateDatabase id=\"NewAction\">\n\t\t\t<File>Map/Map.xml</File>\n\t\t\t<File>Map/NaturalWonders.xml</File>>\n\t\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t</UpdateDatabase>\n\t</InGameActions>" +
+                                    "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t<File>Lua/" +
                                     ProjectName + "_Map.lua</File>\n\t</Files>\n</Mod>";
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\" + ProjectName + ".modinfo", ModInfo);
                 Application.Restart();
@@ -1299,7 +1321,9 @@ namespace YnABMC
                 w == "\"FEATURE_TSINGY\"" || w == "\"FEATURE_YOSEMITE\"" || w == "\"FEATURE_DELICATE_ARCH\"" || w == "\"FEATURE_EYE_OF_THE_SAHARA\"" ||
                 w == "\"FEATURE_LAKE_RETBA\"" || w == "\"FEATURE_MATTERHORN\"" || w == "\"FEATURE_RORAIMA\"" ||
                 w == "\"FEATURE_UBSUNUR_HOLLOW\"" || w == "\"FEATURE_ZHANGYE_DANXIA\"" || w == "\"FEATURE_HA_LONG_BAY\"" || w == "\"FEATURE_EYJAFJALLAJOKULL\"" ||
-                w == "\"FEATURE_LYSEFJORDEN\"" || w == "\"FEATURE_GIANTS_CAUSEWAY\"" || w == "\"FEATURE_ULURU\"") return w;
+                w == "\"FEATURE_LYSEFJORDEN\"" || w == "\"FEATURE_GIANTS_CAUSEWAY\"" || w == "\"FEATURE_ULURU\"" || 
+                w == "\"FEATURE_CHOCOLATEHILLS\"" || w == "\"FEATURE_DEVILSTOWER\"" || w == "\"FEATURE_GOBUSTAN\"" || w == "\"FEATURE_IKKIL\"" || 
+                w == "\"FEATURE_PAMUKKALE\"" || w == "\"FEATURE_VESUVIUS\"" || w == "\"FEATURE_WHITEDESERT\"") return w;
             return null;
         }
 
@@ -1357,6 +1381,7 @@ namespace YnABMC
             if (w == 23) return "FEATURE_KILIMANJARO";
             if (w == 24) return "FEATURE_UBSUNUR_HOLLOW";
             return null;
+            // probably needs to be looked through
         }
 
         public string Civ6Continent(int c)
