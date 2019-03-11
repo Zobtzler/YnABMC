@@ -750,7 +750,7 @@ namespace YnABMC
                             else if (MatchResource == Amber.Colour) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives.Colour) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles.Colour) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
-                            else CurrentLine += "-1,0},{";//testing with 0 if that is what makes it crash
+                            else CurrentLine += "-1,1},{";
 #endregion
 
 #region Cliffs
