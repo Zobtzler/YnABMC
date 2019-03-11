@@ -530,7 +530,7 @@ namespace YnABMC
                             else if (MatchTerrain == Lake.Colour)
                             {
                                 CurrentPlot = "TERRAIN_COAST";
-                                WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes
+                                WaterArray[x, y] = false; //This is only used for cliffs, and cliffs do not generate in lakes (this is actually false, but I'm not gonna update this yet)
                             }
                             else if (MatchTerrain == Coast.Colour)
                             {
@@ -978,12 +978,12 @@ namespace YnABMC
                                     }
                                     LuaTemp = "\n" + MapArray + LuaTemp;
                                     LastColumn = false;
+                                    ExtraPlacement += VolcanoString;
+                                    VolcanoString = "";
                                     if (CoordX == 0)
                                     {
                                         NatWond += NatWondTemp;
                                         NatWondTemp = "";
-                                        ExtraPlacement += VolcanoString;
-                                        VolcanoString = "";
                                         LuaGenMap += LuaTemp + LuaCliffsEnd;
                                         LuaTemp = "";
                                     }
