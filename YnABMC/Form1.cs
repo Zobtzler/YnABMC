@@ -211,7 +211,7 @@ namespace YnABMC
         MapColour Uranium = new MapColour(0, 255, 255); //0,12,12
         MapColour AntiquitySite = new MapColour(0, 192, 192); //0,9,9
         MapColour Shipwreck = new MapColour(192, 192, 192); //9,9,9
-        MapColour Amber = new MapColour(255, 251, 240); //12,12,12
+        MapColour Amber = new MapColour(255, 251, 224); //12,12,11
         MapColour Olives = new MapColour(224, 224, 224); //11,11,11
         MapColour Turtles = new MapColour(160, 160, 160); //8,8,8
 #endregion
@@ -618,7 +618,7 @@ namespace YnABMC
 #endregion
 
 #region Features
-                            if (MatchPlotFeature == FloodPlains.Colour)
+                            if (MatchPlotFeature == FloodPlains.Colour && (MatchTerrain == Desert.Colour || MatchTerrain == Grass.Colour))
                             {
                                 if (MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
                                 else if (MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS_GRASSLAND\",";
@@ -627,7 +627,7 @@ namespace YnABMC
                             else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
-                            else if (MatchPlotFeature == GeothermalFissure.Colour) CurrentLine += "\"FEATURE_GEOTHERMAL_FISSURE\",";
+                            else if (MatchPlotFeature == GeothermalFissure.Colour && MatchTerrain != Lake.Colour) CurrentLine += "\"FEATURE_GEOTHERMAL_FISSURE\",";
                             else if (MatchPlotFeature == Oasis.Colour && MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_OASIS\",";
                             else if (MatchPlotFeature == Marsh.Colour && MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_MARSH\",";
                             else if (MatchPlotFeature == Reef.Colour && MatchTerrain == Coast.Colour) CurrentLine += "\"FEATURE_REEF\",";
@@ -750,7 +750,7 @@ namespace YnABMC
                             else if (MatchResource == Amber.Colour) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives.Colour) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles.Colour) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
-                            else CurrentLine += "-1,1},{";
+                            else CurrentLine += "-1,0},{";//testing with 0 if that is what makes it crash
 #endregion
 
 #region Cliffs
