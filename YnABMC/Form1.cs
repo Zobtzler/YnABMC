@@ -20,7 +20,7 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "Dev 0.3.0.5";
+        string Version = "Alpha 0.3";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
@@ -452,10 +452,6 @@ namespace YnABMC
             }
             else ResourcesGenerate.Enabled = true;
         }
-
-        private void CliffsImport_CheckedChanged(object sender, EventArgs e) { }
-
-        private void CliffsGenerate_CheckedChanged(object sender, EventArgs e) { }
 #endregion
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -750,7 +746,7 @@ namespace YnABMC
                             else if (MatchResource == Amber.Colour) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives.Colour) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles.Colour) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
-                            else CurrentLine += "-1,1},{";
+                            else CurrentLine += "-1,0},{";
 #endregion
 
 #region Cliffs
@@ -1195,6 +1191,15 @@ namespace YnABMC
                     ConfigParameters += ParameterRow(ProjectName, "StartPosition", "START_POSITION", "2", "start", 0, 1, 285);
                 }
 #endregion
+
+#region RCN
+                if (RCNEnable.Checked)
+                {
+                    ConfigParameters += "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"AutoCityNaming\" Name=\"LOC_MAP_AUTO_CITY_NAMING_NAME\" Description=\"\" Domain=\"bool\" DefaultValue=\"1\" ConfigurationGroup=\"Map\" " +
+                                        "ConfigurationId=\"AutoCityNaming\" GroupId=\"MapOptions\" Visible=\"1\" SortIndex=\"2000\"/>";
+                }
+#endregion
+
                 ConfigParameters += "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"" + ProjectName + "_MapSize\" Name=\"LOC_MAP_SIZE\" Description=\"\" Domain=\"StandardMapSizes\" " +
                     "DefaultValue=\"" + SizeOfMap(MapW, MapH) + "\" ConfigurationGroup=\"Map\" ConfigurationId=\"MAP_SIZE\" GroupId=\"MapOptions\" Hash=\"1\" Visible=\"0\" SortIndex=\"225\"/>\n";
                 ConfigParameters += "\t\t<Row Key1=\"Map\" Key2=\"" + ProjectName + "_Map.lua\" ParameterId=\"HideSize\" Name=\"HideSize\" Description=\"\" Domain=\"bool\" " +
@@ -1230,7 +1235,7 @@ namespace YnABMC
 
 #endregion
 
-#region TSL
+#region TSL, Real City Naming
                 string TSLText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<!-- You have to fill this in manually -->" +
                                  "\n\t<StartPosition>\n\t\t<!--<Replace MapName=\"" + ProjectName + "_Map\" Civilization =\"CIVILIZATION_AMERICA\"	X=\"0\" Y=\"0\" />-->" +
                                  "\n\t</StartPosition>\n</GameData>";
@@ -1239,19 +1244,29 @@ namespace YnABMC
                     File.Create(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml").Dispose();
                     System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml", TSLText);
                 }
+
+                string RCNText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<!-- You have to fill this in manually -->" +
+                                 "\n\t<LocalizedText>\n\t\t<!--<Replace Tag=\"LOC_CITY_NAME_" + ProjectName + "_Map_SOME_CITY_NAME\" Text=\"Some City Name\" Language=\"en_US\" />-->" +
+                                 "\n\t</LocalizedText>\n</GameData>";
+                if (!File.Exists(FolderPath + "\\" + ProjectName + "\\Map\\MapText.xml"))
+                {
+                    File.Create(FolderPath + "\\" + ProjectName + "\\Map\\MapText.xml").Dispose();
+                    System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\Map\\MapText.xml", RCNText);
+                }
 #endregion
 
 #region Mod Info
                 string ModInfo = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Mod id=\"" + ModID + "\" version = \"1\">\n\t<Properties>\n\t\t<Name>" + AuthorText.Text + " - " + ProjectText.Text + "</Name>" +
-                                    "\n\t\t<Description>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Description>" +
-                                    "\n\t\t<Teaser>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Teaser>\n\t\t<Authors>" +
-                                    AuthorText.Text + "</Authors>\n\t<CompatibleVersions>" + GameVersions + "</CompatibleVersions>\n\t</Properties>\n\t<Dependencies>\n\t\t<Mod id=\"36e88483-48fe-4545-b85f-bafc50dde315\" title=\"Yet (not) Another Maps Pack\"/>\n\t</Dependencies>" +
-                                    "\n\t<FrontEndActions>\n\t\t<UpdateDatabase id=\"" + ProjectName + "_SETTING\">\n\t\t\t<File>Config/Config.xml</File>\n\t\t</UpdateDatabase>" +
-                                    "\n\t\t<UpdateText id=\"NewAction\">\n\t\t\t<File>Config/Config_Text.xml</File>\n\t\t</UpdateText>\n\t</FrontEndActions>" +
-                                    "\n\t<InGameActions>\n\t\t<ImportFiles id=\"" + ProjectName + "_IMPORT\">\n\t\t\t<File>Lua/" + ProjectName + "_Map.lua</File>\n\t\t</ImportFiles>" +
-                                    "\n\t\t<UpdateDatabase id=\"NewAction\">\n\t\t\t<File>Map/Map.xml</File>\n\t\t\t<File>Map/NaturalWonders.xml</File>>\n\t\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t</UpdateDatabase>\n\t</InGameActions>" +
-                                    "\n\t<Files>\n\t\t<File>Config/Config.xml</File>\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t<File>Lua/" +
-                                    ProjectName + "_Map.lua</File>\n\t</Files>\n</Mod>";
+                                 "\n\t\t<Description>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Description>" +
+                                 "\n\t\t<Teaser>This map has been created by " + AuthorText.Text + " using the \"Yet (not) Another Bit Map Converter\" Civ 6 Map Maker</Teaser>\n\t\t<Authors>" +
+                                 AuthorText.Text + "</Authors>\n\t<CompatibleVersions>" + GameVersions + "</CompatibleVersions>\n\t</Properties>\n\t<Dependencies>\n\t\t<Mod id=\"36e88483-48fe-4545-b85f-bafc50dde315\" title=\"Yet (not) Another Maps Pack\"/>\n\t</Dependencies>" +
+                                 "\n\t<FrontEndActions>\n\t\t<UpdateDatabase id=\"" + ProjectName + "_SETTING\">\n\t\t\t<File>Config/Config.xml</File>\n\t\t</UpdateDatabase>" +
+                                 "\n\t\t<UpdateText id=\"NewAction\">\n\t\t\t<File>Config/Config_Text.xml</File>\n\t\t</UpdateText>\n\t</FrontEndActions>" +
+                                 "\n\t<InGameActions>\n\t\t<ImportFiles id=\"" + ProjectName + "_IMPORT\">\n\t\t\t<File>Lua/" + ProjectName + "_Map.lua</File>\n\t\t</ImportFiles>" +
+                                 "\n\t\t<UpdateDatabase id=\"NewAction\">\n\t\t\t<File>Map/Map.xml</File>\n\t\t\t<File>Map/NaturalWonders.xml</File>\n\t\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t</UpdateDatabase>" +
+                                 "\n\t\t<UpdateText id=\"YNAMP_DEFAULT_LOC\">\n\t\t\t<File>Map/MapText.xml</File>\n\t\t</UpdateText>\n\t</InGameActions>\n\t<Files>\n\t\t<File>Config/Config.xml</File>" +
+                                 "\n\t\t<File>Config/Config_Text.xml</File>\n\t\t<File>Map/Map.xml</File>\n\t\t<File>Map/MapText.xml</File>\n\t\t<File>Map/NaturalWonders.xml</File>\n\t\t<File>Map/ExtraPlacement.xml</File>\n\t\t<File>Lua/" +
+                                 ProjectName + "_Map.lua</File>\n\t</Files>\n</Mod>";
                 System.IO.File.WriteAllText(FolderPath + "\\" + ProjectName + "\\" + ProjectName + ".modinfo", ModInfo);
                 Application.Restart();
 #endregion

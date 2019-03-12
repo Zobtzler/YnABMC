@@ -68,6 +68,7 @@
             this.CliffsLabel = new System.Windows.Forms.Label();
             this.CliffsImport = new System.Windows.Forms.RadioButton();
             this.GSRules = new System.Windows.Forms.CheckBox();
+            this.RCNEnable = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -75,7 +76,7 @@
             this.AuthorText.Location = new System.Drawing.Point(375, 36);
             this.AuthorText.Name = "AuthorText";
             this.AuthorText.Size = new System.Drawing.Size(195, 20);
-            this.AuthorText.TabIndex = 69;
+            this.AuthorText.TabIndex = 4;
             this.AuthorText.TextChanged += new System.EventHandler(this.AuthorText_TextChanged);
             // 
             // AuthorLabel
@@ -92,7 +93,7 @@
             this.ProjectText.Location = new System.Drawing.Point(178, 36);
             this.ProjectText.Name = "ProjectText";
             this.ProjectText.Size = new System.Drawing.Size(191, 20);
-            this.ProjectText.TabIndex = 67;
+            this.ProjectText.TabIndex = 3;
             this.ProjectText.TextChanged += new System.EventHandler(this.ProjectText_TextChanged);
             // 
             // ProjectLabel
@@ -109,7 +110,7 @@
             this.GenerateMap.Location = new System.Drawing.Point(12, 85);
             this.GenerateMap.Name = "GenerateMap";
             this.GenerateMap.Size = new System.Drawing.Size(139, 67);
-            this.GenerateMap.TabIndex = 65;
+            this.GenerateMap.TabIndex = 2;
             this.GenerateMap.Text = "Generate Map";
             this.GenerateMap.UseVisualStyleBackColor = true;
             this.GenerateMap.Click += new System.EventHandler(this.GenerateMap_Click);
@@ -122,7 +123,7 @@
             this.TSLEnable.Location = new System.Drawing.Point(178, 359);
             this.TSLEnable.Name = "TSLEnable";
             this.TSLEnable.Size = new System.Drawing.Size(191, 17);
-            this.TSLEnable.TabIndex = 64;
+            this.TSLEnable.TabIndex = 27;
             this.TSLEnable.Text = "Map Supports True Start Locations";
             this.TSLEnable.UseVisualStyleBackColor = true;
             // 
@@ -134,7 +135,7 @@
             this.ResourcesEmpty.Location = new System.Drawing.Point(370, 313);
             this.ResourcesEmpty.Name = "ResourcesEmpty";
             this.ResourcesEmpty.Size = new System.Drawing.Size(55, 17);
-            this.ResourcesEmpty.TabIndex = 63;
+            this.ResourcesEmpty.TabIndex = 24;
             this.ResourcesEmpty.Text = "Empty";
             this.ResourcesEmpty.UseVisualStyleBackColor = true;
             this.ResourcesEmpty.CheckedChanged += new System.EventHandler(this.ResourcesEmpty_CheckedChanged);
@@ -147,7 +148,7 @@
             this.ResourcesImport.Location = new System.Drawing.Point(296, 313);
             this.ResourcesImport.Name = "ResourcesImport";
             this.ResourcesImport.Size = new System.Drawing.Size(55, 17);
-            this.ResourcesImport.TabIndex = 62;
+            this.ResourcesImport.TabIndex = 23;
             this.ResourcesImport.Text = "Import";
             this.ResourcesImport.UseVisualStyleBackColor = true;
             this.ResourcesImport.CheckedChanged += new System.EventHandler(this.ResourcesImport_CheckedChanged);
@@ -160,7 +161,7 @@
             this.ResourcesGenerate.Location = new System.Drawing.Point(178, 313);
             this.ResourcesGenerate.Name = "ResourcesGenerate";
             this.ResourcesGenerate.Size = new System.Drawing.Size(97, 17);
-            this.ResourcesGenerate.TabIndex = 61;
+            this.ResourcesGenerate.TabIndex = 22;
             this.ResourcesGenerate.Text = "Map Generator";
             this.ResourcesGenerate.UseVisualStyleBackColor = true;
             // 
@@ -181,7 +182,7 @@
             this.FeaturesEmpty.Location = new System.Drawing.Point(370, 290);
             this.FeaturesEmpty.Name = "FeaturesEmpty";
             this.FeaturesEmpty.Size = new System.Drawing.Size(55, 17);
-            this.FeaturesEmpty.TabIndex = 59;
+            this.FeaturesEmpty.TabIndex = 21;
             this.FeaturesEmpty.Text = "Empty";
             this.FeaturesEmpty.UseVisualStyleBackColor = true;
             this.FeaturesEmpty.CheckedChanged += new System.EventHandler(this.FeaturesEmpty_CheckedChanged);
@@ -194,7 +195,7 @@
             this.FeaturesImport.Location = new System.Drawing.Point(296, 290);
             this.FeaturesImport.Name = "FeaturesImport";
             this.FeaturesImport.Size = new System.Drawing.Size(55, 17);
-            this.FeaturesImport.TabIndex = 58;
+            this.FeaturesImport.TabIndex = 20;
             this.FeaturesImport.Text = "Import";
             this.FeaturesImport.UseVisualStyleBackColor = true;
             this.FeaturesImport.CheckedChanged += new System.EventHandler(this.FeaturesImport_CheckedChanged);
@@ -207,7 +208,7 @@
             this.FeaturesGenerate.Location = new System.Drawing.Point(178, 290);
             this.FeaturesGenerate.Name = "FeaturesGenerate";
             this.FeaturesGenerate.Size = new System.Drawing.Size(97, 17);
-            this.FeaturesGenerate.TabIndex = 57;
+            this.FeaturesGenerate.TabIndex = 19;
             this.FeaturesGenerate.Text = "Map Generator";
             this.FeaturesGenerate.UseVisualStyleBackColor = true;
             // 
@@ -228,7 +229,7 @@
             this.WondersEmpty.Location = new System.Drawing.Point(370, 267);
             this.WondersEmpty.Name = "WondersEmpty";
             this.WondersEmpty.Size = new System.Drawing.Size(55, 17);
-            this.WondersEmpty.TabIndex = 55;
+            this.WondersEmpty.TabIndex = 18;
             this.WondersEmpty.Text = "Empty";
             this.WondersEmpty.UseVisualStyleBackColor = true;
             this.WondersEmpty.CheckedChanged += new System.EventHandler(this.WondersEmpty_CheckedChanged);
@@ -241,7 +242,7 @@
             this.WondersImport.Location = new System.Drawing.Point(296, 267);
             this.WondersImport.Name = "WondersImport";
             this.WondersImport.Size = new System.Drawing.Size(55, 17);
-            this.WondersImport.TabIndex = 54;
+            this.WondersImport.TabIndex = 17;
             this.WondersImport.Text = "Import";
             this.WondersImport.UseVisualStyleBackColor = true;
             this.WondersImport.CheckedChanged += new System.EventHandler(this.WondersImport_CheckedChanged);
@@ -254,7 +255,7 @@
             this.WondersGenerate.Location = new System.Drawing.Point(178, 267);
             this.WondersGenerate.Name = "WondersGenerate";
             this.WondersGenerate.Size = new System.Drawing.Size(97, 17);
-            this.WondersGenerate.TabIndex = 53;
+            this.WondersGenerate.TabIndex = 16;
             this.WondersGenerate.Text = "Map Generator";
             this.WondersGenerate.UseVisualStyleBackColor = true;
             // 
@@ -275,7 +276,7 @@
             this.ContinentsImport.Location = new System.Drawing.Point(296, 244);
             this.ContinentsImport.Name = "ContinentsImport";
             this.ContinentsImport.Size = new System.Drawing.Size(55, 17);
-            this.ContinentsImport.TabIndex = 51;
+            this.ContinentsImport.TabIndex = 15;
             this.ContinentsImport.Text = "Import";
             this.ContinentsImport.UseVisualStyleBackColor = true;
             this.ContinentsImport.CheckedChanged += new System.EventHandler(this.ContinentsImport_CheckedChanged);
@@ -288,7 +289,7 @@
             this.ContinentsGenerate.Location = new System.Drawing.Point(178, 244);
             this.ContinentsGenerate.Name = "ContinentsGenerate";
             this.ContinentsGenerate.Size = new System.Drawing.Size(97, 17);
-            this.ContinentsGenerate.TabIndex = 50;
+            this.ContinentsGenerate.TabIndex = 14;
             this.ContinentsGenerate.Text = "Map Generator";
             this.ContinentsGenerate.UseVisualStyleBackColor = true;
             // 
@@ -309,7 +310,7 @@
             this.RiversEmpty.Location = new System.Drawing.Point(370, 218);
             this.RiversEmpty.Name = "RiversEmpty";
             this.RiversEmpty.Size = new System.Drawing.Size(55, 17);
-            this.RiversEmpty.TabIndex = 48;
+            this.RiversEmpty.TabIndex = 13;
             this.RiversEmpty.Text = "Empty";
             this.RiversEmpty.UseVisualStyleBackColor = true;
             this.RiversEmpty.CheckedChanged += new System.EventHandler(this.RiversEmpty_CheckedChanged);
@@ -322,7 +323,7 @@
             this.RiversImport.Location = new System.Drawing.Point(296, 218);
             this.RiversImport.Name = "RiversImport";
             this.RiversImport.Size = new System.Drawing.Size(55, 17);
-            this.RiversImport.TabIndex = 47;
+            this.RiversImport.TabIndex = 12;
             this.RiversImport.Text = "Import";
             this.RiversImport.UseVisualStyleBackColor = true;
             this.RiversImport.CheckedChanged += new System.EventHandler(this.RiversImport_CheckedChanged);
@@ -335,7 +336,7 @@
             this.RiversGenerate.Location = new System.Drawing.Point(178, 221);
             this.RiversGenerate.Name = "RiversGenerate";
             this.RiversGenerate.Size = new System.Drawing.Size(97, 17);
-            this.RiversGenerate.TabIndex = 46;
+            this.RiversGenerate.TabIndex = 11;
             this.RiversGenerate.Text = "Map Generator";
             this.RiversGenerate.UseVisualStyleBackColor = true;
             // 
@@ -356,7 +357,7 @@
             this.RNFRules.Location = new System.Drawing.Point(296, 175);
             this.RNFRules.Name = "RNFRules";
             this.RNFRules.Size = new System.Drawing.Size(88, 17);
-            this.RNFRules.TabIndex = 44;
+            this.RNFRules.TabIndex = 8;
             this.RNFRules.Text = "Rise And Fall";
             this.RNFRules.UseVisualStyleBackColor = true;
             this.RNFRules.CheckedChanged += new System.EventHandler(this.RNFRules_CheckedChanged);
@@ -369,7 +370,7 @@
             this.STDRules.Location = new System.Drawing.Point(178, 175);
             this.STDRules.Name = "STDRules";
             this.STDRules.Size = new System.Drawing.Size(99, 17);
-            this.STDRules.TabIndex = 43;
+            this.STDRules.TabIndex = 7;
             this.STDRules.Text = "Standard Rules";
             this.STDRules.UseVisualStyleBackColor = true;
             // 
@@ -381,7 +382,7 @@
             this.WrapX.Location = new System.Drawing.Point(178, 198);
             this.WrapX.Name = "WrapX";
             this.WrapX.Size = new System.Drawing.Size(143, 17);
-            this.WrapX.TabIndex = 42;
+            this.WrapX.TabIndex = 10;
             this.WrapX.Text = "Enable Circumnavigation";
             this.WrapX.UseVisualStyleBackColor = true;
             // 
@@ -390,7 +391,7 @@
             this.ModIDRandom.Location = new System.Drawing.Point(451, 107);
             this.ModIDRandom.Name = "ModIDRandom";
             this.ModIDRandom.Size = new System.Drawing.Size(119, 23);
-            this.ModIDRandom.TabIndex = 41;
+            this.ModIDRandom.TabIndex = 6;
             this.ModIDRandom.Text = "Generate Mod ID";
             this.ModIDRandom.UseVisualStyleBackColor = true;
             this.ModIDRandom.Click += new System.EventHandler(this.ModIDRandom_Click);
@@ -409,7 +410,7 @@
             this.ModIDValue.Location = new System.Drawing.Point(178, 109);
             this.ModIDValue.Name = "ModIDValue";
             this.ModIDValue.Size = new System.Drawing.Size(267, 20);
-            this.ModIDValue.TabIndex = 39;
+            this.ModIDValue.TabIndex = 5;
             this.ModIDValue.TextChanged += new System.EventHandler(this.ModIDValue_TextChanged);
             // 
             // SelectSource
@@ -417,7 +418,7 @@
             this.SelectSource.Location = new System.Drawing.Point(12, 12);
             this.SelectSource.Name = "SelectSource";
             this.SelectSource.Size = new System.Drawing.Size(139, 67);
-            this.SelectSource.TabIndex = 38;
+            this.SelectSource.TabIndex = 1;
             this.SelectSource.Text = "Select Source File";
             this.SelectSource.UseVisualStyleBackColor = true;
             this.SelectSource.Click += new System.EventHandler(this.SelectSource_Click);
@@ -439,7 +440,7 @@
             this.SelectLua.Location = new System.Drawing.Point(597, 12);
             this.SelectLua.Name = "SelectLua";
             this.SelectLua.Size = new System.Drawing.Size(139, 67);
-            this.SelectLua.TabIndex = 71;
+            this.SelectLua.TabIndex = 30;
             this.SelectLua.Text = "Select .log File";
             this.SelectLua.UseVisualStyleBackColor = true;
             this.SelectLua.Visible = false;
@@ -451,7 +452,7 @@
             this.AdvancedOptions.Location = new System.Drawing.Point(178, 406);
             this.AdvancedOptions.Name = "AdvancedOptions";
             this.AdvancedOptions.Size = new System.Drawing.Size(114, 17);
-            this.AdvancedOptions.TabIndex = 72;
+            this.AdvancedOptions.TabIndex = 29;
             this.AdvancedOptions.Text = "Advanced Options";
             this.AdvancedOptions.UseVisualStyleBackColor = true;
             this.AdvancedOptions.CheckedChanged += new System.EventHandler(this.AdvancedOptions_CheckedChanged);
@@ -462,10 +463,9 @@
             this.CliffsGenerate.Location = new System.Drawing.Point(178, 336);
             this.CliffsGenerate.Name = "CliffsGenerate";
             this.CliffsGenerate.Size = new System.Drawing.Size(75, 17);
-            this.CliffsGenerate.TabIndex = 73;
+            this.CliffsGenerate.TabIndex = 25;
             this.CliffsGenerate.Text = "Generated";
             this.CliffsGenerate.UseVisualStyleBackColor = true;
-            this.CliffsGenerate.CheckedChanged += new System.EventHandler(this.CliffsGenerate_CheckedChanged);
             // 
             // CliffsLabel
             // 
@@ -483,11 +483,10 @@
             this.CliffsImport.Location = new System.Drawing.Point(296, 336);
             this.CliffsImport.Name = "CliffsImport";
             this.CliffsImport.Size = new System.Drawing.Size(54, 17);
-            this.CliffsImport.TabIndex = 75;
+            this.CliffsImport.TabIndex = 26;
             this.CliffsImport.TabStop = true;
             this.CliffsImport.Text = "Import";
             this.CliffsImport.UseVisualStyleBackColor = true;
-            this.CliffsImport.CheckedChanged += new System.EventHandler(this.CliffsImport_CheckedChanged);
             // 
             // GSRules
             // 
@@ -497,16 +496,29 @@
             this.GSRules.Location = new System.Drawing.Point(401, 175);
             this.GSRules.Name = "GSRules";
             this.GSRules.Size = new System.Drawing.Size(102, 17);
-            this.GSRules.TabIndex = 76;
+            this.GSRules.TabIndex = 9;
             this.GSRules.Text = "Gathering Storm";
             this.GSRules.UseVisualStyleBackColor = true;
             this.GSRules.CheckedChanged += new System.EventHandler(this.GSRules_CheckedChanged);
+            // 
+            // RCNEnable
+            // 
+            this.RCNEnable.AutoSize = true;
+            this.RCNEnable.Checked = true;
+            this.RCNEnable.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RCNEnable.Location = new System.Drawing.Point(178, 382);
+            this.RCNEnable.Name = "RCNEnable";
+            this.RCNEnable.Size = new System.Drawing.Size(177, 17);
+            this.RCNEnable.TabIndex = 28;
+            this.RCNEnable.Text = "Map Supports Real CIty Naming";
+            this.RCNEnable.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 454);
+            this.Controls.Add(this.RCNEnable);
             this.Controls.Add(this.GSRules);
             this.Controls.Add(this.CliffsImport);
             this.Controls.Add(this.CliffsLabel);
@@ -596,6 +608,7 @@
         private System.Windows.Forms.Label CliffsLabel;
         private System.Windows.Forms.RadioButton CliffsImport;
         private System.Windows.Forms.CheckBox GSRules;
+        private System.Windows.Forms.CheckBox RCNEnable;
     }
 }
 
