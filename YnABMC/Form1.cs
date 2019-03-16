@@ -20,7 +20,8 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        string Version = "Alpha 0.3";
+        //string Version = "Dev 0.3.0.8";
+        string Version = "Alpha 0.3.1";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
@@ -746,7 +747,7 @@ namespace YnABMC
                             else if (MatchResource == Amber.Colour) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives.Colour) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles.Colour) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
-                            else CurrentLine += "-1,0},{";
+                            else CurrentLine += "-1,1},{";
 #endregion
 
 #region Cliffs
@@ -884,20 +885,22 @@ namespace YnABMC
                                         }
                                     }
                                     MapH = CoordY + 1;
-                                    const string V = "\"FEATURE_.+?\"";
+                                    const string NW = "\"FEATURE_.+?\"";
                                     const string T = "\"TERRAIN_.+?\"";
                                     const string H = "\"TERRAIN_.+?HILLS\"";
                                     const string W = "\"TERRAIN_(OCEAN|COAST)\"";
                                     const string C = "(0|1),(0|1),(0|1)}}";
-                                    const string L = "-- Lake";
+                                    const string L = " -- Lake";
                                     const string Volc = "\"FEATURE_VOLCANO\"";
-                                    Match match = Regex.Match(MapArray, @V);
+                                    const string VolcHill = "HILLS";
+                                    Match match = Regex.Match(MapArray, @NW);
                                     Match terr = Regex.Match(MapArray, @T);
                                     Match hills = Regex.Match(MapArray, @H);
                                     Match water = Regex.Match(MapArray, @W);
                                     Match cliffs = Regex.Match(MapArray, @C);
                                     Match lake = Regex.Match(MapArray, @L);
                                     Match volcano = Regex.Match(MapArray, @Volc);
+                                    Match volcanohill = Regex.Match(MapArray, VolcHill);
                                     if (match.Success && terr.Success)
                                     {
                                         if (Civ6Wonder(match.Groups[0].Value) != null)
@@ -911,11 +914,17 @@ namespace YnABMC
                                             VolcanoString = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X=\"" + CoordX + "\" Y=\"" + CoordY + "\" RuleSet=\"RULESET_EXPANSION_2\" " +
                                                 "TerrainType=" + terr.Groups[0].Value + " FeatureType=\"FEATURE_VOLCANO\" />";
                                             MapArray = MapArray.Replace(volcano.Groups[0].Value, "-1");
+                                            if (volcanohill.Success)
+                                            {
+                                                MapArray = MapArray.Replace(volcanohill.Groups[0].Value, "MOUNTAIN");
+                                                VolcanoString = VolcanoString.Replace("HILLS", "MOUNTAIN");
+                                            }
                                         }
                                     }
                                     if (LastColumn) MapW = CoordX + 1;
                                     if (hills.Success) HasHills[CoordX, CoordY] = true;
                                     else if (water.Success) if (!lake.Success) WaterArray[CoordX, CoordY] = true;
+                                    if (lake.Success) MapArray = MapArray.Replace(lake.Groups[0].Value, "");
                                     LuaCliffsEnd = "";
                                     if (CliffsGenerate.Checked)
                                     {
@@ -1236,9 +1245,13 @@ namespace YnABMC
 #endregion
 
 #region TSL, Real City Naming
-                string TSLText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<!-- You have to fill this in manually -->" +
+                string TSLText = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<GameData>\n\t<!-- True Start Locations. You have to fill this in manually -->" +
                                  "\n\t<StartPosition>\n\t\t<!--<Replace MapName=\"" + ProjectName + "_Map\" Civilization =\"CIVILIZATION_AMERICA\"	X=\"0\" Y=\"0\" />-->" +
-                                 "\n\t</StartPosition>\n</GameData>";
+                                 "\n\t</StartPosition>\n\n\t<!-- Real City Naming. You have to fill this in manually -->\n\t<!--\n\t\t* CityLocaleName must have a matching entry in MapText.xml\n\t\t" +
+                                 "* Area is by default 1 (i.e. a radius of 1, i.e. one center tile and six surrounding tiles.\n\t\t  A radius of 2 adds yet another 12 surrounding tiles. A radius of 0 is only 1 tile)\n\t\t" +
+                                 "* Civilization should only have a value if a name applies to only one civ. I.e. a tile can\n\t\t  have multiple entries for different civs, such as \"London\" as a standard value for London,\n\t\t  but \"Londres\" for France or \"Londinium\" for Rome\n\t-->" +
+                                 "\n\t<CityMap>\n\t\t<!--<Replace MapName=\"" + ProjectName + "_Map\" X=\"0\" Y=\"0\" CityLocaleName=\"LOC_CITY_NAME_" + ProjectName + 
+                                 "_Map_SOME_CITY_NAME\" Area=\"1\" Civilization=\"CIVILIZATION_AMERICA\"/>-->\n\t</CityMap>\n</GameData>";
                 if (!File.Exists(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml"))
                 {
                     File.Create(FolderPath + "\\" + ProjectName + "\\Map\\Map.xml").Dispose();
