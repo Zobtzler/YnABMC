@@ -20,7 +20,7 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        //string Version = "Dev 0.3.3.0.3";
+        //string Version = "Dev 0.3.3.0.4";
         string Version = "Alpha 0.3.3";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
@@ -1520,7 +1520,7 @@ namespace YnABMC
             s = Regex.Replace(s, @"[ƴýŷỳÿȳỹẙẏy̨ɏỿ]", "y");
             s = Regex.Replace(s, @"[źẑžżẓẕƶȥ]", "z");
 
-            s = Regex.Replace(s, @" ", "_");
+            s = Regex.Replace(s, @"\s+", "_");
             s = Regex.Replace(s, @"[^A-Za-z_-]", "-");
             return s;
         }
