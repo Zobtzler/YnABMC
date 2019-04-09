@@ -20,8 +20,8 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        //string Version = "Dev 0.3.2.0.0";
-        string Version = "Alpha 0.3.2";
+        //string Version = "Dev 0.3.3.0.1";
+        string Version = "Alpha 0.3.3";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
@@ -1462,6 +1462,43 @@ namespace YnABMC
             if (r == 40) return "\"RESOURCE_FURS\""; //Bison to Furs
             if (r == 41) return "\"RESOURCE_COCOA\"";
             return "-1";
+        }
+
+        public static string AnglofyString(string s)
+        {
+            s = Regex.Replace(s, @"[ÅÆĀĂĄÀÁÂÃÄ]", "A");
+            s = Regex.Replace(s, @"[ÇĆČ]", "C");
+            s = Regex.Replace(s, @"[ĎĐ]", "D");
+            s = Regex.Replace(s, @"[ĖĘĚĔƏÈÉÊËĒ€]", "E");
+            s = Regex.Replace(s, @"[ĢĞ]", "G");
+            s = Regex.Replace(s, @"[#]", "H");
+            s = Regex.Replace(s, @"[İĮĪÏÎÍÌ]", "I");
+            s = Regex.Replace(s, @"[ŁĽĻĹ£]", "L");
+            s = Regex.Replace(s, @"[ŇŅŃÑ]", "N");
+            s = Regex.Replace(s, @"[ŒŐØÖÕÔÓÒ]", "O");
+            s = Regex.Replace(s, @"[ŔŘ]", "R");
+            s = Regex.Replace(s, @"[ß§ŚŠŞ$]", "S");
+            s = Regex.Replace(s, @"[ÞŤȚŢ]", "T");
+            s = Regex.Replace(s, @"[ŲŰŮŪÜÛÚÙ]", "U");
+            s = Regex.Replace(s, @"[₩]", "W");
+            s = Regex.Replace(s, @"[Ý¥]", "Y");
+            s = Regex.Replace(s, @"[ŹŻŽ]", "Z");
+            s = Regex.Replace(s, @"[åæāăąàáâãä@]", "a");
+            s = Regex.Replace(s, @"[çćč]", "c");
+            s = Regex.Replace(s, @"[ďđ]", "d");
+            s = Regex.Replace(s, @"[ėęěĕəèéêëē]", "e");
+            s = Regex.Replace(s, @"[ģğ]", "g");
+            s = Regex.Replace(s, @"[ıįīïîíì]", "i");
+            s = Regex.Replace(s, @"[łľļĺ]", "l");
+            s = Regex.Replace(s, @"[ňņńñ]", "n");
+            s = Regex.Replace(s, @"[œőøöõôóò]", "o");
+            s = Regex.Replace(s, @"[ŕř]", "r");
+            s = Regex.Replace(s, @"[śšş]", "s");
+            s = Regex.Replace(s, @"[þťțţ]", "t");
+            s = Regex.Replace(s, @"[ųűůūüûúù]", "u");
+            s = Regex.Replace(s, @"[ý]", "y");
+            s = Regex.Replace(s, @"[źżž]", "z");
+            return s;
         }
 
         private void Timer_Tick(object sender, System.EventArgs e)
