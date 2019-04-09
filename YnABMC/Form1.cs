@@ -20,7 +20,7 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        //string Version = "Dev 0.3.3.0.1";
+        //string Version = "Dev 0.3.3.0.2";
         string Version = "Alpha 0.3.3";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
@@ -315,14 +315,14 @@ namespace YnABMC
         {
             AuthorName = new string(AuthorText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
             ProjectName = new string(ProjectText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            ProjectName = AuthorName + "_" + ProjectName;
+            ProjectName = AnglofyString(AuthorName) + "_" + AnglofyString(ProjectName);
         }
 
         private void AuthorText_TextChanged(object sender, EventArgs e)
         {
             AuthorName = new string(AuthorText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
             ProjectName = new string(ProjectText.Text.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            ProjectName = AuthorName + "_" + ProjectName;
+            ProjectName = AnglofyString(AuthorName) + "_" + AnglofyString(ProjectName);
         }
 
         private void ModIDValue_TextChanged(object sender, EventArgs e)
