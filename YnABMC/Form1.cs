@@ -620,7 +620,7 @@ namespace YnABMC
                                 if (MatchTerrain == Desert.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS\",";
                                 else if (MatchTerrain == Grass.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS_GRASSLAND\",";
                             }
-                            else if (MatchPlotFeature == PlainsFloodPlains.Colour && MatchTerrain == Plains.Colour) CurrentLine = "\"FEATURE_FLOODPLAINS_PLAINS\",";
+                            else if (MatchPlotFeature == PlainsFloodPlains.Colour && MatchTerrain == Plains.Colour) CurrentLine += "\"FEATURE_FLOODPLAINS_PLAINS\",";
                             else if (MatchPlotFeature == Ice.Colour && (MatchTerrain == Ocean.Colour || MatchTerrain == Coast.Colour)) CurrentLine += "\"FEATURE_ICE\",";
                             else if (MatchPlotFeature == Jungle.Colour && MatchTerrain != Coast.Colour) CurrentLine += "\"FEATURE_JUNGLE\",";
                             else if (MatchPlotFeature == Woods.Colour) CurrentLine += "\"FEATURE_FOREST\",";
