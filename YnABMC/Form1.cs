@@ -20,15 +20,16 @@ namespace YnABMC
 
     public partial class Form1 : Form
     {
-        //string Version = "Dev 0.3.3.0.4";
-        string Version = "Alpha 0.3.3";
+        
+        string SoftwareVersion = "Alpha 0.3.4";
+        //string SoftwareVersion = "Dev 0.3.4";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Text = "Yet (not) Another Bit Map Converter by Zobtzler - " + Version;
+            Text = "Yet (not) Another Bit Map Converter by Zobtzler - " + SoftwareVersion;
         }
 
 #region MapValues
@@ -217,6 +218,12 @@ namespace YnABMC
         MapColour Turtles = new MapColour(160, 160, 160); //8,8,8
 #endregion
 
+#region LowLand
+        MapColour LowLand0 = new MapColour(255, 0, 0); //12,0,0
+        MapColour LowLand1 = new MapColour(0, 255, 0); //0,12,0
+        MapColour LowLand2 = new MapColour(0, 0, 255); //0,0,12
+#endregion
+
 #endregion
 
 #region Files
@@ -269,13 +276,13 @@ namespace YnABMC
             {
                 SelectLua.Enabled = false;
                 SelectLua.Visible = false;
-                Size = new Size(600, 493);
+                Size = new Size(600, 520);
             }
             else
             {
                 SelectLua.Enabled = true;
                 SelectLua.Visible = true;
-                Size = new Size(764, 493);
+                Size = new Size(764, 520);
             }
         }
 
@@ -453,9 +460,29 @@ namespace YnABMC
             }
             else ResourcesGenerate.Enabled = true;
         }
+
+        private void LowLandImport_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!LowLandImport.Checked && !LowLandEmpty.Checked)
+            {
+                LowLandGenerate.Checked = true;
+                LowLandGenerate.Enabled = false;
+            }
+            else LowLandGenerate.Enabled = true;
+        }
+
+        private void LowLandEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!LowLandImport.Checked && !LowLandEmpty.Checked)
+            {
+                LowLandGenerate.Checked = true;
+                LowLandGenerate.Enabled = false;
+            }
+            else LowLandGenerate.Enabled = true;
+        }
 #endregion
 
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        Timer timer = new Timer();
 
         private void GenerateMap_Click(object sender, EventArgs e)
         {
@@ -480,6 +507,7 @@ namespace YnABMC
                     MapW = (Map.Width - 4) / 6;
                     bool[,] WaterArray = new bool[MapW, MapH];
                     bool[,] HasHills = new bool[MapW, MapH];
+                    string EndLow = "";
                     for (int i = 0; i < MapW; i++)
                     {
                         for (int j = 0; j < MapH; j++)
@@ -507,6 +535,7 @@ namespace YnABMC
                             Color MapResource = Map.GetPixel(MapX - 2, MapY - 2);
                             Color MapContinent = Map.GetPixel(MapX - 2, MapY + 1);
                             Color MapWonder = Map.GetPixel(MapX - 2, MapY - 1);
+                            Color MapLowLand = Map.GetPixel(MapX + 2, MapY - 2);
                             string MatchTerrain = "(" + MapTerrain.R / 20 + "," + MapTerrain.G / 20 + "," + MapTerrain.B / 20 + ")";
                             string MatchHills = "(" + MapHills.R / 20 + "," + MapHills.G / 20 + "," + MapHills.B / 20 + ")";
                             string MatchPlotFeature = "(" + MapPlotFeature.R / 20 + "," + MapPlotFeature.G / 20 + "," + MapPlotFeature.B / 20 + ")";
@@ -516,6 +545,7 @@ namespace YnABMC
                             string MatchResource = "(" + MapResource.R / 20 + "," + MapResource.G / 20 + "," + MapResource.B / 20 + ")";
                             string MatchContinent = "(" + MapContinent.R / 20 + "," + MapContinent.G / 20 + "," + MapContinent.B / 20 + ")";
                             string MatchWonder = "(" + MapWonder.R / 20 + "," + MapWonder.G / 20 + "," + MapWonder.B / 20 + ")";
+                            string MatchLowLand = "(" + MapLowLand.R / 20 + "," + MapLowLand.G / 20 + "," + MapLowLand.B / 20 + ")";
 #endregion
 
 #region Terrain
@@ -750,33 +780,37 @@ namespace YnABMC
                             else CurrentLine += "-1,1},{";
 #endregion
 
-#region Cliffs
+#region Cliffs & LowLand
                             if (CliffsImport.Checked)
                             {
                                 if (MatchRiverSW == Cliffs.Colour) CurrentLine += "1,";
                                 else CurrentLine += "0,";
                                 if (MatchRiverE == Cliffs.Colour) CurrentLine += "1,";
                                 else CurrentLine += "0,";
-                                if (MatchRiverSE == Cliffs.Colour) CurrentLine += "1}}";
-                                else CurrentLine += "0}}";
+                                if (MatchRiverSE == Cliffs.Colour) CurrentLine += "1},";
+                                else CurrentLine += "0},";
+                                CurrentLine += LowLand(MatchLowLand) + "}";
                             }
                             else
                             {
+                                if (x == MapW - 1) EndLow = LowLand(MatchLowLand) + "}";
                                 if (y % 2 == 1)
                                 {
                                     if (x < MapW - 1)
                                     {
                                         if (y > 0) CurrentLine += Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
-                                                Cliff_Generator(WaterArray[x + 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y - 1]) + "}}";
-                                        else CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
+                                                Cliff_Generator(WaterArray[x + 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y - 1]) + "}," +
+                                                LowLand(MatchLowLand) + "}";
+                                        else CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}," +
+                                                LowLand(MatchLowLand) + "}";
                                     }
                                     if (x == 0)
                                     {
                                         if (y > 0) EndCliffs += Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 1, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + "," +
-                                                Cliff_Generator(WaterArray[0, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y - 1]) + "}}";
-                                        else EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}}";
+                                                Cliff_Generator(WaterArray[0, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y - 1]) + "}," + EndLow;
+                                        else EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}," + EndLow;
                                     }
                                 }
                                 else
@@ -785,8 +819,10 @@ namespace YnABMC
                                     {
                                         if (y > 0) CurrentLine += Cliff_Generator(WaterArray[x - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x - 1, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
-                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}}";
-                                        else CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
+                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}," +
+                                                LowLand(MatchLowLand) + "}";
+                                        else CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}," +
+                                                LowLand(MatchLowLand) + "}";
                                     }
                                     if (x == 0)
                                     {
@@ -794,15 +830,16 @@ namespace YnABMC
                                         {
                                             CurrentLine += Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[MapW - 1, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + "," +
-                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}}";
+                                                Cliff_Generator(WaterArray[x, y - 1], HasHills[x, y], WaterArray[x, y], HasHills[x, y - 1]) + "}," +
+                                                LowLand(MatchLowLand) + "}";
                                             EndCliffs += Cliff_Generator(WaterArray[MapW - 2, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 2, y - 1]) + "," +
                                                 Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + "," +
-                                                Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 1, y - 1]) + "}}";
+                                                Cliff_Generator(WaterArray[MapW - 1, y - 1], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[MapW - 1, y - 1]) + "}," + EndLow;
                                         }
                                         else
                                         {
-                                            CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}}";
-                                            EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}}";
+                                            CurrentLine += "0," + Cliff_Generator(WaterArray[x + 1, y], HasHills[x, y], WaterArray[x, y], HasHills[x + 1, y]) + ",0}," + LowLand(MatchLowLand) + "}";
+                                            EndCliffs += "0," + Cliff_Generator(WaterArray[0, y], HasHills[MapW - 1, y], WaterArray[MapW - 1, y], HasHills[0, y]) + ",0}," + EndLow;
                                         }
                                     }
                                 }
@@ -839,11 +876,11 @@ namespace YnABMC
                     List<string> Civ5Lines = new List<string>();
                     List<string> Civ5LinesY = new List<string>();
                     bool FirstLine = true,  LastColumn = true;
-                    string LuaTemp = "", LuaCliffsEnd = "";
+                    string LuaTemp = "", LuaCliffsEnd = "", EndLow = "";
                     while ((LuaLine = file.ReadLine()) != null)
                     {
                         string[] Parts = LuaLine.Split(' ');
-                        const string ConvertCode = @"MapToConvert.+", YnAMP = @"YnAMP_InGame:", WBP = @"WorldBuilderPlacement:", InGame = @"\[\d+\.\d+\] InGame:";
+                        const string ConvertCode = @"MapToConvert.+", YnAMP = @"YnAMP_InGame:", WBP = @"WorldBuilderPlotEditor:", InGame = @"\[\d+\.\d+\] InGame:";
                         Match ynamp = Regex.Match(LuaLine, YnAMP);
                         Match wbp = Regex.Match(LuaLine, WBP);
                         Match ingame = Regex.Match(LuaLine, InGame);
@@ -889,7 +926,8 @@ namespace YnABMC
                                     const string T = "\"TERRAIN_.+?\"";
                                     const string H = "\"TERRAIN_.+?HILLS\"";
                                     const string W = "\"TERRAIN_(OCEAN|COAST)\"";
-                                    const string C = "(0|1),(0|1),(0|1)}}";
+                                    const string C = "(0|1),(0|1),(0|1)},";
+                                    const string Low = "(-1|0|1|2)}( -- Lake)?$";
                                     const string L = " -- Lake";
                                     const string Volc = "\"FEATURE_VOLCANO\"";
                                     const string VolcHill = "HILLS";
@@ -898,6 +936,7 @@ namespace YnABMC
                                     Match hills = Regex.Match(MapArray, @H);
                                     Match water = Regex.Match(MapArray, @W);
                                     Match cliffs = Regex.Match(MapArray, @C);
+                                    Match lowland = Regex.Match(MapArray, @Low);
                                     Match lake = Regex.Match(MapArray, @L);
                                     Match volcano = Regex.Match(MapArray, @Volc);
                                     Match volcanohill = Regex.Match(MapArray, VolcHill);
@@ -923,15 +962,17 @@ namespace YnABMC
                                     }
                                     if (LastColumn) MapW = CoordX + 1;
                                     if (hills.Success) HasHills[CoordX, CoordY] = true;
-                                    else if (water.Success) if (!lake.Success) WaterArray[CoordX, CoordY] = true;
-                                    if (lake.Success) MapArray = MapArray.Replace(lake.Groups[0].Value, "");
+                                    else if (water.Success && !lake.Success) WaterArray[CoordX, CoordY] = true;
                                     LuaCliffsEnd = "";
+                                    EndLow = lowland.Success && LastColumn ? lowland.Groups[0].Value : EndLow;
                                     if (CliffsGenerate.Checked)
                                     {
 #region Cliffs
                                         if (cliffs.Success)
                                         {
-                                            MapArray = MapArray.Replace(cliffs.Groups[0].Value, "");
+                                            string Cliffs = "";
+                                            string low = lowland.Groups[0].Value;
+                                            MapArray = MapArray.Replace(cliffs.Groups[0].Value + lowland.Groups[0].Value, "");
 
                                             if (CoordY % 2 == 1)
                                             {
@@ -939,15 +980,19 @@ namespace YnABMC
                                                 {
                                                     if (CoordY > 0) MapArray += Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "," +
                                                             Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY - 1]) + "}}";
-                                                    else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
+                                                            Cliff_Generator(WaterArray[CoordX + 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY - 1]) + "}," +
+                                                            low;
+                                                    else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}," +
+                                                            low;
                                                 }
                                                 if (CoordX == 0)
                                                 {
-                                                    if (CoordY > 0) LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
+                                                    if (CoordY > 0) LuaCliffsEnd = Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
                                                             Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
-                                                            Cliff_Generator(WaterArray[0, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY - 1]) + "}}";
-                                                    else LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
+                                                            Cliff_Generator(WaterArray[0, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY - 1]) + "}," + 
+                                                            EndLow;
+                                                    else LuaCliffsEnd = "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}," + 
+                                                            EndLow;
                                                 }
                                             }
                                             else
@@ -956,8 +1001,10 @@ namespace YnABMC
                                                 {
                                                     if (CoordY > 0) MapArray += Cliff_Generator(WaterArray[CoordX - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX - 1, CoordY - 1]) + "," +
                                                             Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
-                                                    else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
+                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}," +
+                                                            low;
+                                                    else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}," +
+                                                            low;
                                                 }
                                                 if (CoordX == 0)
                                                 {
@@ -965,15 +1012,17 @@ namespace YnABMC
                                                     {
                                                         MapArray += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
                                                             Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
-                                                        LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 2, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 2, CoordY - 1]) + "," +
+                                                            Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}," +
+                                                            low;
+                                                        LuaCliffsEnd = Cliff_Generator(WaterArray[MapW - 2, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 2, CoordY - 1]) + "," +
                                                             Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
-                                                            Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "}}";
+                                                            Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "}," +
+                                                            EndLow;
                                                     }
                                                     else
                                                     {
-                                                        MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
-                                                        LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
+                                                        MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}," + low;
+                                                        LuaCliffsEnd = "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}," + EndLow;
                                                     }
                                                 }
                                             }
@@ -981,6 +1030,7 @@ namespace YnABMC
                                         }
 #endregion
                                     }
+                                    if (lake.Success) MapArray = MapArray.Replace(lake.Groups[0].Value, "");
                                     LuaTemp = "\n" + MapArray + LuaTemp;
                                     LastColumn = false;
                                     ExtraPlacement += VolcanoString;
@@ -1058,15 +1108,15 @@ namespace YnABMC
                                             {
                                                 if (CoordY > 0) MapArray += Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "," +
                                                         Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                        Cliff_Generator(WaterArray[CoordX + 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY - 1]) + "}}";
-                                                else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
+                                                        Cliff_Generator(WaterArray[CoordX + 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY - 1]) + "},-1}";
+                                                else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0},-1}";
                                             }
                                             if (CoordX == 0)
                                             {
                                                 if (CoordY > 0) LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
                                                         Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
-                                                        Cliff_Generator(WaterArray[0, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY - 1]) + "}}";
-                                                else LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
+                                                        Cliff_Generator(WaterArray[0, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY - 1]) + "},-1}";
+                                                else LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0},-1}";
                                             }
                                         }
                                         else
@@ -1075,8 +1125,8 @@ namespace YnABMC
                                             {
                                                 if (CoordY > 0) MapArray += Cliff_Generator(WaterArray[CoordX - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX - 1, CoordY - 1]) + "," +
                                                         Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                        Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
-                                                else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
+                                                        Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "},-1}";
+                                                else MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0},-1}";
                                             }
                                             if (CoordX == 0)
                                             {
@@ -1084,20 +1134,20 @@ namespace YnABMC
                                                 {
                                                     MapArray += Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[MapW - 1, CoordY - 1]) + "," +
                                                         Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + "," +
-                                                        Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "}}";
+                                                        Cliff_Generator(WaterArray[CoordX, CoordY - 1], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX, CoordY - 1]) + "},-1}";
                                                     LuaCliffsEnd += Cliff_Generator(WaterArray[MapW - 2, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 2, CoordY - 1]) + "," +
                                                         Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + "," +
-                                                        Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "}}";
+                                                        Cliff_Generator(WaterArray[MapW - 1, CoordY - 1], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[MapW - 1, CoordY - 1]) + "},-1}";
                                                 }
                                                 else
                                                 {
-                                                    MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0}}";
-                                                    LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0}}";
+                                                    MapArray += "0," + Cliff_Generator(WaterArray[CoordX + 1, CoordY], HasHills[CoordX, CoordY], WaterArray[CoordX, CoordY], HasHills[CoordX + 1, CoordY]) + ",0},-1}";
+                                                    LuaCliffsEnd += "0," + Cliff_Generator(WaterArray[0, CoordY], HasHills[MapW - 1, CoordY], WaterArray[MapW - 1, CoordY], HasHills[0, CoordY]) + ",0},-1}";
                                                 }
                                             }
                                         }
                                     }
-                                    if (CliffsImport.Checked) MapArray += "0,0,0}}";
+                                    if (CliffsImport.Checked) MapArray += "0,0,0},-1}";
 #endregion
                                     LuaTemp = "\n" + MapArray + LuaTemp;
                                     LastColumn = false;
@@ -1184,6 +1234,19 @@ namespace YnABMC
                 }
 #endregion
 
+#region LowLand
+                if (OneSelected(LowLandGenerate.Checked, LowLandImport.Checked, LowLandEmpty.Checked))
+                {
+                    ConfigParameters += ParameterRow(ProjectName, "LowLandPlacement", "LOWLAND_PLACEMENT", DefaultPlacement(LowLandImport.Checked, LowLandGenerate.Checked, LowLandEmpty.Checked), "LowLandPlacement", 0, 0, 269);
+                    ConfigParameters += ParameterRow(ProjectName, "LowLand", "LOWLAND", "2", "LowLand", 0, 1, 270);
+                }
+                else
+                {
+                    ConfigParameters += ParameterRow(ProjectName, "LowLandPlacement", "LOWLAND_PLACEMENT", DefaultPlacement(LowLandImport.Checked, LowLandGenerate.Checked, LowLandEmpty.Checked), "LowLandPlacement", 0, 1, 269);
+                    ConfigParameters += ParameterRow(ProjectName, "LowLand", "LOWLAND", "2", "LowLand", 0, 1, 270);
+                }
+#endregion
+
 #region TSL
                 if (TSLEnable.Checked)
                 {
@@ -1227,6 +1290,8 @@ namespace YnABMC
                         MapConfig_Generator(FeaturesImport.Checked, ProjectName, "Features", "IMPORT") + MapConfig_Generator(FeaturesEmpty.Checked, ProjectName, "Features", "EMPTY");
                 if (!ResourcesGenerate.Checked || !ResourcesImport.Checked || !ResourcesEmpty.Checked) ConfigMapSupport += MapConfig_Generator(ResourcesGenerate.Checked, ProjectName, "Resources", "DEFAULT") +
                         MapConfig_Generator(ResourcesImport.Checked, ProjectName, "Resources", "IMPORT") + MapConfig_Generator(ResourcesEmpty.Checked, ProjectName, "Resources", "EMPTY");
+                if (!LowLandGenerate.Checked || !LowLandImport.Checked || !LowLandEmpty.Checked) ConfigMapSupport += MapConfig_Generator(LowLandGenerate.Checked, ProjectName, "LowLand", "DEFAULT") +
+                        MapConfig_Generator(LowLandImport.Checked, ProjectName, "LowLand", "IMPORT") + MapConfig_Generator(LowLandEmpty.Checked, ProjectName, "LowLand", "EMPTY");
 #endregion
                 Config = ConfigMap + ConfigParameters + ConfigMapSupport + ConfigEnd;
                 DirectoryInfo ConfigDir = Directory.CreateDirectory(FolderPath + "\\" + ProjectName + "\\Config");
@@ -1339,6 +1404,14 @@ namespace YnABMC
             char[] cArray = s.ToCharArray();
             Array.Reverse(cArray);
             return new string(cArray);
+        }
+
+        public int LowLand(string l)
+        {
+            if (l == LowLand0.Colour) return 0;
+            else if (l == LowLand1.Colour) return 1;
+            else if (l == LowLand2.Colour) return 2;
+            return -1;
         }
 
         public string Civ6Wonder(string w)

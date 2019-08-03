@@ -69,6 +69,10 @@
             this.CliffsImport = new System.Windows.Forms.RadioButton();
             this.GSRules = new System.Windows.Forms.CheckBox();
             this.RCNEnable = new System.Windows.Forms.CheckBox();
+            this.LowlandLabel = new System.Windows.Forms.Label();
+            this.LowLandEmpty = new System.Windows.Forms.CheckBox();
+            this.LowLandImport = new System.Windows.Forms.CheckBox();
+            this.LowLandGenerate = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // AuthorText
@@ -120,10 +124,10 @@
             this.TSLEnable.AutoSize = true;
             this.TSLEnable.Checked = true;
             this.TSLEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TSLEnable.Location = new System.Drawing.Point(178, 359);
+            this.TSLEnable.Location = new System.Drawing.Point(178, 381);
             this.TSLEnable.Name = "TSLEnable";
             this.TSLEnable.Size = new System.Drawing.Size(191, 17);
-            this.TSLEnable.TabIndex = 27;
+            this.TSLEnable.TabIndex = 31;
             this.TSLEnable.Text = "Map Supports True Start Locations";
             this.TSLEnable.UseVisualStyleBackColor = true;
             // 
@@ -427,7 +431,7 @@
             // 
             this.Attention.AutoSize = true;
             this.Attention.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Attention.Location = new System.Drawing.Point(-3, 429);
+            this.Attention.Location = new System.Drawing.Point(-3, 451);
             this.Attention.Name = "Attention";
             this.Attention.Size = new System.Drawing.Size(595, 16);
             this.Attention.TabIndex = 70;
@@ -449,10 +453,10 @@
             // AdvancedOptions
             // 
             this.AdvancedOptions.AutoSize = true;
-            this.AdvancedOptions.Location = new System.Drawing.Point(178, 406);
+            this.AdvancedOptions.Location = new System.Drawing.Point(178, 428);
             this.AdvancedOptions.Name = "AdvancedOptions";
             this.AdvancedOptions.Size = new System.Drawing.Size(114, 17);
-            this.AdvancedOptions.TabIndex = 29;
+            this.AdvancedOptions.TabIndex = 33;
             this.AdvancedOptions.Text = "Advanced Options";
             this.AdvancedOptions.UseVisualStyleBackColor = true;
             this.AdvancedOptions.CheckedChanged += new System.EventHandler(this.AdvancedOptions_CheckedChanged);
@@ -460,17 +464,17 @@
             // CliffsGenerate
             // 
             this.CliffsGenerate.AutoSize = true;
-            this.CliffsGenerate.Location = new System.Drawing.Point(178, 336);
+            this.CliffsGenerate.Location = new System.Drawing.Point(178, 358);
             this.CliffsGenerate.Name = "CliffsGenerate";
             this.CliffsGenerate.Size = new System.Drawing.Size(75, 17);
-            this.CliffsGenerate.TabIndex = 25;
+            this.CliffsGenerate.TabIndex = 29;
             this.CliffsGenerate.Text = "Generated";
             this.CliffsGenerate.UseVisualStyleBackColor = true;
             // 
             // CliffsLabel
             // 
             this.CliffsLabel.AutoSize = true;
-            this.CliffsLabel.Location = new System.Drawing.Point(85, 338);
+            this.CliffsLabel.Location = new System.Drawing.Point(85, 360);
             this.CliffsLabel.Name = "CliffsLabel";
             this.CliffsLabel.Size = new System.Drawing.Size(29, 13);
             this.CliffsLabel.TabIndex = 74;
@@ -480,10 +484,10 @@
             // 
             this.CliffsImport.AutoSize = true;
             this.CliffsImport.Checked = true;
-            this.CliffsImport.Location = new System.Drawing.Point(296, 336);
+            this.CliffsImport.Location = new System.Drawing.Point(296, 358);
             this.CliffsImport.Name = "CliffsImport";
             this.CliffsImport.Size = new System.Drawing.Size(54, 17);
-            this.CliffsImport.TabIndex = 26;
+            this.CliffsImport.TabIndex = 30;
             this.CliffsImport.TabStop = true;
             this.CliffsImport.Text = "Import";
             this.CliffsImport.UseVisualStyleBackColor = true;
@@ -506,18 +510,69 @@
             this.RCNEnable.AutoSize = true;
             this.RCNEnable.Checked = true;
             this.RCNEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RCNEnable.Location = new System.Drawing.Point(178, 382);
+            this.RCNEnable.Location = new System.Drawing.Point(178, 404);
             this.RCNEnable.Name = "RCNEnable";
             this.RCNEnable.Size = new System.Drawing.Size(177, 17);
-            this.RCNEnable.TabIndex = 28;
+            this.RCNEnable.TabIndex = 32;
             this.RCNEnable.Text = "Map Supports Real CIty Naming";
             this.RCNEnable.UseVisualStyleBackColor = true;
+            // 
+            // LowlandLabel
+            // 
+            this.LowlandLabel.AutoSize = true;
+            this.LowlandLabel.Location = new System.Drawing.Point(85, 336);
+            this.LowlandLabel.Name = "LowlandLabel";
+            this.LowlandLabel.Size = new System.Drawing.Size(47, 13);
+            this.LowlandLabel.TabIndex = 75;
+            this.LowlandLabel.Text = "Lowland";
+            // 
+            // LowLandEmpty
+            // 
+            this.LowLandEmpty.AutoSize = true;
+            this.LowLandEmpty.Checked = true;
+            this.LowLandEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LowLandEmpty.Location = new System.Drawing.Point(370, 336);
+            this.LowLandEmpty.Name = "LowLandEmpty";
+            this.LowLandEmpty.Size = new System.Drawing.Size(55, 17);
+            this.LowLandEmpty.TabIndex = 27;
+            this.LowLandEmpty.Text = "Empty";
+            this.LowLandEmpty.UseVisualStyleBackColor = true;
+            this.LowLandEmpty.CheckedChanged += new System.EventHandler(this.LowLandEmpty_CheckedChanged);
+            // 
+            // LowLandImport
+            // 
+            this.LowLandImport.AutoSize = true;
+            this.LowLandImport.Checked = true;
+            this.LowLandImport.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LowLandImport.Location = new System.Drawing.Point(296, 336);
+            this.LowLandImport.Name = "LowLandImport";
+            this.LowLandImport.Size = new System.Drawing.Size(55, 17);
+            this.LowLandImport.TabIndex = 26;
+            this.LowLandImport.Text = "Import";
+            this.LowLandImport.UseVisualStyleBackColor = true;
+            this.LowLandImport.CheckedChanged += new System.EventHandler(this.LowLandImport_CheckedChanged);
+            // 
+            // LowLandGenerate
+            // 
+            this.LowLandGenerate.AutoSize = true;
+            this.LowLandGenerate.Checked = true;
+            this.LowLandGenerate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LowLandGenerate.Location = new System.Drawing.Point(178, 336);
+            this.LowLandGenerate.Name = "LowLandGenerate";
+            this.LowLandGenerate.Size = new System.Drawing.Size(97, 17);
+            this.LowLandGenerate.TabIndex = 25;
+            this.LowLandGenerate.Text = "Map Generator";
+            this.LowLandGenerate.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 454);
+            this.ClientSize = new System.Drawing.Size(748, 481);
+            this.Controls.Add(this.LowLandEmpty);
+            this.Controls.Add(this.LowLandImport);
+            this.Controls.Add(this.LowLandGenerate);
+            this.Controls.Add(this.LowlandLabel);
             this.Controls.Add(this.RCNEnable);
             this.Controls.Add(this.GSRules);
             this.Controls.Add(this.CliffsImport);
@@ -609,6 +664,10 @@
         private System.Windows.Forms.RadioButton CliffsImport;
         private System.Windows.Forms.CheckBox GSRules;
         private System.Windows.Forms.CheckBox RCNEnable;
+        private System.Windows.Forms.Label LowlandLabel;
+        private System.Windows.Forms.CheckBox LowLandEmpty;
+        private System.Windows.Forms.CheckBox LowLandImport;
+        private System.Windows.Forms.CheckBox LowLandGenerate;
     }
 }
 
