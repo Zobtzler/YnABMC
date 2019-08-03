@@ -936,7 +936,6 @@ namespace YnABMC
                                     Match hills = Regex.Match(MapArray, @H);
                                     Match water = Regex.Match(MapArray, @W);
                                     Match cliffs = Regex.Match(MapArray, @C);
-                                    Match lowland = Regex.Match(MapArray, @Low);
                                     Match lake = Regex.Match(MapArray, @L);
                                     Match volcano = Regex.Match(MapArray, @Volc);
                                     Match volcanohill = Regex.Match(MapArray, VolcHill);
@@ -963,6 +962,8 @@ namespace YnABMC
                                     if (LastColumn) MapW = CoordX + 1;
                                     if (hills.Success) HasHills[CoordX, CoordY] = true;
                                     else if (water.Success && !lake.Success) WaterArray[CoordX, CoordY] = true;
+                                    if (lake.Success) MapArray.Replace(lake.Groups[0].Value, "");
+                                    Match lowland = Regex.Match(MapArray, @Low); // -- Lake can sopmetimes show up in weird places, therefore it is removed here
                                     LuaCliffsEnd = "";
                                     EndLow = lowland.Success && LastColumn ? lowland.Groups[0].Value : EndLow;
                                     if (CliffsGenerate.Checked)
@@ -1030,7 +1031,6 @@ namespace YnABMC
                                         }
 #endregion
                                     }
-                                    if (lake.Success) MapArray = MapArray.Replace(lake.Groups[0].Value, "");
                                     LuaTemp = "\n" + MapArray + LuaTemp;
                                     LastColumn = false;
                                     ExtraPlacement += VolcanoString;
