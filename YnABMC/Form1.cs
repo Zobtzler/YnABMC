@@ -880,9 +880,7 @@ namespace YnABMC
                     while ((LuaLine = file.ReadLine()) != null)
                     {
                         string[] Parts = LuaLine.Split(' ');
-                        const string ConvertCode = @"MapToConvert.+", YnAMP = @"YnAMP_InGame:", WBP = @"WorldBuilderPlotEditor:", InGame = @"\[\d+\.\d+\] InGame:";
-                        Match ynamp = Regex.Match(LuaLine, YnAMP);
-                        Match wbp = Regex.Match(LuaLine, WBP);
+                        const string ConvertCode = @"MapToConvert.+", InGame = @"\[\d+\.\d+\] InGame:";
                         Match ingame = Regex.Match(LuaLine, InGame);
                         Match convertcode = Regex.Match(LuaLine, ConvertCode);
                         try
@@ -890,7 +888,7 @@ namespace YnABMC
 #region civ 6
                             if (convertcode.Success)
                             {
-                                if (!Civ5 && (ynamp.Success || wbp.Success))
+                                if (!Civ5 && !ingame.Success)
                                 {
                                     Civ6 = true;
                                     string MapArray = convertcode.Groups[0].Value;
@@ -971,7 +969,6 @@ namespace YnABMC
 #region Cliffs
                                         if (cliffs.Success)
                                         {
-                                            string Cliffs = "";
                                             string low = lowland.Groups[0].Value;
                                             MapArray = MapArray.Replace(cliffs.Groups[0].Value + lowland.Groups[0].Value, "");
 
