@@ -21,8 +21,8 @@ namespace YnABMC
     public partial class Form1 : Form
     {
         
-        string SoftwareVersion = "Alpha 0.3.4";
-        //string SoftwareVersion = "Dev 0.3.4";
+        string SoftwareVersion = "Alpha 0.3.4.1";
+        //string SoftwareVersion = "Dev 0.3.4.1";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
@@ -971,7 +971,6 @@ namespace YnABMC
 #region Cliffs
                                         if (cliffs.Success)
                                         {
-                                            string Cliffs = "";
                                             string low = lowland.Groups[0].Value;
                                             MapArray = MapArray.Replace(cliffs.Groups[0].Value + lowland.Groups[0].Value, "");
 
