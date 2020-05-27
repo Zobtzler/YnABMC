@@ -21,8 +21,8 @@ namespace YnABMC
     public partial class Form1 : Form
     {
         
-        string SoftwareVersion = "Alpha 0.3.4.2";
-        //string SoftwareVersion = "Dev 0.3.4.2";
+        string SoftwareVersion = "Alpha 0.3.4.3";
+        //string SoftwareVersion = "Dev 0.3.4.3";
         string GameVersions = "1.2,2.0";
         string FolderPath = "", BmpFilePath = "", ProjectName = "", AuthorName = "", ModID = "";
         bool Lua = false;
@@ -110,6 +110,9 @@ namespace YnABMC
         MapColour Pamukkale = new MapColour(192, 64, 0); //9,3,0
         MapColour Vesuvius = new MapColour(255, 64, 0); //12,3,0
         MapColour WhiteDesert = new MapColour(64, 96, 0); //3,4,0
+        MapColour BermudaTriangle = new MapColour(64, 96, 32); //3,4,1
+        MapColour FountainOfYouth = new MapColour(64, 96, 64); //3,4,3
+        MapColour Paititi = new MapColour(64, 96, 96); //3,4,4
 #endregion
 
 #region Mods
@@ -216,6 +219,8 @@ namespace YnABMC
         MapColour Amber = new MapColour(255, 251, 224); //12,12,11
         MapColour Olives = new MapColour(224, 224, 224); //11,11,11
         MapColour Turtles = new MapColour(160, 160, 160); //8,8,8
+        MapColour Maize = new MapColour(64, 96, 32); //3,4,1
+        MapColour Honey = new MapColour(64, 96, 64); //3,4,3
 #endregion
 
 #region LowLand
@@ -641,6 +646,12 @@ namespace YnABMC
                                     "FeatureType = \"FEATURE_VESUVIUS\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             else if (MatchWonder == WhiteDesert.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
                                     "FeatureType = \"FEATURE_WHITEDESERT\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == BermudaTriangle.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_BERMUDA_TRIANGLE\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == FountainOfYouth.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_FOUNTAIN_OF_YOUTH\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
+                            else if (MatchWonder == Paititi.Colour) NatWondTemp = "\n\t\t<Replace MapName=\"" + ProjectName + "_Map\" X = \"" + x + "\" Y = \"" + y + "\" " +
+                                    "FeatureType = \"FEATURE_PAITITI\" TerrainType = \"" + CurrentPlot + "\" />" + NatWondTemp;
                             //Repeat for future NWs
 #endregion
 
@@ -777,6 +788,8 @@ namespace YnABMC
                             else if (MatchResource == Amber.Colour) CurrentLine += "\"RESOURCE_AMBER\",1},{";
                             else if (MatchResource == Olives.Colour) CurrentLine += "\"RESOURCE_OLIVES\",1},{";
                             else if (MatchResource == Turtles.Colour) CurrentLine += "\"RESOURCE_TURTLES\",1},{";
+                            else if (MatchResource == Maize.Colour) CurrentLine += "\"RESOURCE_MAIZE\",1},{";
+                            else if (MatchResource == Honey.Colour) CurrentLine += "\"RESOURCE_HONEY\",1},{";
                             else CurrentLine += "-1,1},{";
 #endregion
 
